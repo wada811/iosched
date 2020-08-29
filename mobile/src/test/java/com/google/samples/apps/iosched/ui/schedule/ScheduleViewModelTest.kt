@@ -381,7 +381,7 @@ class ScheduleViewModelTest {
             refreshConferenceDataUseCase = RefreshConferenceDataUseCase(
                 ConferenceDataRepository(
                     remoteDataSource = remoteDataSource,
-                    boostrapDataSource = TestDataSource,
+                    bootstrapDataSource = TestDataSource,
                     appDatabase = FakeAppDatabase()
                 ),
                 testDispatcher
@@ -404,7 +404,7 @@ class ScheduleViewModelTest {
     fun newDataFromConfRepo_scheduleUpdated() {
         val repo = ConferenceDataRepository(
             remoteDataSource = TestConfDataSourceSession0(),
-            boostrapDataSource = BootstrapDataSourceSession3(),
+            bootstrapDataSource = BootstrapDataSourceSession3(),
             appDatabase = FakeAppDatabase()
         )
 

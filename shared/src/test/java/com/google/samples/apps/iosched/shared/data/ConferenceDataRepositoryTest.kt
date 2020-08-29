@@ -64,7 +64,7 @@ class ConferenceDataRepositoryTest {
         // and a bootstrap that returns session 3
         repo = ConferenceDataRepository(
             remoteDataSource = TestConfDataSourceSession0(),
-            boostrapDataSource = BootstrapDataSourceSession3(),
+            bootstrapDataSource = BootstrapDataSourceSession3(),
             appDatabase = FakeAppDatabase()
         )
 
@@ -89,7 +89,7 @@ class ConferenceDataRepositoryTest {
         // and a bootstrap that returns session 3
         repo = ConferenceDataRepository(
             remoteDataSource = NotAvailableDataSource(),
-            boostrapDataSource = BootstrapDataSourceSession3(),
+            bootstrapDataSource = BootstrapDataSourceSession3(),
             appDatabase = FakeAppDatabase()
         )
 
@@ -117,7 +117,7 @@ class ConferenceDataRepositoryTest {
         // and a bootstrap that returns session 1
         repo = ConferenceDataRepository(
             remoteDataSource = ThrowingDataSourceNoCache(),
-            boostrapDataSource = TestConfDataSourceSession1(),
+            bootstrapDataSource = TestConfDataSourceSession1(),
             appDatabase = FakeAppDatabase()
         )
 
