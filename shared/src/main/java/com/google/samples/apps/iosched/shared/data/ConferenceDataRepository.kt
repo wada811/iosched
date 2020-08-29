@@ -40,7 +40,7 @@ import javax.inject.Singleton
  */
 @Singleton
 open class ConferenceDataRepository @Inject constructor(
-    @Named("remoteConfDatasource") private val remoteDataSource: ConferenceDataSource,
+    @Named("remoteConfDataSource") private val remoteDataSource: ConferenceDataSource,
     @Named("bootstrapConfDataSource") private val bootstrapDataSource: ConferenceDataSource,
     private val appDatabase: AppDatabase
 ) {

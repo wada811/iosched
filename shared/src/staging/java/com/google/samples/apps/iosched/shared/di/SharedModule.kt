@@ -63,7 +63,7 @@ class SharedModule {
 
     @Singleton
     @Provides
-    @Named("remoteConfDatasource")
+    @Named("remoteConfDataSource")
     fun provideConferenceDataSource(): ConferenceDataSource {
         return FakeConferenceDataSource
     }
@@ -78,7 +78,7 @@ class SharedModule {
     @Singleton
     @Provides
     fun provideConferenceDataRepository(
-        @Named("remoteConfDatasource") remoteDataSource: ConferenceDataSource,
+        @Named("remoteConfDataSource") remoteDataSource: ConferenceDataSource,
         @Named("bootstrapConfDataSource") bootstrapDataSource: ConferenceDataSource,
         appDatabase: AppDatabase
     ): ConferenceDataRepository {

@@ -80,7 +80,7 @@ class SharedModule {
 
     @Singleton
     @Provides
-    @Named("remoteConfDatasource")
+    @Named("remoteConfDataSource")
     fun provideConferenceDataSource(
         @ApplicationContext context: Context,
         networkUtils: NetworkUtils
@@ -98,7 +98,7 @@ class SharedModule {
     @Singleton
     @Provides
     fun provideConferenceDataRepository(
-        @Named("remoteConfDatasource") remoteDataSource: ConferenceDataSource,
+        @Named("remoteConfDataSource") remoteDataSource: ConferenceDataSource,
         @Named("bootstrapConfDataSource") bootstrapDataSource: ConferenceDataSource,
         appDatabase: AppDatabase
     ): ConferenceDataRepository {
