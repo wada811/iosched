@@ -25,4 +25,5 @@ import javax.inject.Singleton
 
 object SharedDependencyModule : AbstractSharedDependencyModule() {
     override val bootstrapConfDataSource: ConferenceDataSource by lazy { FakeConferenceDataSource }
+    override val announcementDataSource: AnnouncementDataSource by lazy { FakeAnnouncementDataSource }
 }

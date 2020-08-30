@@ -18,7 +18,12 @@ package com.google.samples.apps.iosched.shared.di
 
 import com.google.samples.apps.iosched.shared.data.BootstrapConferenceDataSource
 import com.google.samples.apps.iosched.shared.data.ConferenceDataSource
+import com.google.samples.apps.iosched.shared.data.feed.AnnouncementDataSource
+import com.google.samples.apps.iosched.shared.data.feed.FirestoreAnnouncementDataSource
 
 object SharedDependencyModule : AbstractSharedDependencyModule() {
     override val bootstrapConfDataSource: ConferenceDataSource by lazy { BootstrapConferenceDataSource }
+    override val announcementDataSource: AnnouncementDataSource by lazy {
+        FirestoreAnnouncementDataSource(firebaseFirestore)
+    }
 }
