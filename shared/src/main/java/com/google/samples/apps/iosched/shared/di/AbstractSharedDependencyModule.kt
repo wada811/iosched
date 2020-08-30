@@ -16,9 +16,20 @@
 
 package com.google.samples.apps.iosched.shared.di
 
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.ktx.firestoreSettings
+import com.google.firebase.ktx.Firebase
 import com.google.samples.apps.iosched.shared.data.ConferenceDataSource
 import com.wada811.dependencyproperty.DependencyModule
 
 abstract class AbstractSharedDependencyModule : DependencyModule {
     abstract val bootstrapConfDataSource: ConferenceDataSource
+    val firebaseFirestore: FirebaseFirestore by lazy {
+        Firebase.firestore.apply {
+            // This is to enable the offline data
+            // https://firebase.google.com/docs/firestore/manage-data/enable-offline
+            firestoreSettings = firestoreSettings { isPersistenceEnabled = true }
+        }
+    }
 }
