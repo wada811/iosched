@@ -19,6 +19,6 @@ package com.google.samples.apps.iosched.shared.di
 import com.google.samples.apps.iosched.shared.data.ConferenceDataSource
 import com.wada811.dependencyproperty.DependencyModule
 
-interface SharedDependencyModule : DependencyModule {
-    val bootstrapConfDataSource: ConferenceDataSource
+abstract class AbstractSharedDependencyModule : DependencyModule {
+    abstract val bootstrapConfDataSource: ConferenceDataSource
 }

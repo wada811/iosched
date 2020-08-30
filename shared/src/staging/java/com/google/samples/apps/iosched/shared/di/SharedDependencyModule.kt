@@ -18,7 +18,11 @@ package com.google.samples.apps.iosched.shared.di
 
 import com.google.samples.apps.iosched.shared.data.BootstrapConferenceDataSource
 import com.google.samples.apps.iosched.shared.data.ConferenceDataSource
+import com.wada811.dependencyproperty.DependencyModule
+import dagger.Provides
+import javax.inject.Named
+import javax.inject.Singleton
 
-object SharedDependencyModuleImpl : SharedDependencyModule {
-    override val bootstrapConfDataSource: ConferenceDataSource by lazy { BootstrapConferenceDataSource }
+object SharedDependencyModule : AbstractSharedDependencyModule() {
+    override val bootstrapConfDataSource: ConferenceDataSource by lazy { FakeConferenceDataSource }
 }
