@@ -24,6 +24,8 @@ import com.google.firebase.functions.ktx.functions
 import com.google.firebase.ktx.Firebase
 import com.google.samples.apps.iosched.shared.data.ConferenceDataSource
 import com.google.samples.apps.iosched.shared.data.feed.AnnouncementDataSource
+import com.google.samples.apps.iosched.shared.data.feed.DefaultFeedRepository
+import com.google.samples.apps.iosched.shared.data.feed.FeedRepository
 import com.google.samples.apps.iosched.shared.data.feed.MomentDataSource
 import com.wada811.dependencyproperty.DependencyModule
 
@@ -39,4 +41,7 @@ abstract class AbstractSharedDependencyModule : DependencyModule {
     val firebaseFunctions: FirebaseFunctions by lazy { Firebase.functions }
     abstract val announcementDataSource: AnnouncementDataSource
     abstract val momentsDataSource: MomentDataSource
+    val feedRepository: FeedRepository by lazy {
+        DefaultFeedRepository(announcementDataSource, momentsDataSource)
+    }
 }
