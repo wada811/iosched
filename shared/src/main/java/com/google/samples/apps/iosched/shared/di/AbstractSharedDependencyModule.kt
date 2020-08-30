@@ -19,6 +19,8 @@ package com.google.samples.apps.iosched.shared.di
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.firestoreSettings
+import com.google.firebase.functions.FirebaseFunctions
+import com.google.firebase.functions.ktx.functions
 import com.google.firebase.ktx.Firebase
 import com.google.samples.apps.iosched.shared.data.ConferenceDataSource
 import com.wada811.dependencyproperty.DependencyModule
@@ -32,4 +34,5 @@ abstract class AbstractSharedDependencyModule : DependencyModule {
             firestoreSettings = firestoreSettings { isPersistenceEnabled = true }
         }
     }
+    val firebaseFunctions: FirebaseFunctions by lazy { Firebase.functions }
 }
