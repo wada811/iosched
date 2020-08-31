@@ -40,7 +40,9 @@ import com.google.samples.apps.iosched.shared.data.feed.MomentDataSource
 import com.google.samples.apps.iosched.shared.data.feedback.FeedbackEndpoint
 import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
 import com.google.samples.apps.iosched.shared.data.session.SessionRepository
+import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.data.userevent.FirestoreUserEventDataSource
+import com.google.samples.apps.iosched.shared.data.userevent.SessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventDataSource
 import com.google.samples.apps.iosched.shared.fcm.TopicSubscriber
 import com.google.samples.apps.iosched.shared.time.DefaultTimeProvider
@@ -79,6 +81,9 @@ abstract class AbstractSharedDependencyModule(
         FirestoreUserEventDataSource(firebaseFirestore, coroutinesDependencyModule.ioDispatcher)
     }
     abstract val feedbackEndpoint: FeedbackEndpoint
+    val sessionAndUserEventRepository: SessionAndUserEventRepository by lazy {
+        DefaultSessionAndUserEventRepository(userEventDataSource, sessionRepository)
+    }
     abstract val arDebugFlagEndpoint: ArDebugFlagEndpoint
     abstract val topicSubscriber: TopicSubscriber
     private val firebaseRemoteConfigSettings: FirebaseRemoteConfigSettings by lazy {
