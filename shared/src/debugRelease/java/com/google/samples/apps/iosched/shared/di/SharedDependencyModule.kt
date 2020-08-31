@@ -34,11 +34,9 @@ import com.google.samples.apps.iosched.shared.fcm.FcmTopicSubscriber
 import com.google.samples.apps.iosched.shared.fcm.TopicSubscriber
 
 class SharedDependencyModule(
-    private val context: Context,
-    coroutinesDependencyModule: CoroutinesDependencyModule
+    private val context: Context
 ) : AbstractSharedDependencyModule(
-    context,
-    coroutinesDependencyModule
+    context
 ) {
     override val remoteConfDataSource: ConferenceDataSource by lazy {
         NetworkConferenceDataSource(context)

@@ -55,7 +55,7 @@ import com.wada811.dependencyproperty.DependencyModule
 
 abstract class AbstractSharedDependencyModule(
     private val context: Context,
-    private val coroutinesDependencyModule: CoroutinesDependencyModule
+    protected val coroutinesDependencyModule: CoroutinesDependencyModule = CoroutinesDependencyModule()
 ) : DependencyModule {
     abstract val remoteConfDataSource: ConferenceDataSource
     abstract val bootstrapConfDataSource: ConferenceDataSource
