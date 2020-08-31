@@ -61,14 +61,6 @@ abstract class AbstractSharedDependencyModule(
     val conferenceDataRepository: ConferenceDataRepository by lazy {
         ConferenceDataRepository(remoteConfDataSource, bootstrapConfDataSource, appDatabase)
     }
-    val firebaseFirestore: FirebaseFirestore by lazy {
-        Firebase.firestore.apply {
-            // This is to enable the offline data
-            // https://firebase.google.com/docs/firestore/manage-data/enable-offline
-            firestoreSettings = firestoreSettings { isPersistenceEnabled = true }
-        }
-    }
-    val firebaseFunctions: FirebaseFunctions by lazy { Firebase.functions }
     abstract val announcementDataSource: AnnouncementDataSource
     abstract val momentsDataSource: MomentDataSource
     val feedRepository: FeedRepository by lazy {
@@ -84,6 +76,14 @@ abstract class AbstractSharedDependencyModule(
     val sessionAndUserEventRepository: SessionAndUserEventRepository by lazy {
         DefaultSessionAndUserEventRepository(userEventDataSource, sessionRepository)
     }
+    val firebaseFirestore: FirebaseFirestore by lazy {
+        Firebase.firestore.apply {
+            // This is to enable the offline data
+            // https://firebase.google.com/docs/firestore/manage-data/enable-offline
+            firestoreSettings = firestoreSettings { isPersistenceEnabled = true }
+        }
+    }
+    val firebaseFunctions: FirebaseFunctions by lazy { Firebase.functions }
     abstract val arDebugFlagEndpoint: ArDebugFlagEndpoint
     abstract val topicSubscriber: TopicSubscriber
     private val firebaseRemoteConfigSettings: FirebaseRemoteConfigSettings by lazy {
