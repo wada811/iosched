@@ -28,6 +28,7 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import com.google.samples.apps.iosched.shared.R
+import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
 import com.google.samples.apps.iosched.shared.data.ConferenceDataSource
 import com.google.samples.apps.iosched.shared.data.ar.ArDebugFlagEndpoint
 import com.google.samples.apps.iosched.shared.data.config.AppConfigDataSource
@@ -52,6 +53,9 @@ abstract class AbstractSharedDependencyModule(
     abstract val bootstrapConfDataSource: ConferenceDataSource
     val appDatabase: AppDatabase by lazy {
         AppDatabase.buildDatabase(context)
+    }
+    val conferenceDataRepository: ConferenceDataRepository by lazy {
+        ConferenceDataRepository(remoteConfDataSource, bootstrapConfDataSource, appDatabase)
     }
     val firebaseFirestore: FirebaseFirestore by lazy {
         Firebase.firestore.apply {
