@@ -22,6 +22,8 @@ import com.google.firebase.firestore.ktx.firestoreSettings
 import com.google.firebase.functions.FirebaseFunctions
 import com.google.firebase.functions.ktx.functions
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
+import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import com.google.samples.apps.iosched.shared.data.ConferenceDataSource
 import com.google.samples.apps.iosched.shared.data.ar.ArDebugFlagEndpoint
 import com.google.samples.apps.iosched.shared.data.feed.AnnouncementDataSource
@@ -57,4 +59,12 @@ abstract class AbstractSharedDependencyModule(
     abstract val feedbackEndpoint: FeedbackEndpoint
     abstract val arDebugFlagEndpoint: ArDebugFlagEndpoint
     abstract val topicSubscriber: TopicSubscriber
+    val firebaseRemoteConfigSettings: FirebaseRemoteConfigSettings by lazy {
+        if (BuildConfig.DEBUG) {
+            remoteConfigSettings { minimumFetchIntervalInSeconds = 0 }
+        } else {
+            remoteConfigSettings { }
+        }
+    }
+
 }
