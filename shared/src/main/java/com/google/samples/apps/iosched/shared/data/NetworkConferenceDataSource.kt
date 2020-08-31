@@ -29,7 +29,7 @@ import javax.inject.Inject
  */
 class NetworkConferenceDataSource @Inject constructor(
     @ApplicationContext val context: Context,
-    private val networkUtils: NetworkUtils
+    private val networkUtils: NetworkUtils = NetworkUtils(context)
 ) : ConferenceDataSource {
 
     override fun getRemoteConferenceData(): ConferenceData? {

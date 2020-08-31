@@ -45,6 +45,7 @@ import com.wada811.dependencyproperty.DependencyModule
 abstract class AbstractSharedDependencyModule(
     private val coroutinesDependencyModule: CoroutinesDependencyModule
 ) : DependencyModule {
+    abstract val remoteConfDataSource: ConferenceDataSource
     abstract val bootstrapConfDataSource: ConferenceDataSource
     val firebaseFirestore: FirebaseFirestore by lazy {
         Firebase.firestore.apply {

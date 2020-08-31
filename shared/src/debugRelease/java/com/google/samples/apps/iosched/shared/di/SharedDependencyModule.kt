@@ -16,8 +16,10 @@
 
 package com.google.samples.apps.iosched.shared.di
 
+import android.content.Context
 import com.google.samples.apps.iosched.shared.data.BootstrapConferenceDataSource
 import com.google.samples.apps.iosched.shared.data.ConferenceDataSource
+import com.google.samples.apps.iosched.shared.data.NetworkConferenceDataSource
 import com.google.samples.apps.iosched.shared.data.ar.ArDebugFlagEndpoint
 import com.google.samples.apps.iosched.shared.data.ar.DefaultArDebugFlagEndpoint
 import com.google.samples.apps.iosched.shared.data.config.AppConfigDataSource
@@ -32,10 +34,14 @@ import com.google.samples.apps.iosched.shared.fcm.FcmTopicSubscriber
 import com.google.samples.apps.iosched.shared.fcm.TopicSubscriber
 
 class SharedDependencyModule(
+    private val context: Context,
     coroutinesDependencyModule: CoroutinesDependencyModule
 ) : AbstractSharedDependencyModule(
     coroutinesDependencyModule
 ) {
+    override val remoteConfDataSource: ConferenceDataSource by lazy {
+        NetworkConferenceDataSource(context)
+    }
     override val bootstrapConfDataSource: ConferenceDataSource by lazy { BootstrapConferenceDataSource }
     override val announcementDataSource: AnnouncementDataSource by lazy {
         FirestoreAnnouncementDataSource(firebaseFirestore)
