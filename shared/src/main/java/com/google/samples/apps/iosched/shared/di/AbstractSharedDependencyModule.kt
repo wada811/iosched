@@ -31,6 +31,7 @@ import com.google.samples.apps.iosched.shared.data.feed.MomentDataSource
 import com.google.samples.apps.iosched.shared.data.feedback.FeedbackEndpoint
 import com.google.samples.apps.iosched.shared.data.userevent.FirestoreUserEventDataSource
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventDataSource
+import com.google.samples.apps.iosched.shared.fcm.TopicSubscriber
 import com.wada811.dependencyproperty.DependencyModule
 
 abstract class AbstractSharedDependencyModule(
@@ -55,4 +56,5 @@ abstract class AbstractSharedDependencyModule(
     }
     abstract val feedbackEndpoint: FeedbackEndpoint
     abstract val arDebugFlagEndpoint: ArDebugFlagEndpoint
+    abstract val topicSubscriber: TopicSubscriber
 }

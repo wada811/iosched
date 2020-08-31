@@ -26,6 +26,8 @@ import com.google.samples.apps.iosched.shared.data.feed.FirestoreMomentDataSourc
 import com.google.samples.apps.iosched.shared.data.feed.MomentDataSource
 import com.google.samples.apps.iosched.shared.data.feedback.DefaultFeedbackEndpoint
 import com.google.samples.apps.iosched.shared.data.feedback.FeedbackEndpoint
+import com.google.samples.apps.iosched.shared.fcm.FcmTopicSubscriber
+import com.google.samples.apps.iosched.shared.fcm.TopicSubscriber
 
 class SharedDependencyModule(
     coroutinesDependencyModule: CoroutinesDependencyModule
@@ -44,5 +46,8 @@ class SharedDependencyModule(
     }
     override val arDebugFlagEndpoint: ArDebugFlagEndpoint by lazy {
         DefaultArDebugFlagEndpoint(firebaseFunctions)
+    }
+    override val topicSubscriber: TopicSubscriber by lazy {
+        FcmTopicSubscriber()
     }
 }

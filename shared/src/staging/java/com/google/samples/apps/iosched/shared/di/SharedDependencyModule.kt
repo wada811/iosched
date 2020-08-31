@@ -29,4 +29,5 @@ object SharedDependencyModule : AbstractSharedDependencyModule() {
     override val momentsDataSource: MomentDataSource by lazy { FakeMomentDataSource }
     override val feedbackEndpoint: FeedbackEndpoint by lazy { FakeFeedbackEndpoint }
     override val arDebugFlagEndpoint: ArDebugFlagEndpoint by lazy { FakeArDebugFlagEndpoint }
+    override val topicSubscriber: TopicSubscriber by lazy { StagingTopicSubscriber() }
 }
