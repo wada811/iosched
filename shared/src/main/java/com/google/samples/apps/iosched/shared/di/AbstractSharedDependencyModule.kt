@@ -27,9 +27,13 @@ import com.google.samples.apps.iosched.shared.data.feed.AnnouncementDataSource
 import com.google.samples.apps.iosched.shared.data.feed.DefaultFeedRepository
 import com.google.samples.apps.iosched.shared.data.feed.FeedRepository
 import com.google.samples.apps.iosched.shared.data.feed.MomentDataSource
+import com.google.samples.apps.iosched.shared.data.userevent.FirestoreUserEventDataSource
+import com.google.samples.apps.iosched.shared.data.userevent.UserEventDataSource
 import com.wada811.dependencyproperty.DependencyModule
 
-abstract class AbstractSharedDependencyModule : DependencyModule {
+abstract class AbstractSharedDependencyModule(
+    private val coroutinesDependencyModule: CoroutinesDependencyModule
+) : DependencyModule {
     abstract val bootstrapConfDataSource: ConferenceDataSource
     val firebaseFirestore: FirebaseFirestore by lazy {
         Firebase.firestore.apply {
@@ -43,5 +47,8 @@ abstract class AbstractSharedDependencyModule : DependencyModule {
     abstract val momentsDataSource: MomentDataSource
     val feedRepository: FeedRepository by lazy {
         DefaultFeedRepository(announcementDataSource, momentsDataSource)
+    }
+    val userEventDataSource: UserEventDataSource by lazy {
+        FirestoreUserEventDataSource(firebaseFirestore, coroutinesDependencyModule.ioDispatcher)
     }
 }

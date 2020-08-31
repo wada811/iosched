@@ -23,7 +23,11 @@ import com.google.samples.apps.iosched.shared.data.feed.FirestoreAnnouncementDat
 import com.google.samples.apps.iosched.shared.data.feed.FirestoreMomentDataSource
 import com.google.samples.apps.iosched.shared.data.feed.MomentDataSource
 
-object SharedDependencyModule : AbstractSharedDependencyModule() {
+class SharedDependencyModule(
+    coroutinesDependencyModule: CoroutinesDependencyModule
+) : AbstractSharedDependencyModule(
+    coroutinesDependencyModule
+) {
     override val bootstrapConfDataSource: ConferenceDataSource by lazy { BootstrapConferenceDataSource }
     override val announcementDataSource: AnnouncementDataSource by lazy {
         FirestoreAnnouncementDataSource(firebaseFirestore)
