@@ -22,6 +22,8 @@ import com.google.samples.apps.iosched.shared.data.feed.AnnouncementDataSource
 import com.google.samples.apps.iosched.shared.data.feed.FirestoreAnnouncementDataSource
 import com.google.samples.apps.iosched.shared.data.feed.FirestoreMomentDataSource
 import com.google.samples.apps.iosched.shared.data.feed.MomentDataSource
+import com.google.samples.apps.iosched.shared.data.feedback.DefaultFeedbackEndpoint
+import com.google.samples.apps.iosched.shared.data.feedback.FeedbackEndpoint
 
 class SharedDependencyModule(
     coroutinesDependencyModule: CoroutinesDependencyModule
@@ -34,5 +36,8 @@ class SharedDependencyModule(
     }
     override val momentsDataSource: MomentDataSource by lazy {
         FirestoreMomentDataSource(firebaseFirestore)
+    }
+    override val feedbackEndpoint: FeedbackEndpoint by lazy {
+        DefaultFeedbackEndpoint(firebaseFunctions)
     }
 }
