@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.iosched.shared.di
 
+import android.content.Context
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.firestoreSettings
@@ -30,6 +31,7 @@ import com.google.samples.apps.iosched.shared.R
 import com.google.samples.apps.iosched.shared.data.ConferenceDataSource
 import com.google.samples.apps.iosched.shared.data.ar.ArDebugFlagEndpoint
 import com.google.samples.apps.iosched.shared.data.config.AppConfigDataSource
+import com.google.samples.apps.iosched.shared.data.db.AppDatabase
 import com.google.samples.apps.iosched.shared.data.feed.AnnouncementDataSource
 import com.google.samples.apps.iosched.shared.data.feed.DefaultFeedRepository
 import com.google.samples.apps.iosched.shared.data.feed.FeedRepository
@@ -43,10 +45,14 @@ import com.google.samples.apps.iosched.shared.time.TimeProvider
 import com.wada811.dependencyproperty.DependencyModule
 
 abstract class AbstractSharedDependencyModule(
+    private val context: Context,
     private val coroutinesDependencyModule: CoroutinesDependencyModule
 ) : DependencyModule {
     abstract val remoteConfDataSource: ConferenceDataSource
     abstract val bootstrapConfDataSource: ConferenceDataSource
+    val appDatabase: AppDatabase by lazy {
+        AppDatabase.buildDatabase(context)
+    }
     val firebaseFirestore: FirebaseFirestore by lazy {
         Firebase.firestore.apply {
             // This is to enable the offline data

@@ -37,6 +37,7 @@ class SharedDependencyModule(
     private val context: Context,
     coroutinesDependencyModule: CoroutinesDependencyModule
 ) : AbstractSharedDependencyModule(
+    context,
     coroutinesDependencyModule
 ) {
     override val remoteConfDataSource: ConferenceDataSource by lazy {
