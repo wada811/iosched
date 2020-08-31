@@ -29,6 +29,7 @@ import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import com.google.samples.apps.iosched.shared.R
 import com.google.samples.apps.iosched.shared.data.ConferenceDataSource
 import com.google.samples.apps.iosched.shared.data.ar.ArDebugFlagEndpoint
+import com.google.samples.apps.iosched.shared.data.config.AppConfigDataSource
 import com.google.samples.apps.iosched.shared.data.feed.AnnouncementDataSource
 import com.google.samples.apps.iosched.shared.data.feed.DefaultFeedRepository
 import com.google.samples.apps.iosched.shared.data.feed.FeedRepository
@@ -75,4 +76,5 @@ abstract class AbstractSharedDependencyModule(
             setDefaultsAsync(R.xml.remote_config_defaults)
         }
     }
+    abstract val appConfigDataSource: AppConfigDataSource
 }

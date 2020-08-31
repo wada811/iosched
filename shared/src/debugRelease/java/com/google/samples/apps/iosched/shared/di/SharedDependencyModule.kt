@@ -20,6 +20,8 @@ import com.google.samples.apps.iosched.shared.data.BootstrapConferenceDataSource
 import com.google.samples.apps.iosched.shared.data.ConferenceDataSource
 import com.google.samples.apps.iosched.shared.data.ar.ArDebugFlagEndpoint
 import com.google.samples.apps.iosched.shared.data.ar.DefaultArDebugFlagEndpoint
+import com.google.samples.apps.iosched.shared.data.config.AppConfigDataSource
+import com.google.samples.apps.iosched.shared.data.config.RemoteAppConfigDataSource
 import com.google.samples.apps.iosched.shared.data.feed.AnnouncementDataSource
 import com.google.samples.apps.iosched.shared.data.feed.FirestoreAnnouncementDataSource
 import com.google.samples.apps.iosched.shared.data.feed.FirestoreMomentDataSource
@@ -49,5 +51,8 @@ class SharedDependencyModule(
     }
     override val topicSubscriber: TopicSubscriber by lazy {
         FcmTopicSubscriber()
+    }
+    override val appConfigDataSource: AppConfigDataSource by lazy {
+        RemoteAppConfigDataSource(firebaseRemoteConfig, coroutinesDependencyModule.ioDispatcher)
     }
 }
