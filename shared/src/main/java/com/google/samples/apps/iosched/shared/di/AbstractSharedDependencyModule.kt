@@ -38,6 +38,8 @@ import com.google.samples.apps.iosched.shared.data.feed.DefaultFeedRepository
 import com.google.samples.apps.iosched.shared.data.feed.FeedRepository
 import com.google.samples.apps.iosched.shared.data.feed.MomentDataSource
 import com.google.samples.apps.iosched.shared.data.feedback.FeedbackEndpoint
+import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
+import com.google.samples.apps.iosched.shared.data.session.SessionRepository
 import com.google.samples.apps.iosched.shared.data.userevent.FirestoreUserEventDataSource
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventDataSource
 import com.google.samples.apps.iosched.shared.fcm.TopicSubscriber
@@ -69,6 +71,9 @@ abstract class AbstractSharedDependencyModule(
     abstract val momentsDataSource: MomentDataSource
     val feedRepository: FeedRepository by lazy {
         DefaultFeedRepository(announcementDataSource, momentsDataSource)
+    }
+    val sessionRepository: SessionRepository by lazy {
+        DefaultSessionRepository(conferenceDataRepository)
     }
     val userEventDataSource: UserEventDataSource by lazy {
         FirestoreUserEventDataSource(firebaseFirestore, coroutinesDependencyModule.ioDispatcher)
