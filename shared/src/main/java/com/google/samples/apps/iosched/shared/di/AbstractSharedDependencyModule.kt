@@ -27,8 +27,8 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
-import com.google.samples.apps.iosched.shared.R
 import com.google.samples.apps.iosched.shared.BuildConfig
+import com.google.samples.apps.iosched.shared.R
 import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
 import com.google.samples.apps.iosched.shared.data.ConferenceDataSource
 import com.google.samples.apps.iosched.shared.data.ar.ArDebugFlagEndpoint
@@ -107,7 +107,10 @@ abstract class AbstractSharedDependencyModule(
     val timeProvider: TimeProvider by lazy {
         DefaultTimeProvider
     }
+    val featureFlags: FeatureFlags by lazy {
+        FeatureFlags(appConfigDataSource)
+    }
     val sessionTextMatchStrategy: SessionTextMatchStrategy by lazy {
-        if (appConfigDataSource.isSearchUsingRoomFeatureEnabled()) FtsMatchStrategy(appDatabase) else SimpleMatchStrategy
+        if (featureFlags.isSearchUsingRoomFeatureEnabled) FtsMatchStrategy(appDatabase) else SimpleMatchStrategy
     }
 }
