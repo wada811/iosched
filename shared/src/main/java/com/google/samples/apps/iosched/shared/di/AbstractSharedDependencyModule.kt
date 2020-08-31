@@ -23,6 +23,7 @@ import com.google.firebase.functions.FirebaseFunctions
 import com.google.firebase.functions.ktx.functions
 import com.google.firebase.ktx.Firebase
 import com.google.samples.apps.iosched.shared.data.ConferenceDataSource
+import com.google.samples.apps.iosched.shared.data.ar.ArDebugFlagEndpoint
 import com.google.samples.apps.iosched.shared.data.feed.AnnouncementDataSource
 import com.google.samples.apps.iosched.shared.data.feed.DefaultFeedRepository
 import com.google.samples.apps.iosched.shared.data.feed.FeedRepository
@@ -53,4 +54,5 @@ abstract class AbstractSharedDependencyModule(
         FirestoreUserEventDataSource(firebaseFirestore, coroutinesDependencyModule.ioDispatcher)
     }
     abstract val feedbackEndpoint: FeedbackEndpoint
+    abstract val arDebugFlagEndpoint: ArDebugFlagEndpoint
 }

@@ -18,6 +18,8 @@ package com.google.samples.apps.iosched.shared.di
 
 import com.google.samples.apps.iosched.shared.data.BootstrapConferenceDataSource
 import com.google.samples.apps.iosched.shared.data.ConferenceDataSource
+import com.google.samples.apps.iosched.shared.data.ar.ArDebugFlagEndpoint
+import com.google.samples.apps.iosched.shared.data.ar.DefaultArDebugFlagEndpoint
 import com.google.samples.apps.iosched.shared.data.feed.AnnouncementDataSource
 import com.google.samples.apps.iosched.shared.data.feed.FirestoreAnnouncementDataSource
 import com.google.samples.apps.iosched.shared.data.feed.FirestoreMomentDataSource
@@ -39,5 +41,8 @@ class SharedDependencyModule(
     }
     override val feedbackEndpoint: FeedbackEndpoint by lazy {
         DefaultFeedbackEndpoint(firebaseFunctions)
+    }
+    override val arDebugFlagEndpoint: ArDebugFlagEndpoint by lazy {
+        DefaultArDebugFlagEndpoint(firebaseFunctions)
     }
 }
