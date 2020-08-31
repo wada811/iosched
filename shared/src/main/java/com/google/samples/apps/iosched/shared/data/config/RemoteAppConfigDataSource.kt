@@ -20,7 +20,6 @@ import android.content.res.Resources.NotFoundException
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
-import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import com.google.samples.apps.iosched.model.ConferenceWifiInfo
 import com.google.samples.apps.iosched.shared.BuildConfig
 import com.google.samples.apps.iosched.shared.di.IoDispatcher
@@ -34,7 +33,6 @@ import kotlin.coroutines.resume
 
 class RemoteAppConfigDataSource @Inject constructor(
     private val firebaseRemoteConfig: FirebaseRemoteConfig,
-    configSettings: FirebaseRemoteConfigSettings,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : AppConfigDataSource {
 

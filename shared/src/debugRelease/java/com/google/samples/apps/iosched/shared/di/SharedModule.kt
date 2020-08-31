@@ -214,10 +214,9 @@ class SharedModule {
     @Provides
     fun provideAppConfigDataSource(
         remoteConfig: FirebaseRemoteConfig,
-        configSettings: FirebaseRemoteConfigSettings,
         @IoDispatcher ioDispatcher: CoroutineDispatcher
     ): AppConfigDataSource {
-        return RemoteAppConfigDataSource(remoteConfig, configSettings, ioDispatcher)
+        return RemoteAppConfigDataSource(remoteConfig, ioDispatcher)
     }
 
     @Singleton
