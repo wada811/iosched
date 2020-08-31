@@ -38,6 +38,8 @@ import com.google.samples.apps.iosched.shared.data.feedback.FeedbackEndpoint
 import com.google.samples.apps.iosched.shared.data.userevent.FirestoreUserEventDataSource
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventDataSource
 import com.google.samples.apps.iosched.shared.fcm.TopicSubscriber
+import com.google.samples.apps.iosched.shared.time.DefaultTimeProvider
+import com.google.samples.apps.iosched.shared.time.TimeProvider
 import com.wada811.dependencyproperty.DependencyModule
 
 abstract class AbstractSharedDependencyModule(
@@ -77,4 +79,7 @@ abstract class AbstractSharedDependencyModule(
         }
     }
     abstract val appConfigDataSource: AppConfigDataSource
+    val timeProvider: TimeProvider by lazy {
+        DefaultTimeProvider
+    }
 }
