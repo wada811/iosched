@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.iosched.di
 
+import android.content.ClipboardManager
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.wifi.WifiManager
@@ -31,4 +32,6 @@ class AppDependencyModule(private val context: Context) : DependencyModule {
         get() = context.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
     val connectivityManager: ConnectivityManager
         get() = context.applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    val clipboardManager: ClipboardManager
+        get() = context.applicationContext.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
 }
