@@ -31,6 +31,8 @@ import com.google.samples.apps.iosched.shared.BuildConfig
 import com.google.samples.apps.iosched.shared.R
 import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
 import com.google.samples.apps.iosched.shared.data.ConferenceDataSource
+import com.google.samples.apps.iosched.shared.data.agenda.AgendaRepository
+import com.google.samples.apps.iosched.shared.data.agenda.DefaultAgendaRepository
 import com.google.samples.apps.iosched.shared.data.ar.ArDebugFlagEndpoint
 import com.google.samples.apps.iosched.shared.data.config.AppConfigDataSource
 import com.google.samples.apps.iosched.shared.data.db.AppDatabase
@@ -112,5 +114,8 @@ abstract class AbstractSharedDependencyModule(
     }
     val sessionTextMatchStrategy: SessionTextMatchStrategy by lazy {
         if (featureFlags.isSearchUsingRoomFeatureEnabled) FtsMatchStrategy(appDatabase) else SimpleMatchStrategy
+    }
+    val agendaRepository: AgendaRepository by lazy {
+        DefaultAgendaRepository(appConfigDataSource)
     }
 }
