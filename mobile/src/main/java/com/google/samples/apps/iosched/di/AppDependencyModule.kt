@@ -17,12 +17,15 @@
 package com.google.samples.apps.iosched.di
 
 import android.content.Context
+import android.net.wifi.WifiManager
 import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
 import com.google.samples.apps.iosched.shared.data.prefs.SharedPreferenceStorage
 import com.wada811.dependencyproperty.DependencyModule
 
-class AppDependencyModule(context: Context) : DependencyModule {
+class AppDependencyModule(private val context: Context) : DependencyModule {
     val preferenceStorage: PreferenceStorage by lazy {
         SharedPreferenceStorage(context)
     }
+    val wifiManager: WifiManager
+        get() = context.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
 }
