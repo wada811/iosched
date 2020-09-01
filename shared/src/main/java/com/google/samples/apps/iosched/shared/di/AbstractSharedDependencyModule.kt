@@ -56,6 +56,7 @@ import com.google.samples.apps.iosched.shared.data.userevent.UserEventDataSource
 import com.google.samples.apps.iosched.shared.domain.search.FtsMatchStrategy
 import com.google.samples.apps.iosched.shared.domain.search.SessionTextMatchStrategy
 import com.google.samples.apps.iosched.shared.domain.search.SimpleMatchStrategy
+import com.google.samples.apps.iosched.shared.domain.sessions.NotificationAlarmUpdater
 import com.google.samples.apps.iosched.shared.fcm.TopicSubscriber
 import com.google.samples.apps.iosched.shared.notifications.SessionAlarmManager
 import com.google.samples.apps.iosched.shared.time.DefaultTimeProvider
@@ -141,5 +142,8 @@ abstract class AbstractSharedDependencyModule(
     }
     val sessionAlarmManager: SessionAlarmManager by lazy {
         SessionAlarmManager(context)
+    }
+    val notificationAlarmUpdater: NotificationAlarmUpdater by lazy {
+        NotificationAlarmUpdater(sessionAlarmManager, sessionAndUserEventRepository, applicationScope)
     }
 }
