@@ -41,4 +41,9 @@ object SharedDependencyModule : AbstractSharedDependencyModule() {
             notificationAlarmUpdater = notificationAlarmUpdater
         )
     }
+    override val authIdDataSource: AuthIdDataSource by lazy {
+        object : AuthIdDataSource {
+            override fun getUserId() = "StagingTest"
+        }
+    }
 }

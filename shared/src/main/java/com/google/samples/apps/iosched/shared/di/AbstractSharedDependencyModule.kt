@@ -47,6 +47,7 @@ import com.google.samples.apps.iosched.shared.data.feed.MomentDataSource
 import com.google.samples.apps.iosched.shared.data.feedback.FeedbackEndpoint
 import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
 import com.google.samples.apps.iosched.shared.data.session.SessionRepository
+import com.google.samples.apps.iosched.shared.data.signin.datasources.AuthIdDataSource
 import com.google.samples.apps.iosched.shared.data.signin.datasources.AuthStateUserDataSource
 import com.google.samples.apps.iosched.shared.data.signin.datasources.FirestoreRegisteredUserDataSource
 import com.google.samples.apps.iosched.shared.data.signin.datasources.RegisteredUserDataSource
@@ -148,4 +149,5 @@ abstract class AbstractSharedDependencyModule(
         NotificationAlarmUpdater(sessionAlarmManager, sessionAndUserEventRepository, applicationScope)
     }
     abstract val authStateUserDataSource: AuthStateUserDataSource
+    abstract val authIdDataSource: AuthIdDataSource
 }

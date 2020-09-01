@@ -30,6 +30,7 @@ import com.google.samples.apps.iosched.shared.data.feed.FirestoreMomentDataSourc
 import com.google.samples.apps.iosched.shared.data.feed.MomentDataSource
 import com.google.samples.apps.iosched.shared.data.feedback.DefaultFeedbackEndpoint
 import com.google.samples.apps.iosched.shared.data.feedback.FeedbackEndpoint
+import com.google.samples.apps.iosched.shared.data.signin.datasources.AuthIdDataSource
 import com.google.samples.apps.iosched.shared.data.signin.datasources.AuthStateUserDataSource
 import com.google.samples.apps.iosched.shared.data.signin.datasources.FirebaseAuthStateUserDataSource
 import com.google.samples.apps.iosched.shared.fcm.FcmTokenUpdater
@@ -70,5 +71,10 @@ class SharedDependencyModule(
             notificationAlarmUpdater,
             coroutinesDependencyModule.ioDispatcher
         )
+    }
+    override val authIdDataSource: AuthIdDataSource by lazy {
+        object : AuthIdDataSource {
+            override fun getUserId() = firebaseAuth.currentUser?.uid
+        }
     }
 }
