@@ -17,6 +17,7 @@
 package com.google.samples.apps.iosched.di
 
 import android.content.Context
+import android.net.ConnectivityManager
 import android.net.wifi.WifiManager
 import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
 import com.google.samples.apps.iosched.shared.data.prefs.SharedPreferenceStorage
@@ -28,4 +29,6 @@ class AppDependencyModule(private val context: Context) : DependencyModule {
     }
     val wifiManager: WifiManager
         get() = context.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
+    val connectivityManager: ConnectivityManager
+        get() = context.applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 }
