@@ -23,6 +23,8 @@ import android.net.wifi.WifiManager
 import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
 import com.google.samples.apps.iosched.shared.data.prefs.SharedPreferenceStorage
 import com.google.samples.apps.iosched.shared.di.CoroutinesDependencyModule
+import com.google.samples.apps.iosched.shared.domain.internal.IOSchedHandler
+import com.google.samples.apps.iosched.shared.domain.internal.IOSchedMainHandler
 import com.wada811.dependencyproperty.DependencyModule
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
@@ -43,4 +45,5 @@ class AppDependencyModule(
     val applicationScope: CoroutineScope by lazy {
         CoroutineScope(SupervisorJob() + coroutinesDependencyModule.defaultDispatcher)
     }
+    val mainThreadHandler: IOSchedHandler by lazy { IOSchedMainHandler() }
 }
