@@ -32,4 +32,13 @@ object SharedDependencyModule : AbstractSharedDependencyModule() {
     override val arDebugFlagEndpoint: ArDebugFlagEndpoint by lazy { FakeArDebugFlagEndpoint }
     override val topicSubscriber: TopicSubscriber by lazy { StagingTopicSubscriber() }
     override val appConfigDataSource: AppConfigDataSource by lazy { FakeAppConfigDataSource() }
+    override val authStateUserDataSource: AuthStateUserDataSource by lazy {
+        StagingAuthStateUserDataSource(
+            isRegistered = true,
+            isSignedIn = true,
+            context = context,
+            userId = "StagingTest",
+            notificationAlarmUpdater = notificationAlarmUpdater
+        )
+    }
 }
