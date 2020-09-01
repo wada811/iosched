@@ -22,14 +22,15 @@ import android.net.ConnectivityManager
 import android.net.wifi.WifiManager
 import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
 import com.google.samples.apps.iosched.shared.data.prefs.SharedPreferenceStorage
-import com.google.samples.apps.iosched.shared.di.CoroutinesDependencyModule
+import com.google.samples.apps.iosched.shared.di.AbstractSharedDependencyModule
 import com.google.samples.apps.iosched.shared.domain.internal.IOSchedHandler
 import com.google.samples.apps.iosched.shared.domain.internal.IOSchedMainHandler
+import com.google.samples.apps.iosched.util.signin.SignInHandler
 import com.wada811.dependencyproperty.DependencyModule
 
 abstract class AbstractAppDependencyModule(
     private val context: Context,
-    private val coroutinesDependencyModule: CoroutinesDependencyModule
+    protected val sharedDependencyModule: AbstractSharedDependencyModule
 ) : DependencyModule {
     val preferenceStorage: PreferenceStorage by lazy {
         SharedPreferenceStorage(context)
@@ -41,4 +42,5 @@ abstract class AbstractAppDependencyModule(
     val clipboardManager: ClipboardManager
         get() = context.applicationContext.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
     val mainThreadHandler: IOSchedHandler by lazy { IOSchedMainHandler() }
+    abstract val signInHandler: SignInHandler
 }
