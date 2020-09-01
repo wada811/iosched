@@ -22,9 +22,15 @@ import android.net.ConnectivityManager
 import android.net.wifi.WifiManager
 import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
 import com.google.samples.apps.iosched.shared.data.prefs.SharedPreferenceStorage
+import com.google.samples.apps.iosched.shared.di.CoroutinesDependencyModule
 import com.wada811.dependencyproperty.DependencyModule
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.SupervisorJob
 
-class AppDependencyModule(private val context: Context) : DependencyModule {
+class AppDependencyModule(
+    private val context: Context,
+    private val coroutinesDependencyModule: CoroutinesDependencyModule
+) : DependencyModule {
     val preferenceStorage: PreferenceStorage by lazy {
         SharedPreferenceStorage(context)
     }
@@ -34,4 +40,7 @@ class AppDependencyModule(private val context: Context) : DependencyModule {
         get() = context.applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
     val clipboardManager: ClipboardManager
         get() = context.applicationContext.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+    val applicationScope: CoroutineScope by lazy {
+        CoroutineScope(SupervisorJob() + coroutinesDependencyModule.defaultDispatcher)
+    }
 }
