@@ -45,6 +45,8 @@ import com.google.samples.apps.iosched.shared.data.feed.MomentDataSource
 import com.google.samples.apps.iosched.shared.data.feedback.FeedbackEndpoint
 import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
 import com.google.samples.apps.iosched.shared.data.session.SessionRepository
+import com.google.samples.apps.iosched.shared.data.signin.datasources.FirestoreRegisteredUserDataSource
+import com.google.samples.apps.iosched.shared.data.signin.datasources.RegisteredUserDataSource
 import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.data.userevent.FirestoreUserEventDataSource
 import com.google.samples.apps.iosched.shared.data.userevent.SessionAndUserEventRepository
@@ -122,5 +124,8 @@ abstract class AbstractSharedDependencyModule(
     }
     val gson: Gson by lazy {
         GsonBuilder().create()
+    }
+    val registeredUserDataSource: RegisteredUserDataSource by lazy {
+        FirestoreRegisteredUserDataSource(firebaseFirestore)
     }
 }
