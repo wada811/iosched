@@ -55,6 +55,7 @@ import com.google.samples.apps.iosched.shared.domain.search.FtsMatchStrategy
 import com.google.samples.apps.iosched.shared.domain.search.SessionTextMatchStrategy
 import com.google.samples.apps.iosched.shared.domain.search.SimpleMatchStrategy
 import com.google.samples.apps.iosched.shared.fcm.TopicSubscriber
+import com.google.samples.apps.iosched.shared.notifications.SessionAlarmManager
 import com.google.samples.apps.iosched.shared.time.DefaultTimeProvider
 import com.google.samples.apps.iosched.shared.time.TimeProvider
 import com.wada811.dependencyproperty.DependencyModule
@@ -127,5 +128,8 @@ abstract class AbstractSharedDependencyModule(
     }
     val registeredUserDataSource: RegisteredUserDataSource by lazy {
         FirestoreRegisteredUserDataSource(firebaseFirestore)
+    }
+    val sessionAlarmManager: SessionAlarmManager by lazy {
+        SessionAlarmManager(context)
     }
 }
