@@ -29,7 +29,7 @@ import com.wada811.dependencyproperty.DependencyModule
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 
-class AppDependencyModule(
+abstract class AbstractAppDependencyModule(
     private val context: Context,
     private val coroutinesDependencyModule: CoroutinesDependencyModule
 ) : DependencyModule {
