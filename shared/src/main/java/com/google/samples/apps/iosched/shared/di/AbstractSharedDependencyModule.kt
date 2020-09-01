@@ -17,6 +17,8 @@
 package com.google.samples.apps.iosched.shared.di
 
 import android.content.Context
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.firestoreSettings
@@ -128,6 +130,9 @@ abstract class AbstractSharedDependencyModule(
     }
     val registeredUserDataSource: RegisteredUserDataSource by lazy {
         FirestoreRegisteredUserDataSource(firebaseFirestore)
+    }
+    val firebaseAuth: FirebaseAuth by lazy {
+        Firebase.auth
     }
     val sessionAlarmManager: SessionAlarmManager by lazy {
         SessionAlarmManager(context)
