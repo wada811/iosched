@@ -27,6 +27,8 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.google.samples.apps.iosched.shared.BuildConfig
 import com.google.samples.apps.iosched.shared.R
 import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
@@ -117,5 +119,8 @@ abstract class AbstractSharedDependencyModule(
     }
     val agendaRepository: AgendaRepository by lazy {
         DefaultAgendaRepository(appConfigDataSource)
+    }
+    val gson: Gson by lazy {
+        GsonBuilder().create()
     }
 }
