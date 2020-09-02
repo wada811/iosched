@@ -45,6 +45,8 @@ import com.google.samples.apps.iosched.shared.data.feed.DefaultFeedRepository
 import com.google.samples.apps.iosched.shared.data.feed.FeedRepository
 import com.google.samples.apps.iosched.shared.data.feed.MomentDataSource
 import com.google.samples.apps.iosched.shared.data.feedback.FeedbackEndpoint
+import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
+import com.google.samples.apps.iosched.shared.data.prefs.SharedPreferenceStorage
 import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
 import com.google.samples.apps.iosched.shared.data.session.SessionRepository
 import com.google.samples.apps.iosched.shared.data.signin.datasources.AuthIdDataSource
@@ -159,5 +161,8 @@ abstract class AbstractSharedDependencyModule(
             applicationScope,
             coroutinesDependencyModule.ioDispatcher
         )
+    }
+    val preferenceStorage: PreferenceStorage by lazy {
+        SharedPreferenceStorage(context)
     }
 }

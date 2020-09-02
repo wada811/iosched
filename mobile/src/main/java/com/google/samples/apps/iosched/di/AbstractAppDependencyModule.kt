@@ -20,8 +20,6 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.wifi.WifiManager
-import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
-import com.google.samples.apps.iosched.shared.data.prefs.SharedPreferenceStorage
 import com.google.samples.apps.iosched.shared.di.AbstractSharedDependencyModule
 import com.google.samples.apps.iosched.shared.domain.internal.IOSchedHandler
 import com.google.samples.apps.iosched.shared.domain.internal.IOSchedMainHandler
@@ -32,9 +30,6 @@ abstract class AbstractAppDependencyModule(
     private val context: Context,
     protected val sharedDependencyModule: AbstractSharedDependencyModule
 ) : DependencyModule {
-    val preferenceStorage: PreferenceStorage by lazy {
-        SharedPreferenceStorage(context)
-    }
     val wifiManager: WifiManager
         get() = context.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
     val connectivityManager: ConnectivityManager
