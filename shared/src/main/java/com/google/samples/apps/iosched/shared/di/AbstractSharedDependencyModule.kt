@@ -63,6 +63,7 @@ import com.google.samples.apps.iosched.shared.domain.search.FtsMatchStrategy
 import com.google.samples.apps.iosched.shared.domain.search.SessionTextMatchStrategy
 import com.google.samples.apps.iosched.shared.domain.search.SimpleMatchStrategy
 import com.google.samples.apps.iosched.shared.domain.sessions.NotificationAlarmUpdater
+import com.google.samples.apps.iosched.shared.domain.settings.ObserveThemeModeUseCase
 import com.google.samples.apps.iosched.shared.fcm.TopicSubscriber
 import com.google.samples.apps.iosched.shared.notifications.SessionAlarmManager
 import com.google.samples.apps.iosched.shared.time.DefaultTimeProvider
@@ -172,4 +173,9 @@ abstract class AbstractSharedDependencyModule(
             coroutinesDependencyModule.ioDispatcher
         )
     }
+    val observeThemeModeUseCase: ObserveThemeModeUseCase
+        get() = ObserveThemeModeUseCase(
+            preferenceStorage,
+            coroutinesDependencyModule.defaultDispatcher
+        )
 }
