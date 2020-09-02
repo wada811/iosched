@@ -26,8 +26,6 @@ import com.google.samples.apps.iosched.shared.di.CoroutinesDependencyModule
 import com.google.samples.apps.iosched.shared.domain.internal.IOSchedHandler
 import com.google.samples.apps.iosched.shared.domain.internal.IOSchedMainHandler
 import com.wada811.dependencyproperty.DependencyModule
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.SupervisorJob
 
 abstract class AbstractAppDependencyModule(
     private val context: Context,
@@ -42,8 +40,5 @@ abstract class AbstractAppDependencyModule(
         get() = context.applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
     val clipboardManager: ClipboardManager
         get() = context.applicationContext.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-    val applicationScope: CoroutineScope by lazy {
-        CoroutineScope(SupervisorJob() + coroutinesDependencyModule.defaultDispatcher)
-    }
     val mainThreadHandler: IOSchedHandler by lazy { IOSchedMainHandler() }
 }

@@ -61,6 +61,8 @@ import com.google.samples.apps.iosched.shared.notifications.SessionAlarmManager
 import com.google.samples.apps.iosched.shared.time.DefaultTimeProvider
 import com.google.samples.apps.iosched.shared.time.TimeProvider
 import com.wada811.dependencyproperty.DependencyModule
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.SupervisorJob
 
 abstract class AbstractSharedDependencyModule(
     private val context: Context,
@@ -127,6 +129,9 @@ abstract class AbstractSharedDependencyModule(
     }
     val gson: Gson by lazy {
         GsonBuilder().create()
+    }
+    val applicationScope: CoroutineScope by lazy {
+        CoroutineScope(SupervisorJob() + coroutinesDependencyModule.defaultDispatcher)
     }
     val registeredUserDataSource: RegisteredUserDataSource by lazy {
         FirestoreRegisteredUserDataSource(firebaseFirestore)
