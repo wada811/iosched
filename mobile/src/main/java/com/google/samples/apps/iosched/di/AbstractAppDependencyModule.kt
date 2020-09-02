@@ -20,12 +20,14 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.wifi.WifiManager
+import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.di.AbstractSharedDependencyModule
 import com.google.samples.apps.iosched.shared.di.CoroutinesDependencyModule
 import com.google.samples.apps.iosched.shared.domain.internal.IOSchedHandler
 import com.google.samples.apps.iosched.shared.domain.internal.IOSchedMainHandler
 import com.google.samples.apps.iosched.ui.signin.FirebaseSignInViewModelDelegate
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
+import com.google.samples.apps.iosched.util.FirebaseAnalyticsHelper
 import com.google.samples.apps.iosched.util.signin.SignInHandler
 import com.wada811.dependencyproperty.DependencyModule
 
@@ -49,6 +51,14 @@ abstract class AbstractAppDependencyModule(
             coroutinesDependencyModule.ioDispatcher,
             coroutinesDependencyModule.mainDispatcher,
             sharedDependencyModule.featureFlags.isReservationFeatureEnabled
+        )
+    }
+    val analyticsHelper: AnalyticsHelper by lazy {
+        FirebaseAnalyticsHelper(
+            sharedDependencyModule.applicationScope,
+            context,
+            signInViewModelDelegate,
+            sharedDependencyModule.preferenceStorage
         )
     }
 }
