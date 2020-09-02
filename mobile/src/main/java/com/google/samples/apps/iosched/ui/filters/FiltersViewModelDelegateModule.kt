@@ -16,7 +16,6 @@
 
 package com.google.samples.apps.iosched.ui.filters
 
-import com.wada811.dependencyproperty.DependencyModule
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -28,8 +27,4 @@ class FiltersViewModelDelegateModule {
 
     @Provides
     fun provideFiltersViewModelDelegate(): FiltersViewModelDelegate = FiltersViewModelDelegateImpl()
-}
-
-object FiltersViewModelDelegateDependencyModule : DependencyModule {
-    val filtersViewModelDelegate: FiltersViewModelDelegate get() = FiltersViewModelDelegateImpl()
 }
