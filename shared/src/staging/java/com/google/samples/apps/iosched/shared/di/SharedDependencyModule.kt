@@ -16,14 +16,30 @@
 
 package com.google.samples.apps.iosched.shared.di
 
-import com.google.samples.apps.iosched.shared.data.BootstrapConferenceDataSource
+import android.content.Context
 import com.google.samples.apps.iosched.shared.data.ConferenceDataSource
-import com.wada811.dependencyproperty.DependencyModule
-import dagger.Provides
-import javax.inject.Named
-import javax.inject.Singleton
+import com.google.samples.apps.iosched.shared.data.FakeAnnouncementDataSource
+import com.google.samples.apps.iosched.shared.data.FakeAppConfigDataSource
+import com.google.samples.apps.iosched.shared.data.FakeConferenceDataSource
+import com.google.samples.apps.iosched.shared.data.FakeFeedbackEndpoint
+import com.google.samples.apps.iosched.shared.data.ar.ArDebugFlagEndpoint
+import com.google.samples.apps.iosched.shared.data.ar.FakeArDebugFlagEndpoint
+import com.google.samples.apps.iosched.shared.data.config.AppConfigDataSource
+import com.google.samples.apps.iosched.shared.data.feed.AnnouncementDataSource
+import com.google.samples.apps.iosched.shared.data.feed.FakeMomentDataSource
+import com.google.samples.apps.iosched.shared.data.feed.MomentDataSource
+import com.google.samples.apps.iosched.shared.data.feedback.FeedbackEndpoint
+import com.google.samples.apps.iosched.shared.data.login.datasources.StagingAuthStateUserDataSource
+import com.google.samples.apps.iosched.shared.data.signin.datasources.AuthIdDataSource
+import com.google.samples.apps.iosched.shared.data.signin.datasources.AuthStateUserDataSource
+import com.google.samples.apps.iosched.shared.fcm.StagingTopicSubscriber
+import com.google.samples.apps.iosched.shared.fcm.TopicSubscriber
 
-object SharedDependencyModule : AbstractSharedDependencyModule() {
+class SharedDependencyModule(
+    context: Context
+) : AbstractSharedDependencyModule(
+    context
+) {
     override val remoteConfDataSource: ConferenceDataSource by lazy { FakeConferenceDataSource }
     override val bootstrapConfDataSource: ConferenceDataSource by lazy { FakeConferenceDataSource }
     override val announcementDataSource: AnnouncementDataSource by lazy { FakeAnnouncementDataSource }

@@ -36,7 +36,7 @@ import com.google.samples.apps.iosched.util.signin.SignInHandler
 import com.wada811.dependencyproperty.DependencyModule
 
 abstract class AbstractAppDependencyModule(
-    private val context: Context,
+    protected val context: Context,
     protected val sharedDependencyModule: AbstractSharedDependencyModule,
     private val coroutinesDependencyModule: CoroutinesDependencyModule = CoroutinesDependencyModule()
 ) : DependencyModule {

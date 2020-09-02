@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.shared.data.login
+package com.google.samples.apps.iosched.util.signin
 
 import android.content.Context
 import android.content.Intent
@@ -24,9 +24,6 @@ import androidx.lifecycle.MutableLiveData
 import com.google.samples.apps.iosched.shared.data.login.datasources.StagingAuthenticatedUserInfo
 import com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserInfo
 import com.google.samples.apps.iosched.shared.result.Result
-import com.google.samples.apps.iosched.util.signin.SignInHandler
-import com.google.samples.apps.iosched.util.signin.SignInResult
-import com.google.samples.apps.iosched.util.signin.SignInSuccess
 import timber.log.Timber
 
 /**

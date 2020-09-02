@@ -17,8 +17,8 @@
 package com.google.samples.apps.iosched.di
 
 import android.content.Context
-import com.google.samples.apps.iosched.shared.data.login.StagingAuthenticatedUser
-import com.google.samples.apps.iosched.shared.data.login.StagingSignInHandler
+import com.google.samples.apps.iosched.util.signin.StagingAuthenticatedUser
+import com.google.samples.apps.iosched.util.signin.StagingSignInHandler
 import com.google.samples.apps.iosched.shared.data.login.datasources.StagingAuthStateUserDataSource
 import com.google.samples.apps.iosched.shared.data.login.datasources.StagingRegisteredUserDataSource
 import com.google.samples.apps.iosched.shared.data.signin.datasources.AuthIdDataSource
