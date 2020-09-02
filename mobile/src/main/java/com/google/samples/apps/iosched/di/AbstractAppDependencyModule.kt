@@ -29,6 +29,8 @@ import com.google.samples.apps.iosched.ui.filters.FiltersViewModelDelegate
 import com.google.samples.apps.iosched.ui.filters.FiltersViewModelDelegateImpl
 import com.google.samples.apps.iosched.ui.signin.FirebaseSignInViewModelDelegate
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
+import com.google.samples.apps.iosched.ui.theme.ThemedActivityDelegate
+import com.google.samples.apps.iosched.ui.theme.ThemedActivityDelegateImpl
 import com.google.samples.apps.iosched.util.FirebaseAnalyticsHelper
 import com.google.samples.apps.iosched.util.signin.SignInHandler
 import com.wada811.dependencyproperty.DependencyModule
@@ -64,4 +66,9 @@ abstract class AbstractAppDependencyModule(
         )
     }
     val filtersViewModelDelegate: FiltersViewModelDelegate get() = FiltersViewModelDelegateImpl()
+    val themedActivityDelegate: ThemedActivityDelegate
+        get() = ThemedActivityDelegateImpl(
+            sharedDependencyModule.observeThemeModeUseCase,
+            sharedDependencyModule.getThemeUseCase
+        )
 }
