@@ -58,6 +58,7 @@ import com.google.samples.apps.iosched.shared.data.userevent.FirestoreUserEventD
 import com.google.samples.apps.iosched.shared.data.userevent.SessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventDataSource
 import com.google.samples.apps.iosched.shared.domain.auth.ObserveUserAuthStateUseCase
+import com.google.samples.apps.iosched.shared.domain.prefs.NotificationsPrefIsShownUseCase
 import com.google.samples.apps.iosched.shared.domain.search.FtsMatchStrategy
 import com.google.samples.apps.iosched.shared.domain.search.SessionTextMatchStrategy
 import com.google.samples.apps.iosched.shared.domain.search.SimpleMatchStrategy
@@ -164,5 +165,11 @@ abstract class AbstractSharedDependencyModule(
     }
     val preferenceStorage: PreferenceStorage by lazy {
         SharedPreferenceStorage(context)
+    }
+    val notificationsPrefIsShownUseCase: NotificationsPrefIsShownUseCase by lazy {
+        NotificationsPrefIsShownUseCase(
+            preferenceStorage,
+            coroutinesDependencyModule.ioDispatcher
+        )
     }
 }
