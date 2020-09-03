@@ -19,21 +19,30 @@ package com.google.samples.apps.iosched
 import android.app.Application
 import android.os.StrictMode
 import android.os.StrictMode.ThreadPolicy.Builder
+import com.google.samples.apps.iosched.di.AppDependencyModule
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
+import com.google.samples.apps.iosched.shared.di.SharedDependencyModule
 import com.google.samples.apps.iosched.util.CrashlyticsTree
 import com.jakewharton.threetenabp.AndroidThreeTen
+import com.wada811.dependencyproperty.DependencyModules
+import com.wada811.dependencyproperty.DependencyModulesHolder
+import com.wada811.dependencyproperty.dependency
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
-import javax.inject.Inject
 
 /**
  * Initialization of libraries.
  */
 @HiltAndroidApp
-class MainApplication : Application() {
+class MainApplication : Application(), DependencyModulesHolder {
+    private val sharedDependencyModule = SharedDependencyModule(this)
+    override val dependencyModules: DependencyModules by dependencyModules(
+        AppDependencyModule(this, sharedDependencyModule),
+        sharedDependencyModule
+    )
 
     // Even if the var isn't used, needs to be initialized at application startup.
-    @Inject lateinit var analyticsHelper: AnalyticsHelper
+    val analyticsHelper = dependency<AppDependencyModule, AnalyticsHelper> { it.analyticsHelper }.value
 
     override fun onCreate() {
         // ThreeTenBP for times and dates, called before super to be available for objects
