@@ -63,6 +63,7 @@ import com.google.samples.apps.iosched.shared.domain.auth.ObserveUserAuthStateUs
 import com.google.samples.apps.iosched.shared.domain.codelabs.GetCodelabsInfoCardShownUseCase
 import com.google.samples.apps.iosched.shared.domain.codelabs.LoadCodelabsUseCase
 import com.google.samples.apps.iosched.shared.domain.codelabs.SetCodelabsInfoCardShownUseCase
+import com.google.samples.apps.iosched.shared.domain.feed.LoadAnnouncementsUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.NotificationsPrefIsShownUseCase
 import com.google.samples.apps.iosched.shared.domain.search.FtsMatchStrategy
 import com.google.samples.apps.iosched.shared.domain.search.SessionTextMatchStrategy
@@ -216,6 +217,11 @@ abstract class AbstractSharedDependencyModule(
     val setCodelabsInfoCardShownUseCase: SetCodelabsInfoCardShownUseCase
         get() = SetCodelabsInfoCardShownUseCase(
             preferenceStorage,
+            coroutinesDependencyModule.ioDispatcher
+        )
+    val loadAnnouncementsUseCase: LoadAnnouncementsUseCase
+        get() = LoadAnnouncementsUseCase(
+            feedRepository,
             coroutinesDependencyModule.ioDispatcher
         )
 }
