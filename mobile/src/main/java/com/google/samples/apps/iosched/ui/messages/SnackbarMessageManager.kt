@@ -23,8 +23,6 @@ import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.ui.SnackbarMessage
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager.Companion.MAX_ITEMS
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * A single source of Snackbar messages related to reservations.
@@ -37,8 +35,7 @@ import javax.inject.Singleton
  * but limited to avoid wasting resources.
  *
  */
-@Singleton
-open class SnackbarMessageManager @Inject constructor(
+open class SnackbarMessageManager(
     private val preferenceStorage: PreferenceStorage
 ) {
     companion object {

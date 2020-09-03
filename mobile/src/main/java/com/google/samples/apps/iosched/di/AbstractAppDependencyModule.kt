@@ -27,6 +27,7 @@ import com.google.samples.apps.iosched.shared.domain.internal.IOSchedHandler
 import com.google.samples.apps.iosched.shared.domain.internal.IOSchedMainHandler
 import com.google.samples.apps.iosched.ui.filters.FiltersViewModelDelegate
 import com.google.samples.apps.iosched.ui.filters.FiltersViewModelDelegateImpl
+import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.signin.FirebaseSignInViewModelDelegate
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.google.samples.apps.iosched.ui.theme.ThemedActivityDelegate
@@ -71,4 +72,9 @@ abstract class AbstractAppDependencyModule(
             sharedDependencyModule.observeThemeModeUseCase,
             sharedDependencyModule.getThemeUseCase
         )
+    val snackbarMessageManager: SnackbarMessageManager by lazy {
+        SnackbarMessageManager(
+            sharedDependencyModule.preferenceStorage
+        )
+    }
 }

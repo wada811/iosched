@@ -31,6 +31,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.google.common.collect.ImmutableMap
 import com.google.samples.apps.iosched.databinding.FragmentFeedBinding
+import com.google.samples.apps.iosched.di.AppDependencyModule
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.result.EventObserver
@@ -44,11 +45,9 @@ import com.google.samples.apps.iosched.ui.signin.SignInDialogFragment
 import com.google.samples.apps.iosched.ui.signin.setupProfileMenuItem
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
 import com.google.samples.apps.iosched.util.openWebsiteUrl
-import dagger.hilt.android.AndroidEntryPoint
+import com.wada811.dependencyproperty.dependency
 import timber.log.Timber
-import javax.inject.Inject
 
-@AndroidEntryPoint
 class FeedFragment : MainNavigationFragment() {
 
     companion object {
@@ -56,11 +55,8 @@ class FeedFragment : MainNavigationFragment() {
         private const val BUNDLE_KEY_SESSIONS_LAYOUT_MANAGER_STATE = "sessions_layout_manager"
     }
 
-    @Inject
-    lateinit var snackbarMessageManager: SnackbarMessageManager
-
-    @Inject
-    lateinit var analyticsHelper: AnalyticsHelper
+    private val snackbarMessageManager by dependency<AppDependencyModule, SnackbarMessageManager> { it.snackbarMessageManager }
+    private val analyticsHelper by dependency<AppDependencyModule, AnalyticsHelper> { it.analyticsHelper }
 
     private val model: FeedViewModel by viewModels()
     private val mainActivityViewModel: MainActivityViewModel by activityViewModels()
@@ -195,6 +191,7 @@ class FeedFragment : MainNavigationFragment() {
             val announcementsLoadingViewBinder = AnnouncementsLoadingViewBinder()
             val feedSustainabilitySectionViewBinder = FeedSustainabilitySectionViewBinder()
             val feedSocialChannelsSectionViewBinder = FeedSocialChannelsSectionViewBinder()
+
             @Suppress("UNCHECKED_CAST")
             val viewBinders = ImmutableMap.builder<FeedItemClass, FeedItemBinder>()
                 .put(
