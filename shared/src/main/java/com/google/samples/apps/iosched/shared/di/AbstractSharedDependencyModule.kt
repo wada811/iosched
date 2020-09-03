@@ -57,6 +57,7 @@ import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUs
 import com.google.samples.apps.iosched.shared.data.userevent.FirestoreUserEventDataSource
 import com.google.samples.apps.iosched.shared.data.userevent.SessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventDataSource
+import com.google.samples.apps.iosched.shared.domain.agenda.LoadAgendaUseCase
 import com.google.samples.apps.iosched.shared.domain.auth.ObserveUserAuthStateUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.NotificationsPrefIsShownUseCase
 import com.google.samples.apps.iosched.shared.domain.search.FtsMatchStrategy
@@ -64,6 +65,7 @@ import com.google.samples.apps.iosched.shared.domain.search.SessionTextMatchStra
 import com.google.samples.apps.iosched.shared.domain.search.SimpleMatchStrategy
 import com.google.samples.apps.iosched.shared.domain.sessions.NotificationAlarmUpdater
 import com.google.samples.apps.iosched.shared.domain.settings.GetThemeUseCase
+import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.ObserveThemeModeUseCase
 import com.google.samples.apps.iosched.shared.fcm.TopicSubscriber
 import com.google.samples.apps.iosched.shared.notifications.SessionAlarmManager
@@ -181,6 +183,16 @@ abstract class AbstractSharedDependencyModule(
         )
     val getThemeUseCase: GetThemeUseCase
         get() = GetThemeUseCase(
+            preferenceStorage,
+            coroutinesDependencyModule.ioDispatcher
+        )
+    val loadAgendaUseCase: LoadAgendaUseCase
+        get() = LoadAgendaUseCase(
+            agendaRepository,
+            coroutinesDependencyModule.ioDispatcher
+        )
+    val getTimeZoneUseCase: GetTimeZoneUseCase
+        get() = GetTimeZoneUseCase(
             preferenceStorage,
             coroutinesDependencyModule.ioDispatcher
         )
