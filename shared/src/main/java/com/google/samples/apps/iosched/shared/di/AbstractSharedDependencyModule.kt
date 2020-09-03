@@ -38,6 +38,7 @@ import com.google.samples.apps.iosched.shared.data.ConferenceDataSource
 import com.google.samples.apps.iosched.shared.data.agenda.AgendaRepository
 import com.google.samples.apps.iosched.shared.data.agenda.DefaultAgendaRepository
 import com.google.samples.apps.iosched.shared.data.ar.ArDebugFlagEndpoint
+import com.google.samples.apps.iosched.shared.data.codelabs.CodelabsRepository
 import com.google.samples.apps.iosched.shared.data.config.AppConfigDataSource
 import com.google.samples.apps.iosched.shared.data.db.AppDatabase
 import com.google.samples.apps.iosched.shared.data.feed.AnnouncementDataSource
@@ -59,6 +60,9 @@ import com.google.samples.apps.iosched.shared.data.userevent.SessionAndUserEvent
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventDataSource
 import com.google.samples.apps.iosched.shared.domain.agenda.LoadAgendaUseCase
 import com.google.samples.apps.iosched.shared.domain.auth.ObserveUserAuthStateUseCase
+import com.google.samples.apps.iosched.shared.domain.codelabs.GetCodelabsInfoCardShownUseCase
+import com.google.samples.apps.iosched.shared.domain.codelabs.LoadCodelabsUseCase
+import com.google.samples.apps.iosched.shared.domain.codelabs.SetCodelabsInfoCardShownUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.NotificationsPrefIsShownUseCase
 import com.google.samples.apps.iosched.shared.domain.search.FtsMatchStrategy
 import com.google.samples.apps.iosched.shared.domain.search.SessionTextMatchStrategy
@@ -193,6 +197,24 @@ abstract class AbstractSharedDependencyModule(
         )
     val getTimeZoneUseCase: GetTimeZoneUseCase
         get() = GetTimeZoneUseCase(
+            preferenceStorage,
+            coroutinesDependencyModule.ioDispatcher
+        )
+    val codelabsRepository: CodelabsRepository by lazy {
+        CodelabsRepository(conferenceDataRepository)
+    }
+    val loadCodelabsUseCase: LoadCodelabsUseCase
+        get() = LoadCodelabsUseCase(
+            codelabsRepository,
+            coroutinesDependencyModule.ioDispatcher
+        )
+    val getCodelabsInfoCardShownUseCase: GetCodelabsInfoCardShownUseCase
+        get() = GetCodelabsInfoCardShownUseCase(
+            preferenceStorage,
+            coroutinesDependencyModule.ioDispatcher
+        )
+    val setCodelabsInfoCardShownUseCase: SetCodelabsInfoCardShownUseCase
+        get() = SetCodelabsInfoCardShownUseCase(
             preferenceStorage,
             coroutinesDependencyModule.ioDispatcher
         )

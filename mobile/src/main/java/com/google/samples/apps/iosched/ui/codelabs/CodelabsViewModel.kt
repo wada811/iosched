@@ -16,22 +16,25 @@
 
 package com.google.samples.apps.iosched.ui.codelabs
 
-import androidx.hilt.lifecycle.ViewModelInject
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.samples.apps.iosched.shared.di.SharedDependencyModule
 import com.google.samples.apps.iosched.shared.domain.codelabs.GetCodelabsInfoCardShownUseCase
 import com.google.samples.apps.iosched.shared.domain.codelabs.LoadCodelabsUseCase
 import com.google.samples.apps.iosched.shared.domain.codelabs.SetCodelabsInfoCardShownUseCase
 import com.google.samples.apps.iosched.shared.result.successOr
+import com.wada811.dependencyproperty.dependencyModule
 import kotlinx.coroutines.launch
 
-class CodelabsViewModel @ViewModelInject constructor(
-    private val loadCodelabsUseCase: LoadCodelabsUseCase,
-    private val getCodelabsInfoCardShownUseCase: GetCodelabsInfoCardShownUseCase,
-    private val setCodelabsInfoCardShownUseCase: SetCodelabsInfoCardShownUseCase
-) : ViewModel() {
+class CodelabsViewModel @JvmOverloads constructor(
+    application: Application,
+    private val loadCodelabsUseCase: LoadCodelabsUseCase = application.dependencyModule<SharedDependencyModule>().loadCodelabsUseCase,
+    private val getCodelabsInfoCardShownUseCase: GetCodelabsInfoCardShownUseCase = application.dependencyModule<SharedDependencyModule>().getCodelabsInfoCardShownUseCase,
+    private val setCodelabsInfoCardShownUseCase: SetCodelabsInfoCardShownUseCase = application.dependencyModule<SharedDependencyModule>().setCodelabsInfoCardShownUseCase
+) : AndroidViewModel(application) {
 
     private val _codelabs = MutableLiveData<List<Any>>()
     val codelabs: LiveData<List<Any>> = _codelabs
