@@ -24,9 +24,7 @@ import androidx.core.view.updatePaddingRelative
 import androidx.fragment.app.Fragment
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
-import dagger.hilt.android.AndroidEntryPoint
 
-@AndroidEntryPoint
 class TravelFragment : Fragment() {
 
     override fun onCreateView(
