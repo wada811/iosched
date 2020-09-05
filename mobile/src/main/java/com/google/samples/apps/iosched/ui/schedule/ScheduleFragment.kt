@@ -33,11 +33,12 @@ import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import androidx.recyclerview.widget.RecyclerView.RecycledViewPool
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentScheduleBinding
+import com.google.samples.apps.iosched.di.AppDependencyModule
 import com.google.samples.apps.iosched.model.ConferenceDay
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
-import com.google.samples.apps.iosched.shared.di.SearchScheduleEnabledFlag
+import com.google.samples.apps.iosched.shared.di.SharedDependencyModule
 import com.google.samples.apps.iosched.shared.domain.sessions.ConferenceDayIndexer
 import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.TimeUtils
@@ -61,14 +62,13 @@ import com.google.samples.apps.iosched.util.requestApplyInsetsWhenAttached
 import com.google.samples.apps.iosched.widget.BubbleDecoration
 import com.google.samples.apps.iosched.widget.FadingSnackbar
 import com.google.samples.apps.iosched.widget.JumpSmoothScroller
-import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
-import javax.inject.Named
+import com.wada811.dependencyproperty.DependencyModule
+import com.wada811.dependencyproperty.dependency
+import com.wada811.dependencyproperty.dependencyModules
 
 /**
  * The Schedule page of the top-level Activity.
  */
-@AndroidEntryPoint
 class ScheduleFragment : MainNavigationFragment() {
 
     companion object {
@@ -77,20 +77,13 @@ class ScheduleFragment : MainNavigationFragment() {
         private const val DIALOG_SCHEDULE_HINTS = "dialog_schedule_hints"
     }
 
-    @Inject
-    lateinit var analyticsHelper: AnalyticsHelper
+    private val analyticsHelper by dependency<AppDependencyModule, AnalyticsHelper> { it.analyticsHelper }
 
-    @Inject
-    @field:Named("tagViewPool")
-    lateinit var tagViewPool: RecycledViewPool
+    private val tagViewPool: RecycledViewPool by dependency<ScheduleFragmentModule, RecycledViewPool> { it.tagViewPool }
 
-    @Inject
-    @JvmField
-    @SearchScheduleEnabledFlag
-    var searchScheduleFeatureEnabled: Boolean = false
+    private val searchScheduleFeatureEnabled by dependency<SharedDependencyModule, Boolean> { it.featureFlags.isSearchScheduleFeatureEnabled }
 
-    @Inject
-    lateinit var snackbarMessageManager: SnackbarMessageManager
+    private val snackbarMessageManager by dependency<AppDependencyModule, SnackbarMessageManager> { it.snackbarMessageManager }
 
     private val scheduleViewModel: ScheduleViewModel by viewModels()
     private val snackbarPrefsViewModel: SnackbarPreferenceViewModel by activityViewModels()
@@ -129,6 +122,7 @@ class ScheduleFragment : MainNavigationFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        dependencyModules.replaceModule(ScheduleFragmentModule())
 
         // Set up search menu item
         binding.includeScheduleAppbar.toolbar.run {
@@ -374,4 +368,8 @@ class ScheduleFragment : MainNavigationFragment() {
         val dialog = NotificationsPreferenceDialogFragment()
         dialog.show(requireActivity().supportFragmentManager, DIALOG_NOTIFICATIONS_PREFERENCE)
     }
+}
+
+class ScheduleFragmentModule : DependencyModule {
+    val tagViewPool: RecycledViewPool by lazy { RecycledViewPool() }
 }
