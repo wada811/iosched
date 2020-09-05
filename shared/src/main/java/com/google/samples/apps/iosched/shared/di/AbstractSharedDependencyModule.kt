@@ -63,11 +63,14 @@ import com.google.samples.apps.iosched.shared.domain.auth.ObserveUserAuthStateUs
 import com.google.samples.apps.iosched.shared.domain.codelabs.GetCodelabsInfoCardShownUseCase
 import com.google.samples.apps.iosched.shared.domain.codelabs.LoadCodelabsUseCase
 import com.google.samples.apps.iosched.shared.domain.codelabs.SetCodelabsInfoCardShownUseCase
+import com.google.samples.apps.iosched.shared.domain.feed.GetConferenceStateUseCase
 import com.google.samples.apps.iosched.shared.domain.feed.LoadAnnouncementsUseCase
+import com.google.samples.apps.iosched.shared.domain.feed.LoadCurrentMomentUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.NotificationsPrefIsShownUseCase
 import com.google.samples.apps.iosched.shared.domain.search.FtsMatchStrategy
 import com.google.samples.apps.iosched.shared.domain.search.SessionTextMatchStrategy
 import com.google.samples.apps.iosched.shared.domain.search.SimpleMatchStrategy
+import com.google.samples.apps.iosched.shared.domain.sessions.LoadStarredAndReservedSessionsUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.NotificationAlarmUpdater
 import com.google.samples.apps.iosched.shared.domain.settings.GetThemeUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
@@ -223,5 +226,20 @@ abstract class AbstractSharedDependencyModule(
         get() = LoadAnnouncementsUseCase(
             feedRepository,
             coroutinesDependencyModule.ioDispatcher
+        )
+    val loadCurrentMomentUseCase: LoadCurrentMomentUseCase
+        get() = LoadCurrentMomentUseCase(
+            feedRepository,
+            coroutinesDependencyModule.ioDispatcher
+        )
+    val loadStarredAndReservedSessionsUseCase: LoadStarredAndReservedSessionsUseCase
+        get() = LoadStarredAndReservedSessionsUseCase(
+            sessionAndUserEventRepository,
+            coroutinesDependencyModule.ioDispatcher
+        )
+    val getConferenceStateUseCase: GetConferenceStateUseCase
+        get() = GetConferenceStateUseCase(
+            timeProvider,
+            coroutinesDependencyModule.mainDispatcher
         )
 }

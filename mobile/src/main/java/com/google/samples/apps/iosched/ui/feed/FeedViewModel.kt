@@ -16,16 +16,17 @@
 
 package com.google.samples.apps.iosched.ui.feed
 
-import androidx.hilt.lifecycle.ViewModelInject
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.liveData
 import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavDirections
 import com.google.samples.apps.iosched.R
+import com.google.samples.apps.iosched.di.AppDependencyModule
 import com.google.samples.apps.iosched.model.Announcement
 import com.google.samples.apps.iosched.model.Moment
 import com.google.samples.apps.iosched.model.Session
@@ -33,8 +34,7 @@ import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
-import com.google.samples.apps.iosched.shared.di.MapFeatureEnabledFlag
-import com.google.samples.apps.iosched.shared.di.ReservationEnabledFlag
+import com.google.samples.apps.iosched.shared.di.SharedDependencyModule
 import com.google.samples.apps.iosched.shared.domain.feed.ConferenceState
 import com.google.samples.apps.iosched.shared.domain.feed.ConferenceState.ENDED
 import com.google.samples.apps.iosched.shared.domain.feed.ConferenceState.UPCOMING
@@ -58,29 +58,31 @@ import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailFragmentDir
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.google.samples.apps.iosched.ui.theme.ThemedActivityDelegate
 import com.google.samples.apps.iosched.util.combine
+import com.wada811.dependencyproperty.dependency
+import com.wada811.dependencyproperty.dependencyModule
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
-import javax.inject.Inject
 
 /**
  * Loads data and exposes it to the view.
  * By annotating the constructor with [@Inject], Dagger will use that constructor when needing to
  * create the object, so defining a [@Provides] method for this class won't be needed.
  */
-class FeedViewModel @ViewModelInject constructor(
-    private val loadCurrentMomentUseCase: LoadCurrentMomentUseCase,
-    loadAnnouncementsUseCase: LoadAnnouncementsUseCase,
-    private val loadStarredAndReservedSessionsUseCase: LoadStarredAndReservedSessionsUseCase,
-    getTimeZoneUseCase: GetTimeZoneUseCase,
-    getConferenceStateUseCase: GetConferenceStateUseCase,
-    private val timeProvider: TimeProvider,
-    private val analyticsHelper: AnalyticsHelper,
-    private val signInViewModelDelegate: SignInViewModelDelegate,
-    themedActivityDelegate: ThemedActivityDelegate
-) : ViewModel(),
+class FeedViewModel @JvmOverloads constructor(
+    application: Application,
+    private val loadCurrentMomentUseCase: LoadCurrentMomentUseCase = application.dependencyModule<SharedDependencyModule>().loadCurrentMomentUseCase,
+    loadAnnouncementsUseCase: LoadAnnouncementsUseCase = application.dependencyModule<SharedDependencyModule>().loadAnnouncementsUseCase,
+    private val loadStarredAndReservedSessionsUseCase: LoadStarredAndReservedSessionsUseCase = application.dependencyModule<SharedDependencyModule>().loadStarredAndReservedSessionsUseCase,
+    getTimeZoneUseCase: GetTimeZoneUseCase = application.dependencyModule<SharedDependencyModule>().getTimeZoneUseCase,
+    getConferenceStateUseCase: GetConferenceStateUseCase = application.dependencyModule<SharedDependencyModule>().getConferenceStateUseCase,
+    private val timeProvider: TimeProvider = application.dependencyModule<SharedDependencyModule>().timeProvider,
+    private val analyticsHelper: AnalyticsHelper = application.dependencyModule<AppDependencyModule>().analyticsHelper,
+    private val signInViewModelDelegate: SignInViewModelDelegate = application.dependencyModule<AppDependencyModule>().signInViewModelDelegate,
+    themedActivityDelegate: ThemedActivityDelegate = application.dependencyModule<AppDependencyModule>().themedActivityDelegate
+) : AndroidViewModel(application),
     FeedEventListener,
     ThemedActivityDelegate by themedActivityDelegate,
     SignInViewModelDelegate by signInViewModelDelegate {
@@ -100,15 +102,9 @@ class FeedViewModel @ViewModelInject constructor(
         private object NoSessionsContainer
     }
 
-    @Inject
-    @JvmField
-    @ReservationEnabledFlag
-    var isReservationEnabledByRemoteConfig: Boolean = false
+    private val isReservationEnabledByRemoteConfig: Boolean by dependency<SharedDependencyModule, Boolean> { it.featureFlags.isReservationFeatureEnabled }
 
-    @Inject
-    @JvmField
-    @MapFeatureEnabledFlag
-    var isMapEnabledByRemoteConfig: Boolean = false
+    private val isMapEnabledByRemoteConfig: Boolean by dependency<SharedDependencyModule, Boolean> { it.featureFlags.isMapFeatureEnabled }
 
     val feed: LiveData<List<Any>>
 

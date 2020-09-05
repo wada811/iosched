@@ -146,6 +146,6 @@ class GetConferenceStateUseCaseTest {
             on { now() }.doReturn(instant)
         }
     ): GetConferenceStateUseCase {
-        return GetConferenceStateUseCase(testDispatcher, timeProvider)
+        return GetConferenceStateUseCase(timeProvider, testDispatcher)
     }
 }

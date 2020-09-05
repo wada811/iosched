@@ -145,7 +145,7 @@ class FeedViewModelTest {
         getTimeZoneUseCase: GetTimeZoneUseCase =
             GetTimeZoneUseCase(FakePreferenceStorage(), testDispatcher),
         getConferenceStateUseCase: GetConferenceStateUseCase =
-            GetConferenceStateUseCase(testDispatcher, defaultTimeProvider),
+            GetConferenceStateUseCase(defaultTimeProvider, testDispatcher),
         timeProvider: TimeProvider = defaultTimeProvider,
         signInViewModelDelegate: SignInViewModelDelegate = FakeSignInViewModelDelegate().apply {
             loadUser("123")
