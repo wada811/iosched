@@ -71,6 +71,7 @@ import com.google.samples.apps.iosched.shared.domain.prefs.MyLocationOptedInUseC
 import com.google.samples.apps.iosched.shared.domain.prefs.NotificationsPrefIsShownUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.OnboardingCompleteActionUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.OptIntoMyLocationUseCase
+import com.google.samples.apps.iosched.shared.domain.prefs.StopSnackbarActionUseCase
 import com.google.samples.apps.iosched.shared.domain.search.FtsMatchStrategy
 import com.google.samples.apps.iosched.shared.domain.search.SessionTextMatchStrategy
 import com.google.samples.apps.iosched.shared.domain.search.SimpleMatchStrategy
@@ -264,6 +265,11 @@ abstract class AbstractSharedDependencyModule(
         )
     val onboardingCompleteActionUseCase: OnboardingCompleteActionUseCase
         get() = OnboardingCompleteActionUseCase(
+            preferenceStorage,
+            coroutinesDependencyModule.ioDispatcher
+        )
+    val stopSnackbarActionUseCase : StopSnackbarActionUseCase
+        get() = StopSnackbarActionUseCase(
             preferenceStorage,
             coroutinesDependencyModule.ioDispatcher
         )
