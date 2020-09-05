@@ -83,6 +83,7 @@ import com.google.samples.apps.iosched.shared.domain.settings.GetThemeUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.ObserveThemeModeUseCase
 import com.google.samples.apps.iosched.shared.domain.users.ReservationActionUseCase
+import com.google.samples.apps.iosched.shared.domain.users.SwapActionUseCase
 import com.google.samples.apps.iosched.shared.fcm.TopicSubscriber
 import com.google.samples.apps.iosched.shared.notifications.SessionAlarmManager
 import com.google.samples.apps.iosched.shared.time.DefaultTimeProvider
@@ -288,6 +289,11 @@ abstract class AbstractSharedDependencyModule(
         get() = ReservationActionUseCase(
             sessionAndUserEventRepository,
             starReserveNotificationAlarmUpdater,
+            coroutinesDependencyModule.ioDispatcher
+        )
+    val swapActionUseCase: SwapActionUseCase
+        get() = SwapActionUseCase(
+            sessionAndUserEventRepository,
             coroutinesDependencyModule.ioDispatcher
         )
 }

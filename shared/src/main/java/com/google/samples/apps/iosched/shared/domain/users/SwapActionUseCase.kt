@@ -18,20 +18,18 @@ package com.google.samples.apps.iosched.shared.domain.users
 
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.shared.data.userevent.SessionAndUserEventRepository
-import com.google.samples.apps.iosched.shared.di.IoDispatcher
 import com.google.samples.apps.iosched.shared.domain.UseCase
 import com.google.samples.apps.iosched.shared.result.Result.Error
 import com.google.samples.apps.iosched.shared.result.Result.Loading
 import com.google.samples.apps.iosched.shared.result.Result.Success
 import kotlinx.coroutines.CoroutineDispatcher
-import javax.inject.Inject
 
 /**
  * Sends a request to replace reservations.
  */
-open class SwapActionUseCase @Inject constructor(
+open class SwapActionUseCase(
     private val repository: SessionAndUserEventRepository,
-    @IoDispatcher ioDispatcher: CoroutineDispatcher
+    ioDispatcher: CoroutineDispatcher
 ) : UseCase<SwapRequestParameters, SwapRequestAction>(ioDispatcher) {
 
     override suspend fun execute(parameters: SwapRequestParameters): SwapRequestAction {
