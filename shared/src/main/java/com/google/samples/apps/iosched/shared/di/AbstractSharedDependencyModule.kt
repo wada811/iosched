@@ -69,6 +69,7 @@ import com.google.samples.apps.iosched.shared.domain.feed.LoadCurrentMomentUseCa
 import com.google.samples.apps.iosched.shared.domain.logistics.LoadWifiInfoUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.MyLocationOptedInUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.NotificationsPrefIsShownUseCase
+import com.google.samples.apps.iosched.shared.domain.prefs.OnboardingCompleteActionUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.OptIntoMyLocationUseCase
 import com.google.samples.apps.iosched.shared.domain.search.FtsMatchStrategy
 import com.google.samples.apps.iosched.shared.domain.search.SessionTextMatchStrategy
@@ -258,6 +259,11 @@ abstract class AbstractSharedDependencyModule(
         )
     val myLocationOptedInUseCase: MyLocationOptedInUseCase
         get() = MyLocationOptedInUseCase(
+            preferenceStorage,
+            coroutinesDependencyModule.ioDispatcher
+        )
+    val onboardingCompleteActionUseCase: OnboardingCompleteActionUseCase
+        get() = OnboardingCompleteActionUseCase(
             preferenceStorage,
             coroutinesDependencyModule.ioDispatcher
         )

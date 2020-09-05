@@ -16,22 +16,26 @@
 
 package com.google.samples.apps.iosched.ui.onboarding
 
-import androidx.hilt.lifecycle.ViewModelInject
+import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.samples.apps.iosched.di.AppDependencyModule
+import com.google.samples.apps.iosched.shared.di.SharedDependencyModule
 import com.google.samples.apps.iosched.shared.domain.prefs.OnboardingCompleteActionUseCase
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
+import com.wada811.dependencyproperty.dependencyModule
 import kotlinx.coroutines.launch
 
 /**
  * Records that onboarding has been completed and navigates user onward.
  */
-class OnboardingViewModel @ViewModelInject constructor(
-    private val onboardingCompleteActionUseCase: OnboardingCompleteActionUseCase,
-    signInViewModelDelegate: SignInViewModelDelegate
+class OnboardingViewModel @JvmOverloads constructor(
+    application: Application,
+    private val onboardingCompleteActionUseCase: OnboardingCompleteActionUseCase = application.dependencyModule<SharedDependencyModule>().onboardingCompleteActionUseCase,
+    signInViewModelDelegate: SignInViewModelDelegate = application.dependencyModule<AppDependencyModule>().signInViewModelDelegate
 ) : ViewModel(), SignInViewModelDelegate by signInViewModelDelegate {
 
     private val _navigateToMainActivity = MutableLiveData<Event<Unit>>()
