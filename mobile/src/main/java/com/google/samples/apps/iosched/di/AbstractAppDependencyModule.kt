@@ -34,6 +34,7 @@ import com.google.samples.apps.iosched.ui.theme.ThemedActivityDelegate
 import com.google.samples.apps.iosched.ui.theme.ThemedActivityDelegateImpl
 import com.google.samples.apps.iosched.util.FirebaseAnalyticsHelper
 import com.google.samples.apps.iosched.util.signin.SignInHandler
+import com.google.samples.apps.iosched.util.wifi.WifiInstaller
 import com.wada811.dependencyproperty.DependencyModule
 
 abstract class AbstractAppDependencyModule(
@@ -77,4 +78,9 @@ abstract class AbstractAppDependencyModule(
             sharedDependencyModule.preferenceStorage
         )
     }
+    val wifiInstaller: WifiInstaller
+        get() = WifiInstaller(
+            wifiManager,
+            clipboardManager
+        )
 }

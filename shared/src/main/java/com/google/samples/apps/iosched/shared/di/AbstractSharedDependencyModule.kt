@@ -66,6 +66,7 @@ import com.google.samples.apps.iosched.shared.domain.codelabs.SetCodelabsInfoCar
 import com.google.samples.apps.iosched.shared.domain.feed.GetConferenceStateUseCase
 import com.google.samples.apps.iosched.shared.domain.feed.LoadAnnouncementsUseCase
 import com.google.samples.apps.iosched.shared.domain.feed.LoadCurrentMomentUseCase
+import com.google.samples.apps.iosched.shared.domain.logistics.LoadWifiInfoUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.NotificationsPrefIsShownUseCase
 import com.google.samples.apps.iosched.shared.domain.search.FtsMatchStrategy
 import com.google.samples.apps.iosched.shared.domain.search.SessionTextMatchStrategy
@@ -242,4 +243,10 @@ abstract class AbstractSharedDependencyModule(
             timeProvider,
             coroutinesDependencyModule.mainDispatcher
         )
+    val loadWifiInfoUseCase: LoadWifiInfoUseCase by lazy {
+        LoadWifiInfoUseCase(
+            appConfigDataSource,
+            coroutinesDependencyModule.ioDispatcher
+        )
+    }
 }

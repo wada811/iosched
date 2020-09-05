@@ -27,7 +27,7 @@ import javax.inject.Inject
 /**
  * Installs WiFi on device given a WiFi configuration.
  */
-class WifiInstaller @Inject constructor(
+class WifiInstaller(
     private val wifiManager: WifiManager,
     private val clipboardManager: ClipboardManager
 ) {

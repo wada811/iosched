@@ -16,28 +16,32 @@
 
 package com.google.samples.apps.iosched.ui.info
 
+import android.app.Application
 import android.net.wifi.WifiConfiguration
-import androidx.hilt.lifecycle.ViewModelInject
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import com.google.samples.apps.iosched.R
+import com.google.samples.apps.iosched.di.AppDependencyModule
 import com.google.samples.apps.iosched.model.ConferenceWifiInfo
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
+import com.google.samples.apps.iosched.shared.di.SharedDependencyModule
 import com.google.samples.apps.iosched.shared.domain.logistics.LoadWifiInfoUseCase
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.data
 import com.google.samples.apps.iosched.shared.util.map
 import com.google.samples.apps.iosched.ui.SnackbarMessage
 import com.google.samples.apps.iosched.util.wifi.WifiInstaller
+import com.wada811.dependencyproperty.dependencyModule
 
-class EventInfoViewModel @ViewModelInject constructor(
-    loadWifiInfoUseCase: LoadWifiInfoUseCase,
-    private val wifiInstaller: WifiInstaller,
-    private val analyticsHelper: AnalyticsHelper
-) : ViewModel() {
+class EventInfoViewModel @JvmOverloads constructor(
+    application: Application,
+    loadWifiInfoUseCase: LoadWifiInfoUseCase = application.dependencyModule<SharedDependencyModule>().loadWifiInfoUseCase,
+    private val wifiInstaller: WifiInstaller = application.dependencyModule<AppDependencyModule>().wifiInstaller,
+    private val analyticsHelper: AnalyticsHelper = application.dependencyModule<AppDependencyModule>().analyticsHelper
+) : AndroidViewModel(application) {
 
     companion object {
         private const val ASSISTANT_APP_URL =
