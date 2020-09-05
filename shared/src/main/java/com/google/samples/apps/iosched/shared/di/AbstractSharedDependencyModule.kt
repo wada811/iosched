@@ -76,10 +76,13 @@ import com.google.samples.apps.iosched.shared.domain.search.FtsMatchStrategy
 import com.google.samples.apps.iosched.shared.domain.search.SessionTextMatchStrategy
 import com.google.samples.apps.iosched.shared.domain.search.SimpleMatchStrategy
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadStarredAndReservedSessionsUseCase
+import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.NotificationAlarmUpdater
+import com.google.samples.apps.iosched.shared.domain.sessions.StarReserveNotificationAlarmUpdater
 import com.google.samples.apps.iosched.shared.domain.settings.GetThemeUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.ObserveThemeModeUseCase
+import com.google.samples.apps.iosched.shared.domain.users.ReservationActionUseCase
 import com.google.samples.apps.iosched.shared.fcm.TopicSubscriber
 import com.google.samples.apps.iosched.shared.notifications.SessionAlarmManager
 import com.google.samples.apps.iosched.shared.time.DefaultTimeProvider
@@ -268,9 +271,23 @@ abstract class AbstractSharedDependencyModule(
             preferenceStorage,
             coroutinesDependencyModule.ioDispatcher
         )
-    val stopSnackbarActionUseCase : StopSnackbarActionUseCase
+    val stopSnackbarActionUseCase: StopSnackbarActionUseCase
         get() = StopSnackbarActionUseCase(
             preferenceStorage,
+            coroutinesDependencyModule.ioDispatcher
+        )
+    val loadUserSessionUseCase: LoadUserSessionUseCase
+        get() = LoadUserSessionUseCase(
+            sessionAndUserEventRepository,
+            coroutinesDependencyModule.ioDispatcher
+        )
+    val starReserveNotificationAlarmUpdater: StarReserveNotificationAlarmUpdater by lazy {
+        StarReserveNotificationAlarmUpdater(sessionAlarmManager)
+    }
+    val reservationActionUseCase: ReservationActionUseCase
+        get() = ReservationActionUseCase(
+            sessionAndUserEventRepository,
+            starReserveNotificationAlarmUpdater,
             coroutinesDependencyModule.ioDispatcher
         )
 }

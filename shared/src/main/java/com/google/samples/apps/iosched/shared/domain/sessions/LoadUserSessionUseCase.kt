@@ -18,9 +18,8 @@ package com.google.samples.apps.iosched.shared.domain.sessions
 
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.userdata.UserSession
-import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
+import com.google.samples.apps.iosched.shared.data.userevent.SessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventMessage
-import com.google.samples.apps.iosched.shared.di.IoDispatcher
 import com.google.samples.apps.iosched.shared.domain.FlowUseCase
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.result.Result.Success
@@ -28,16 +27,15 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
-open class LoadUserSessionUseCase @Inject constructor(
-    private val userEventRepository: DefaultSessionAndUserEventRepository,
-    @IoDispatcher ioDispatcher: CoroutineDispatcher
+open class LoadUserSessionUseCase(
+    private val userEventRepository: SessionAndUserEventRepository,
+    ioDispatcher: CoroutineDispatcher
 ) : FlowUseCase<Pair<String?, SessionId>, LoadUserSessionUseCaseResult>(ioDispatcher) {
 
     override fun execute(parameters: Pair<String?, SessionId>):
-            Flow<Result<LoadUserSessionUseCaseResult>> {
+        Flow<Result<LoadUserSessionUseCaseResult>> {
         val (userId, eventId) = parameters
         return userEventRepository.getObservableUserEvent(userId, eventId).map {
             if (it is Success) {

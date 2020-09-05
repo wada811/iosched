@@ -16,13 +16,15 @@
 
 package com.google.samples.apps.iosched.ui.reservation
 
-import androidx.hilt.lifecycle.ViewModelInject
+import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.samples.apps.iosched.R
+import com.google.samples.apps.iosched.di.AppDependencyModule
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.userdata.UserSession
+import com.google.samples.apps.iosched.shared.di.SharedDependencyModule
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCase
 import com.google.samples.apps.iosched.shared.domain.users.ReservationActionUseCase
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction
@@ -33,16 +35,18 @@ import com.google.samples.apps.iosched.shared.result.data
 import com.google.samples.apps.iosched.shared.util.cancelIfActive
 import com.google.samples.apps.iosched.ui.SnackbarMessage
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
+import com.wada811.dependencyproperty.dependencyModule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @ExperimentalCoroutinesApi
-class RemoveReservationViewModel @ViewModelInject constructor(
-    signInViewModelDelegate: SignInViewModelDelegate,
-    private val loadUserSessionUseCase: LoadUserSessionUseCase,
-    private val reservationActionUseCase: ReservationActionUseCase
+class RemoveReservationViewModel @JvmOverloads constructor(
+    application: Application,
+    signInViewModelDelegate: SignInViewModelDelegate = application.dependencyModule<AppDependencyModule>().signInViewModelDelegate,
+    private val loadUserSessionUseCase: LoadUserSessionUseCase = application.dependencyModule<SharedDependencyModule>().loadUserSessionUseCase,
+    private val reservationActionUseCase: ReservationActionUseCase = application.dependencyModule<SharedDependencyModule>().reservationActionUseCase
 ) : ViewModel(), SignInViewModelDelegate by signInViewModelDelegate {
 
     private var loadUserSessionJob: Job? = null

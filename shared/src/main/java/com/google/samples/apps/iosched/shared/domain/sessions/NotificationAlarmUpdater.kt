@@ -80,8 +80,7 @@ class NotificationAlarmUpdater @Inject constructor(
     }
 }
 
-@Singleton
-open class StarReserveNotificationAlarmUpdater @Inject constructor(
+open class StarReserveNotificationAlarmUpdater(
     private val alarmManager: SessionAlarmManager
 ) {
     open fun updateSession(
