@@ -27,9 +27,7 @@ import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.inTransaction
 import com.google.samples.apps.iosched.ui.signin.SignInDialogFragment
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
-import dagger.hilt.android.AndroidEntryPoint
 
-@AndroidEntryPoint
 class OnboardingActivity : AppCompatActivity() {
 
     private val viewModel: OnboardingViewModel by viewModels()
