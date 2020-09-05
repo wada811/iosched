@@ -23,9 +23,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.google.samples.apps.iosched.databinding.FragmentOnboardingSigninBinding
-import dagger.hilt.android.AndroidEntryPoint
 
-@AndroidEntryPoint
 class OnboardingSignInFragment : Fragment() {
 
     private lateinit var binding: FragmentOnboardingSigninBinding
