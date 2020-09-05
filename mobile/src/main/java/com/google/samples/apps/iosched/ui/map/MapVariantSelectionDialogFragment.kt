@@ -30,9 +30,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.google.samples.apps.iosched.R
-import dagger.hilt.android.AndroidEntryPoint
 
-@AndroidEntryPoint
 class MapVariantSelectionDialogFragment : AppCompatDialogFragment() {
 
     private val mapViewModel: MapViewModel by viewModels(
