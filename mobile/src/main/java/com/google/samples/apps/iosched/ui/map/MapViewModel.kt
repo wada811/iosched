@@ -16,7 +16,7 @@
 
 package com.google.samples.apps.iosched.ui.map
 
-import androidx.hilt.lifecycle.ViewModelInject
+import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
@@ -31,8 +31,10 @@ import com.google.maps.android.data.geojson.GeoJsonFeature
 import com.google.maps.android.data.geojson.GeoJsonLayer
 import com.google.maps.android.data.geojson.GeoJsonPoint
 import com.google.samples.apps.iosched.BuildConfig
+import com.google.samples.apps.iosched.di.AppDependencyModule
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
+import com.google.samples.apps.iosched.shared.di.SharedDependencyModule
 import com.google.samples.apps.iosched.shared.domain.prefs.MyLocationOptedInUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.OptIntoMyLocationUseCase
 import com.google.samples.apps.iosched.shared.result.Event
@@ -41,14 +43,16 @@ import com.google.samples.apps.iosched.shared.result.updateOnSuccess
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.google.samples.apps.iosched.util.combine
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior
+import com.wada811.dependencyproperty.dependencyModule
 import kotlinx.coroutines.launch
 
-class MapViewModel @ViewModelInject constructor(
-    private val loadGeoJsonFeaturesUseCase: LoadGeoJsonFeaturesUseCase,
-    private val analyticsHelper: AnalyticsHelper,
-    private val signInViewModelDelegate: SignInViewModelDelegate,
-    private val optIntoMyLocationUseCase: OptIntoMyLocationUseCase,
-    myLocationOptedInUseCase: MyLocationOptedInUseCase
+class MapViewModel @JvmOverloads constructor(
+    application: Application,
+    private val loadGeoJsonFeaturesUseCase: LoadGeoJsonFeaturesUseCase = application.dependencyModule<AppDependencyModule>().loadGeoJsonFeaturesUseCase,
+    private val analyticsHelper: AnalyticsHelper = application.dependencyModule<AppDependencyModule>().analyticsHelper,
+    private val signInViewModelDelegate: SignInViewModelDelegate = application.dependencyModule<AppDependencyModule>().signInViewModelDelegate,
+    private val optIntoMyLocationUseCase: OptIntoMyLocationUseCase = application.dependencyModule<SharedDependencyModule>().optIntoMyLocationUseCase,
+    myLocationOptedInUseCase: MyLocationOptedInUseCase = application.dependencyModule<SharedDependencyModule>().myLocationOptedInUseCase
 ) : ViewModel(), SignInViewModelDelegate by signInViewModelDelegate {
 
     /**
