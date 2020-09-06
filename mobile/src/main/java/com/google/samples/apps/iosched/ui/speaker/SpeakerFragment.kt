@@ -44,6 +44,7 @@ import com.google.samples.apps.iosched.ui.speaker.SpeakerFragmentDirections.Comp
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
 import com.wada811.dependencyproperty.DependencyModule
 import com.wada811.dependencyproperty.dependency
+import com.wada811.dependencyproperty.dependencyModules
 import java.util.concurrent.TimeUnit
 
 /**
@@ -162,6 +163,11 @@ class SpeakerFragment : MainNavigationFragment(), OnOffsetChangedListener {
                 analyticsHelper.sendScreenView(pageName, requireActivity())
             }
         })
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        dependencyModules.replaceModule(SpeakerFragmentModule())
     }
 
     override fun onOffsetChanged(appBarLayout: AppBarLayout, verticalOffset: Int) {
