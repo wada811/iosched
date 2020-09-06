@@ -88,6 +88,7 @@ import com.google.samples.apps.iosched.shared.domain.sessions.StarReserveNotific
 import com.google.samples.apps.iosched.shared.domain.settings.GetThemeUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.ObserveThemeModeUseCase
+import com.google.samples.apps.iosched.shared.domain.users.FeedbackUseCase
 import com.google.samples.apps.iosched.shared.domain.users.ReservationActionUseCase
 import com.google.samples.apps.iosched.shared.domain.users.StarEventAndNotifyUseCase
 import com.google.samples.apps.iosched.shared.domain.users.SwapActionUseCase
@@ -339,6 +340,12 @@ abstract class AbstractSharedDependencyModule(
         )
     val loadUserSessionsUseCase: LoadUserSessionsUseCase
         get() = LoadUserSessionsUseCase(
+            sessionAndUserEventRepository,
+            coroutinesDependencyModule.ioDispatcher
+        )
+    val feedbackUseCase: FeedbackUseCase
+        get() = FeedbackUseCase(
+            feedbackEndpoint,
             sessionAndUserEventRepository,
             coroutinesDependencyModule.ioDispatcher
         )
