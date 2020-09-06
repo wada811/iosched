@@ -71,6 +71,8 @@ import com.google.samples.apps.iosched.shared.domain.logistics.LoadWifiInfoUseCa
 import com.google.samples.apps.iosched.shared.domain.prefs.MarkScheduleUiHintsShownUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.MyLocationOptedInUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.NotificationsPrefIsShownUseCase
+import com.google.samples.apps.iosched.shared.domain.prefs.NotificationsPrefSaveActionUseCase
+import com.google.samples.apps.iosched.shared.domain.prefs.NotificationsPrefShownActionUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.OnboardingCompleteActionUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.OptIntoMyLocationUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.ScheduleUiHintsShownUseCase
@@ -85,10 +87,14 @@ import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsUs
 import com.google.samples.apps.iosched.shared.domain.sessions.NotificationAlarmUpdater
 import com.google.samples.apps.iosched.shared.domain.sessions.ObserveConferenceDataUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.StarReserveNotificationAlarmUpdater
+import com.google.samples.apps.iosched.shared.domain.settings.GetAnalyticsSettingUseCase
+import com.google.samples.apps.iosched.shared.domain.settings.GetAvailableThemesUseCase
+import com.google.samples.apps.iosched.shared.domain.settings.GetNotificationsSettingUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetThemeUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.ObserveThemeModeUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.SetAnalyticsSettingUseCase
+import com.google.samples.apps.iosched.shared.domain.settings.SetThemeUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.SetTimeZoneUseCase
 import com.google.samples.apps.iosched.shared.domain.users.FeedbackUseCase
 import com.google.samples.apps.iosched.shared.domain.users.ReservationActionUseCase
@@ -384,5 +390,10 @@ abstract class AbstractSharedDependencyModule(
     val getAvailableThemesUseCase: GetAvailableThemesUseCase
         get() = GetAvailableThemesUseCase(
             coroutinesDependencyModule.mainImmediateDispatcher
+        )
+    val notificationsPrefShownActionUseCase: NotificationsPrefShownActionUseCase
+        get() = NotificationsPrefShownActionUseCase(
+            preferenceStorage,
+            coroutinesDependencyModule.ioDispatcher
         )
 }

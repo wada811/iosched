@@ -23,23 +23,20 @@ import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.samples.apps.iosched.R
+import com.google.samples.apps.iosched.shared.di.SharedDependencyModule
 import com.google.samples.apps.iosched.shared.domain.prefs.NotificationsPrefSaveActionUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.NotificationsPrefShownActionUseCase
-import dagger.hilt.android.AndroidEntryPoint
+import com.wada811.dependencyproperty.dependency
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 /**
  * Dialog that asks for the user's notifications preference.
  */
-@AndroidEntryPoint
 class NotificationsPreferenceDialogFragment : AppCompatDialogFragment() {
 
-    @Inject
-    lateinit var notificationsPrefSaveActionUseCase: NotificationsPrefSaveActionUseCase
-    @Inject
-    lateinit var notificationsPrefShownActionUseCase: NotificationsPrefShownActionUseCase
+    private val notificationsPrefSaveActionUseCase by dependency<SharedDependencyModule, NotificationsPrefSaveActionUseCase> { it.notificationsPrefSaveActionUseCase }
+    private val notificationsPrefShownActionUseCase by dependency<SharedDependencyModule, NotificationsPrefShownActionUseCase> { it.notificationsPrefShownActionUseCase }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return MaterialAlertDialogBuilder(requireContext())
