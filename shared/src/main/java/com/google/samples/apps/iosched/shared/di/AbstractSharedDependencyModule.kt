@@ -60,6 +60,7 @@ import com.google.samples.apps.iosched.shared.data.userevent.SessionAndUserEvent
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventDataSource
 import com.google.samples.apps.iosched.shared.domain.RefreshConferenceDataUseCase
 import com.google.samples.apps.iosched.shared.domain.agenda.LoadAgendaUseCase
+import com.google.samples.apps.iosched.shared.domain.ar.LoadArDebugFlagUseCase
 import com.google.samples.apps.iosched.shared.domain.auth.ObserveUserAuthStateUseCase
 import com.google.samples.apps.iosched.shared.domain.codelabs.GetCodelabsInfoCardShownUseCase
 import com.google.samples.apps.iosched.shared.domain.codelabs.LoadCodelabsUseCase
@@ -81,6 +82,7 @@ import com.google.samples.apps.iosched.shared.domain.prefs.StopSnackbarActionUse
 import com.google.samples.apps.iosched.shared.domain.search.FtsMatchStrategy
 import com.google.samples.apps.iosched.shared.domain.search.SessionTextMatchStrategy
 import com.google.samples.apps.iosched.shared.domain.search.SimpleMatchStrategy
+import com.google.samples.apps.iosched.shared.domain.sessions.LoadPinnedSessionsJsonUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadScheduleUserSessionsUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadStarredAndReservedSessionsUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCase
@@ -406,6 +408,17 @@ abstract class AbstractSharedDependencyModule(
     val onboardingCompletedUseCase: OnboardingCompletedUseCase
         get() = OnboardingCompletedUseCase(
             preferenceStorage,
+            coroutinesDependencyModule.ioDispatcher
+        )
+    val loadPinnedSessionsJsonUseCase: LoadPinnedSessionsJsonUseCase
+        get() = LoadPinnedSessionsJsonUseCase(
+            sessionAndUserEventRepository,
+            gson,
+            coroutinesDependencyModule.ioDispatcher
+        )
+    val loadArDebugFlagUseCase: LoadArDebugFlagUseCase
+        get() = LoadArDebugFlagUseCase(
+            arDebugFlagEndpoint,
             coroutinesDependencyModule.ioDispatcher
         )
 }

@@ -20,9 +20,8 @@ import com.google.gson.Gson
 import com.google.samples.apps.iosched.model.schedule.PinnedSession
 import com.google.samples.apps.iosched.model.schedule.PinnedSessionsSchedule
 import com.google.samples.apps.iosched.model.userdata.UserSession
-import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.data.userevent.ObservableUserEvents
-import com.google.samples.apps.iosched.shared.di.IoDispatcher
+import com.google.samples.apps.iosched.shared.data.userevent.SessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.domain.FlowUseCase
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.util.TimeUtils
@@ -30,7 +29,6 @@ import com.google.samples.apps.iosched.shared.util.toEpochMilli
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
 
 /**
  * Load a list of pinned (starred or reserved) [UserSession]s for a given user as a json format.
@@ -57,10 +55,10 @@ import javax.inject.Inject
  *   ]
  * }
  */
-open class LoadPinnedSessionsJsonUseCase @Inject constructor(
-    private val userEventRepository: DefaultSessionAndUserEventRepository,
+open class LoadPinnedSessionsJsonUseCase(
+    private val userEventRepository: SessionAndUserEventRepository,
     private val gson: Gson,
-    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
+    ioDispatcher: CoroutineDispatcher
 ) : FlowUseCase<String, String>(ioDispatcher) {
 
     override fun execute(parameters: String): Flow<Result<String>> {

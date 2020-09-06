@@ -16,13 +16,14 @@
 
 package com.google.samples.apps.iosched.ui
 
-import android.content.Context
-import androidx.hilt.lifecycle.ViewModelInject
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import androidx.lifecycle.switchMap
+import com.google.samples.apps.iosched.di.AppDependencyModule
+import com.google.samples.apps.iosched.shared.di.SharedDependencyModule
 import com.google.samples.apps.iosched.shared.domain.ar.LoadArDebugFlagUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadPinnedSessionsJsonUseCase
 import com.google.samples.apps.iosched.shared.result.Event
@@ -30,16 +31,16 @@ import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.ui.ar.ArCoreAvailabilityLiveData
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.google.samples.apps.iosched.ui.theme.ThemedActivityDelegate
-import dagger.hilt.android.qualifiers.ApplicationContext
+import com.wada811.dependencyproperty.dependencyModule
 import kotlinx.coroutines.flow.collect
 
-class MainActivityViewModel @ViewModelInject constructor(
-    signInViewModelDelegate: SignInViewModelDelegate,
-    themedActivityDelegate: ThemedActivityDelegate,
-    loadPinnedSessionsUseCase: LoadPinnedSessionsJsonUseCase,
-    loadArDebugFlagUseCase: LoadArDebugFlagUseCase,
-    @ApplicationContext context: Context
-) : ViewModel(),
+class MainActivityViewModel @JvmOverloads constructor(
+    application: Application,
+    signInViewModelDelegate: SignInViewModelDelegate = application.dependencyModule<AppDependencyModule>().signInViewModelDelegate,
+    themedActivityDelegate: ThemedActivityDelegate = application.dependencyModule<AppDependencyModule>().themedActivityDelegate,
+    loadPinnedSessionsUseCase: LoadPinnedSessionsJsonUseCase = application.dependencyModule<SharedDependencyModule>().loadPinnedSessionsJsonUseCase,
+    loadArDebugFlagUseCase: LoadArDebugFlagUseCase = application.dependencyModule<SharedDependencyModule>().loadArDebugFlagUseCase
+) : AndroidViewModel(application),
     SignInViewModelDelegate by signInViewModelDelegate,
     ThemedActivityDelegate by themedActivityDelegate {
 
@@ -77,7 +78,7 @@ class MainActivityViewModel @ViewModelInject constructor(
         }
     }
 
-    val arCoreAvailability = ArCoreAvailabilityLiveData(context)
+    val arCoreAvailability = ArCoreAvailabilityLiveData(application)
 
     fun onProfileClicked() {
         if (isSignedIn()) {
