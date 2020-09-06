@@ -25,14 +25,11 @@ import androidx.core.content.edit
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.samples.apps.iosched.model.Theme
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
-import javax.inject.Inject
-import javax.inject.Singleton
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
@@ -60,9 +57,8 @@ interface PreferenceStorage {
  */
 @FlowPreview
 @ExperimentalCoroutinesApi
-@Singleton
-class SharedPreferenceStorage @Inject constructor(
-    @ApplicationContext context: Context
+class SharedPreferenceStorage(
+    context: Context
 ) : PreferenceStorage {
 
     private val selectedThemeChannel: ConflatedBroadcastChannel<String> by lazy {
