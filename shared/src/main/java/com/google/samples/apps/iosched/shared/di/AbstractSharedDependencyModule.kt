@@ -67,6 +67,7 @@ import com.google.samples.apps.iosched.shared.domain.feed.GetConferenceStateUseC
 import com.google.samples.apps.iosched.shared.domain.feed.LoadAnnouncementsUseCase
 import com.google.samples.apps.iosched.shared.domain.feed.LoadCurrentMomentUseCase
 import com.google.samples.apps.iosched.shared.domain.logistics.LoadWifiInfoUseCase
+import com.google.samples.apps.iosched.shared.domain.prefs.MarkScheduleUiHintsShownUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.MyLocationOptedInUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.NotificationsPrefIsShownUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.OnboardingCompleteActionUseCase
@@ -294,6 +295,11 @@ abstract class AbstractSharedDependencyModule(
     val swapActionUseCase: SwapActionUseCase
         get() = SwapActionUseCase(
             sessionAndUserEventRepository,
+            coroutinesDependencyModule.ioDispatcher
+        )
+    val markScheduleUiHintsShownUseCase: MarkScheduleUiHintsShownUseCase
+        get() = MarkScheduleUiHintsShownUseCase(
+            preferenceStorage,
             coroutinesDependencyModule.ioDispatcher
         )
 }
