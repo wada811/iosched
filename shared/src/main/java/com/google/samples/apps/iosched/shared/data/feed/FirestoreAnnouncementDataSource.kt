@@ -23,10 +23,9 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.samples.apps.iosched.model.Announcement
 import com.google.samples.apps.iosched.shared.data.document2020
 import com.google.samples.apps.iosched.shared.util.ColorUtils
-import java.util.concurrent.TimeUnit
-import javax.inject.Inject
 import org.threeten.bp.Instant
 import org.threeten.bp.ZoneOffset.UTC
+import java.util.concurrent.TimeUnit
 
 interface AnnouncementDataSource {
     fun getAnnouncements(): List<Announcement>
@@ -35,7 +34,7 @@ interface AnnouncementDataSource {
 /**
  * Feed data source backed by items in a FireStore collection.
  */
-class FirestoreAnnouncementDataSource @Inject constructor(
+class FirestoreAnnouncementDataSource(
     val firestore: FirebaseFirestore
 ) : AnnouncementDataSource {
 
@@ -48,7 +47,7 @@ class FirestoreAnnouncementDataSource @Inject constructor(
         val snapshot = Tasks.await(task, 20, TimeUnit.SECONDS)
         return snapshot.documents.map { parseFeedItem(it) }
             .sortedWith(compareByDescending<Announcement> { it.priority }
-            .thenByDescending { it.timestamp })
+                .thenByDescending { it.timestamp })
     }
 
     private fun parseFeedItem(snapshot: DocumentSnapshot): Announcement {
