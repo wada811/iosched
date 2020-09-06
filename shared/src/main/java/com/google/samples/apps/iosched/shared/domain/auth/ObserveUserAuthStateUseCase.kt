@@ -21,16 +21,12 @@ import com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserInfoB
 import com.google.samples.apps.iosched.shared.data.signin.FirebaseRegisteredUserInfo
 import com.google.samples.apps.iosched.shared.data.signin.datasources.AuthStateUserDataSource
 import com.google.samples.apps.iosched.shared.data.signin.datasources.RegisteredUserDataSource
-import com.google.samples.apps.iosched.shared.di.ApplicationScope
-import com.google.samples.apps.iosched.shared.di.IoDispatcher
 import com.google.samples.apps.iosched.shared.domain.FlowUseCase
 import com.google.samples.apps.iosched.shared.fcm.TopicSubscriber
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.result.Result.Success
 import com.google.samples.apps.iosched.shared.result.data
 import com.google.samples.apps.iosched.shared.util.cancelIfActive
-import javax.inject.Inject
-import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -48,13 +44,12 @@ import kotlinx.coroutines.launch
  * [RegisteredUserDataSource] observes a different data source to provide a flag indicating
  * whether the user is registered.
  */
-@Singleton
-open class ObserveUserAuthStateUseCase @Inject constructor(
+open class ObserveUserAuthStateUseCase(
     private val registeredUserDataSource: RegisteredUserDataSource,
     private val authStateUserDataSource: AuthStateUserDataSource,
     private val topicSubscriber: TopicSubscriber,
-    @ApplicationScope private val externalScope: CoroutineScope,
-    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
+    private val externalScope: CoroutineScope,
+    private val ioDispatcher: CoroutineDispatcher
 ) : FlowUseCase<Any, AuthenticatedUserInfo>(ioDispatcher) {
 
     private var observeUserRegisteredChangesJob: Job? = null
