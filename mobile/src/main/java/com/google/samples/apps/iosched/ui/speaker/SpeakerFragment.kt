@@ -32,6 +32,7 @@ import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.AppBarLayout.OnOffsetChangedListener
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentSpeakerBinding
+import com.google.samples.apps.iosched.di.AppDependencyModule
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
@@ -41,24 +42,20 @@ import com.google.samples.apps.iosched.ui.setUpSnackbar
 import com.google.samples.apps.iosched.ui.signin.SignInDialogFragment
 import com.google.samples.apps.iosched.ui.speaker.SpeakerFragmentDirections.Companion.toSessionDetail
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
-import dagger.hilt.android.AndroidEntryPoint
+import com.wada811.dependencyproperty.DependencyModule
+import com.wada811.dependencyproperty.dependency
 import java.util.concurrent.TimeUnit
-import javax.inject.Inject
-import javax.inject.Named
 
 /**
  * Fragment displaying speaker details and their events.
  */
-@AndroidEntryPoint
 class SpeakerFragment : MainNavigationFragment(), OnOffsetChangedListener {
 
-    @Inject lateinit var snackbarMessageManager: SnackbarMessageManager
+    private val snackbarMessageManager by dependency<AppDependencyModule, SnackbarMessageManager> { it.snackbarMessageManager }
 
-    @Inject lateinit var analyticsHelper: AnalyticsHelper
+    private val analyticsHelper by dependency<AppDependencyModule, AnalyticsHelper> { it.analyticsHelper }
 
-    @Inject
-    @field:Named("tagViewPool")
-    lateinit var tagRecycledViewPool: RecycledViewPool
+    private val tagRecycledViewPool: RecycledViewPool by dependency<SpeakerFragmentModule, RecycledViewPool> { it.tagRecycledViewPool }
 
     private val speakerViewModel: SpeakerViewModel by viewModels()
     private val snackbarPrefsViewModel: SnackbarPreferenceViewModel by activityViewModels()
@@ -177,5 +174,9 @@ class SpeakerFragment : MainNavigationFragment(), OnOffsetChangedListener {
             binding.toolbar.animate().alpha(alpha).start()
             binding.speakerImage.animate().alpha(alpha).start()
         }
+    }
+
+    class SpeakerFragmentModule : DependencyModule {
+        val tagRecycledViewPool: RecycledViewPool by lazy { RecycledViewPool() }
     }
 }
