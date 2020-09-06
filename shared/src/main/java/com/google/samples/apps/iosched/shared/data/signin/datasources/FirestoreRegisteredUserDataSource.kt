@@ -21,7 +21,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.samples.apps.iosched.shared.data.document2020
 import com.google.samples.apps.iosched.shared.result.Result
-import javax.inject.Inject
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
@@ -32,7 +31,7 @@ import timber.log.Timber
  * A [RegisteredUserDataSource] that listens to changes in firestore to indicate whether the
  * current user is registered in the event or not as an attendee.
  */
-class FirestoreRegisteredUserDataSource @Inject constructor(
+class FirestoreRegisteredUserDataSource(
     val firestore: FirebaseFirestore
 ) : RegisteredUserDataSource {
 
