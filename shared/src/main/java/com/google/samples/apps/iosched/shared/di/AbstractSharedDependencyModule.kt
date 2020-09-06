@@ -81,6 +81,7 @@ import com.google.samples.apps.iosched.shared.domain.search.SimpleMatchStrategy
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadScheduleUserSessionsUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadStarredAndReservedSessionsUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCase
+import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.NotificationAlarmUpdater
 import com.google.samples.apps.iosched.shared.domain.sessions.ObserveConferenceDataUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.StarReserveNotificationAlarmUpdater
@@ -94,6 +95,7 @@ import com.google.samples.apps.iosched.shared.fcm.TopicSubscriber
 import com.google.samples.apps.iosched.shared.notifications.SessionAlarmManager
 import com.google.samples.apps.iosched.shared.time.DefaultTimeProvider
 import com.google.samples.apps.iosched.shared.time.TimeProvider
+import com.google.samples.apps.iosched.shared.util.NetworkUtils
 import com.wada811.dependencyproperty.DependencyModule
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
@@ -102,6 +104,8 @@ abstract class AbstractSharedDependencyModule(
     private val context: Context,
     protected val coroutinesDependencyModule: CoroutinesDependencyModule = CoroutinesDependencyModule()
 ) : DependencyModule {
+    val networkUtils: NetworkUtils
+        get() = NetworkUtils(context)
     abstract val remoteConfDataSource: ConferenceDataSource
     abstract val bootstrapConfDataSource: ConferenceDataSource
     val appDatabase: AppDatabase by lazy {
@@ -331,6 +335,11 @@ abstract class AbstractSharedDependencyModule(
     val observeConferenceDataUseCase: ObserveConferenceDataUseCase
         get() = ObserveConferenceDataUseCase(
             conferenceDataRepository,
+            coroutinesDependencyModule.ioDispatcher
+        )
+    val loadUserSessionsUseCase: LoadUserSessionsUseCase
+        get() = LoadUserSessionsUseCase(
+            sessionAndUserEventRepository,
             coroutinesDependencyModule.ioDispatcher
         )
 }

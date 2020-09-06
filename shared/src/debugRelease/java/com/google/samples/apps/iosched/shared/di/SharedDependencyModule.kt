@@ -43,7 +43,10 @@ class SharedDependencyModule(
     context
 ) {
     override val remoteConfDataSource: ConferenceDataSource by lazy {
-        NetworkConferenceDataSource(context)
+        NetworkConferenceDataSource(
+            context,
+            networkUtils
+        )
     }
     override val bootstrapConfDataSource: ConferenceDataSource by lazy { BootstrapConferenceDataSource }
     override val announcementDataSource: AnnouncementDataSource by lazy {
