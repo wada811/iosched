@@ -74,6 +74,7 @@ import com.google.samples.apps.iosched.shared.domain.prefs.NotificationsPrefIsSh
 import com.google.samples.apps.iosched.shared.domain.prefs.NotificationsPrefSaveActionUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.NotificationsPrefShownActionUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.OnboardingCompleteActionUseCase
+import com.google.samples.apps.iosched.shared.domain.prefs.OnboardingCompletedUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.OptIntoMyLocationUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.ScheduleUiHintsShownUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.StopSnackbarActionUseCase
@@ -400,6 +401,11 @@ abstract class AbstractSharedDependencyModule(
     val loadSpeakerUseCase: LoadSpeakerUseCase
         get() = LoadSpeakerUseCase(
             conferenceDataRepository,
+            coroutinesDependencyModule.ioDispatcher
+        )
+    val onboardingCompletedUseCase: OnboardingCompletedUseCase
+        get() = OnboardingCompletedUseCase(
+            preferenceStorage,
             coroutinesDependencyModule.ioDispatcher
         )
 }
