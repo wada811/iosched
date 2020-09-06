@@ -33,9 +33,7 @@ import com.google.samples.apps.iosched.ui.MainActivityViewModel
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
 import com.google.samples.apps.iosched.ui.signin.setupProfileMenuItem
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
-import dagger.hilt.android.AndroidEntryPoint
 
-@AndroidEntryPoint
 class SettingsFragment : MainNavigationFragment() {
 
     private val viewModel: SettingsViewModel by viewModels()
@@ -49,7 +47,7 @@ class SettingsFragment : MainNavigationFragment() {
 
         viewModel.navigateToThemeSelector.observe(viewLifecycleOwner, EventObserver {
             ThemeSettingDialogFragment.newInstance()
-                    .show(requireFragmentManager(), null)
+                .show(requireFragmentManager(), null)
         })
 
         val binding = FragmentSettingsBinding.inflate(inflater, container, false)
