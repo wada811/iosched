@@ -18,13 +18,12 @@ package com.google.samples.apps.iosched.shared.domain.logistics
 
 import com.google.samples.apps.iosched.model.ConferenceWifiInfo
 import com.google.samples.apps.iosched.shared.data.config.AppConfigDataSource
-import com.google.samples.apps.iosched.shared.di.IoDispatcher
 import com.google.samples.apps.iosched.shared.domain.UseCase
 import kotlinx.coroutines.CoroutineDispatcher
 
 open class LoadWifiInfoUseCase(
     private val appConfigDataSource: AppConfigDataSource,
-    @IoDispatcher dispatcher: CoroutineDispatcher
+    dispatcher: CoroutineDispatcher
 ) : UseCase<Unit, ConferenceWifiInfo>(dispatcher) {
 
     override suspend fun execute(parameters: Unit): ConferenceWifiInfo {
