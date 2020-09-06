@@ -22,14 +22,12 @@ import com.google.firebase.auth.GetTokenResult
 import com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserInfoBasic
 import com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserRegistration
 import com.google.samples.apps.iosched.shared.data.signin.FirebaseUserInfo
-import com.google.samples.apps.iosched.shared.di.IoDispatcher
 import com.google.samples.apps.iosched.shared.domain.sessions.NotificationAlarmUpdater
 import com.google.samples.apps.iosched.shared.fcm.FcmTokenUpdater
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.result.Result.Success
 import com.google.samples.apps.iosched.shared.util.suspendAndWait
 import kotlinx.coroutines.CoroutineDispatcher
-import javax.inject.Inject
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
@@ -51,11 +49,11 @@ import timber.log.Timber
  * is observed by [RegisteredUserDataSource] in its implementation
  * [FirestoreRegisteredUserDataSource].
  */
-class FirebaseAuthStateUserDataSource @Inject constructor(
+class FirebaseAuthStateUserDataSource(
     val firebase: FirebaseAuth,
     private val tokenUpdater: FcmTokenUpdater,
     private val notificationAlarmUpdater: NotificationAlarmUpdater,
-    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
+    private val ioDispatcher: CoroutineDispatcher
 ) : AuthStateUserDataSource {
 
     // lastUid can be potentially consumed and written from different threads
