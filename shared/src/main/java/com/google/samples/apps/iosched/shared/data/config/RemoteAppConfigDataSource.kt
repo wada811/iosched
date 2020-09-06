@@ -22,18 +22,16 @@ import androidx.lifecycle.MutableLiveData
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.samples.apps.iosched.model.ConferenceWifiInfo
 import com.google.samples.apps.iosched.shared.BuildConfig
-import com.google.samples.apps.iosched.shared.di.IoDispatcher
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
-import javax.inject.Inject
 import kotlin.coroutines.resume
 
-class RemoteAppConfigDataSource @Inject constructor(
+class RemoteAppConfigDataSource(
     private val firebaseRemoteConfig: FirebaseRemoteConfig,
-    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
+    private val ioDispatcher: CoroutineDispatcher
 ) : AppConfigDataSource {
 
     private val _attributesLiveDataMap: Map<String, MutableLiveData<String>> = mapOf(
