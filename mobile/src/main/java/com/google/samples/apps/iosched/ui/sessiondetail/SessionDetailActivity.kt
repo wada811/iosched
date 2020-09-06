@@ -25,6 +25,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.firebase.ui.auth.IdpResponse
 import com.google.samples.apps.iosched.R
+import com.google.samples.apps.iosched.di.AppDependencyModule
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.shared.notifications.AlarmBroadcastReceiver
 import com.google.samples.apps.iosched.shared.notifications.AlarmBroadcastReceiver.Companion.QUERY_SESSION_ID
@@ -34,16 +35,13 @@ import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.theme.ThemeViewModel
 import com.google.samples.apps.iosched.util.signin.FirebaseAuthErrorCodeConverter
 import com.google.samples.apps.iosched.util.updateForTheme
-import dagger.hilt.android.AndroidEntryPoint
+import com.wada811.dependencyproperty.dependency
 import timber.log.Timber
 import java.util.UUID
-import javax.inject.Inject
 
-@AndroidEntryPoint
 class SessionDetailActivity : AppCompatActivity() {
 
-    @Inject
-    lateinit var snackbarMessageManager: SnackbarMessageManager
+    private val snackbarMessageManager by dependency<AppDependencyModule, SnackbarMessageManager> { it.snackbarMessageManager }
 
     private val themeViewModel: ThemeViewModel by viewModels()
 
