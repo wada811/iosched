@@ -24,7 +24,6 @@ import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.userdata.UserEvent
 import com.google.samples.apps.iosched.shared.data.document2020
-import com.google.samples.apps.iosched.shared.di.IoDispatcher
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.CancelAction
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.RequestAction
@@ -45,9 +44,8 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
 import timber.log.Timber
-import java.util.concurrent.TimeUnit
 import java.util.UUID
-import javax.inject.Inject
+import java.util.concurrent.TimeUnit
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
@@ -56,9 +54,9 @@ import kotlin.coroutines.resumeWithException
  * stars and reservations.
  */
 @ExperimentalCoroutinesApi
-class FirestoreUserEventDataSource @Inject constructor(
+class FirestoreUserEventDataSource(
     val firestore: FirebaseFirestore,
-    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
+    private val ioDispatcher: CoroutineDispatcher
 ) : UserEventDataSource {
 
     companion object {
@@ -208,11 +206,11 @@ class FirestoreUserEventDataSource @Inject constructor(
         }
 
         val task = firestore
-                .document2020()
-                .collection(USERS_COLLECTION)
-                .document(userId)
-                .collection(EVENTS_COLLECTION)
-                .document(eventId).get()
+            .document2020()
+            .collection(USERS_COLLECTION)
+            .document(userId)
+            .collection(EVENTS_COLLECTION)
+            .document(eventId).get()
         val snapshot = Tasks.await(task, 20, TimeUnit.SECONDS)
         return parseUserEvent(snapshot)
     }
