@@ -40,12 +40,13 @@ import androidx.transition.TransitionInflater
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.R.style
 import com.google.samples.apps.iosched.databinding.FragmentSessionDetailBinding
+import com.google.samples.apps.iosched.di.AppDependencyModule
 import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.SpeakerId
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
-import com.google.samples.apps.iosched.shared.di.MapFeatureEnabledFlag
+import com.google.samples.apps.iosched.shared.di.SharedDependencyModule
 import com.google.samples.apps.iosched.shared.domain.users.SwapRequestParameters
 import com.google.samples.apps.iosched.shared.notifications.AlarmBroadcastReceiver
 import com.google.samples.apps.iosched.shared.result.EventObserver
@@ -67,32 +68,25 @@ import com.google.samples.apps.iosched.ui.signin.SignInDialogFragment
 import com.google.samples.apps.iosched.ui.signin.SignInDialogFragment.Companion.DIALOG_SIGN_IN
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
 import com.google.samples.apps.iosched.util.openWebsiteUrl
-import dagger.hilt.android.AndroidEntryPoint
+import com.wada811.dependencyproperty.DependencyModule
+import com.wada811.dependencyproperty.dependency
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
-import javax.inject.Inject
-import javax.inject.Named
 
-@AndroidEntryPoint
 class SessionDetailFragment : MainNavigationFragment(), SessionFeedbackFragment.Listener {
 
     private var shareString = ""
 
-    @Inject lateinit var snackbarMessageManager: SnackbarMessageManager
+    private val snackbarMessageManager by dependency<AppDependencyModule, SnackbarMessageManager> { it.snackbarMessageManager }
 
     private val sessionDetailViewModel: SessionDetailViewModel by viewModels()
     private val snackbarPrefsViewModel: SnackbarPreferenceViewModel by activityViewModels()
 
-    @Inject lateinit var analyticsHelper: AnalyticsHelper
+    private val analyticsHelper by dependency<AppDependencyModule, AnalyticsHelper> { it.analyticsHelper }
 
-    @Inject
-    @field:Named("tagViewPool")
-    lateinit var tagRecycledViewPool: RecycledViewPool
+    private val tagRecycledViewPool: RecycledViewPool by dependency<SessionDetailFragmentModule, RecycledViewPool> { it.tagRecycledViewPool }
 
-    @Inject
-    @JvmField
-    @MapFeatureEnabledFlag
-    var isMapEnabled: Boolean = false
+    private val isMapEnabled: Boolean by dependency<SharedDependencyModule, Boolean> { it.featureFlags.isMapFeatureEnabled }
 
     private var session: Session? = null
 
@@ -101,17 +95,17 @@ class SessionDetailFragment : MainNavigationFragment(), SessionFeedbackFragment.
     private lateinit var binding: FragmentSessionDetailBinding
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
         sharedElementReturnTransition =
-            TransitionInflater.from(context).inflateTransition(R.transition.speaker_shared_enter)
+                TransitionInflater.from(context).inflateTransition(R.transition.speaker_shared_enter)
         // Delay the enter transition until speaker image has loaded.
         postponeEnterTransition(500L, TimeUnit.MILLISECONDS)
 
         val themedInflater =
-            inflater.cloneInContext(ContextThemeWrapper(requireActivity(), style.AppTheme_Detail))
+                inflater.cloneInContext(ContextThemeWrapper(requireActivity(), style.AppTheme_Detail))
         binding = FragmentSessionDetailBinding.inflate(themedInflater, container, false).apply {
             viewModel = sessionDetailViewModel
             lifecycleOwner = viewLifecycleOwner
@@ -127,18 +121,18 @@ class SessionDetailFragment : MainNavigationFragment(), SessionFeedbackFragment.
                 when (item.itemId) {
                     R.id.menu_item_share -> {
                         ShareCompat.IntentBuilder.from(requireActivity())
-                            .setType("text/plain")
-                            .setText(shareString)
-                            .setChooserTitle(R.string.intent_chooser_session_detail)
-                            .startChooser()
+                                .setType("text/plain")
+                                .setText(shareString)
+                                .setChooserTitle(R.string.intent_chooser_session_detail)
+                                .startChooser()
                     }
                     R.id.menu_item_star -> {
                         sessionDetailViewModel.onStarClicked()
                     }
                     R.id.menu_item_map -> {
                         val directions = SessionDetailFragmentDirections.toMap(
-                            featureId = session?.room?.id,
-                            startTime = session?.startTime?.toEpochMilli() ?: 0L
+                                featureId = session?.room?.id,
+                                startTime = session?.startTime?.toEpochMilli() ?: 0L
                         )
                         findNavController().navigate(directions)
                     }
@@ -156,9 +150,9 @@ class SessionDetailFragment : MainNavigationFragment(), SessionFeedbackFragment.
         }
 
         val detailsAdapter = SessionDetailAdapter(
-            viewLifecycleOwner,
-            sessionDetailViewModel,
-            tagRecycledViewPool
+                viewLifecycleOwner,
+                sessionDetailViewModel,
+                tagRecycledViewPool
         )
         binding.sessionDetailRecyclerView.run {
             adapter = detailsAdapter
@@ -173,7 +167,7 @@ class SessionDetailFragment : MainNavigationFragment(), SessionFeedbackFragment.
                 // CollapsingToolbarLayout's defualt scrim visible trigger height is a bit large.
                 // Choose something smaller so that the content stays visible longer.
                 binding.collapsingToolbar.scrimVisibleHeightTrigger =
-                    insets.systemWindowInsetTop * 2
+                        insets.systemWindowInsetTop * 2
             }
         }
 
@@ -204,26 +198,26 @@ class SessionDetailFragment : MainNavigationFragment(), SessionFeedbackFragment.
         })
 
         sessionDetailViewModel.navigateToYouTubeAction.observe(
-            viewLifecycleOwner,
-            EventObserver { youtubeUrl ->
-                openYoutubeUrl(youtubeUrl)
-            }
+                viewLifecycleOwner,
+                EventObserver { youtubeUrl ->
+                    openYoutubeUrl(youtubeUrl)
+                }
         )
 
         sessionDetailViewModel.navigateToSessionAction.observe(
-            viewLifecycleOwner,
-            EventObserver { sessionId ->
-                findNavController().navigate(toSessionDetail(sessionId))
-            }
+                viewLifecycleOwner,
+                EventObserver { sessionId ->
+                    findNavController().navigate(toSessionDetail(sessionId))
+                }
         )
 
         setUpSnackbar(
-            sessionDetailViewModel.snackBarMessage,
-            binding.snackbar,
-            snackbarMessageManager,
-            actionClickListener = {
-                snackbarPrefsViewModel.onStopClicked()
-            }
+                sessionDetailViewModel.snackBarMessage,
+                binding.snackbar,
+                snackbarMessageManager,
+                actionClickListener = {
+                    snackbarPrefsViewModel.onStopClicked()
+                }
         )
 
         sessionDetailViewModel.errorMessage.observe(viewLifecycleOwner, EventObserver { errorMsg ->
@@ -232,50 +226,50 @@ class SessionDetailFragment : MainNavigationFragment(), SessionFeedbackFragment.
         })
 
         sessionDetailViewModel.navigateToSignInDialogAction.observe(
-            viewLifecycleOwner,
-            EventObserver {
-                openSignInDialog(requireActivity())
-            }
+                viewLifecycleOwner,
+                EventObserver {
+                    openSignInDialog(requireActivity())
+                }
         )
         sessionDetailViewModel.navigateToRemoveReservationDialogAction.observe(
-            viewLifecycleOwner,
-            EventObserver {
-                openRemoveReservationDialog(requireActivity(), it)
-            }
+                viewLifecycleOwner,
+                EventObserver {
+                    openRemoveReservationDialog(requireActivity(), it)
+                }
         )
         sessionDetailViewModel.navigateToSwapReservationDialogAction.observe(
-            viewLifecycleOwner,
-            EventObserver {
-                openSwapReservationDialog(requireActivity(), it)
-            }
+                viewLifecycleOwner,
+                EventObserver {
+                    openSwapReservationDialog(requireActivity(), it)
+                }
         )
 
         sessionDetailViewModel.shouldShowNotificationsPrefAction.observe(
-            viewLifecycleOwner,
-            EventObserver {
-                if (it) {
-                    openNotificationsPreferenceDialog()
+                viewLifecycleOwner,
+                EventObserver {
+                    if (it) {
+                        openNotificationsPreferenceDialog()
+                    }
                 }
-            }
         )
 
         sessionDetailViewModel.navigateToSpeakerDetail.observe(
-            viewLifecycleOwner,
-            EventObserver { speakerId ->
-                val sharedElement = findSpeakerHeadshot(
-                    binding.sessionDetailRecyclerView,
-                    speakerId
-                )
-                val extras = FragmentNavigatorExtras(sharedElement to sharedElement.transitionName)
-                findNavController().navigate(toSpeakerDetail(speakerId), extras)
-            }
+                viewLifecycleOwner,
+                EventObserver { speakerId ->
+                    val sharedElement = findSpeakerHeadshot(
+                            binding.sessionDetailRecyclerView,
+                            speakerId
+                    )
+                    val extras = FragmentNavigatorExtras(sharedElement to sharedElement.transitionName)
+                    findNavController().navigate(toSpeakerDetail(speakerId), extras)
+                }
         )
 
         sessionDetailViewModel.navigateToSessionFeedbackAction.observe(
-            viewLifecycleOwner,
-            EventObserver {
-                openFeedbackDialog(it)
-            }
+                viewLifecycleOwner,
+                EventObserver {
+                    openFeedbackDialog(it)
+                }
         )
 
         // When opened from the post session notification, open the feedback dialog
@@ -283,7 +277,8 @@ class SessionDetailFragment : MainNavigationFragment(), SessionFeedbackFragment.
             val sessionId = getString(EXTRA_SESSION_ID)
                     ?: SessionDetailFragmentArgs.fromBundle(this).sessionId
             val openRateSession =
-                arguments?.getBoolean(AlarmBroadcastReceiver.EXTRA_SHOW_RATE_SESSION_FLAG) ?: false
+                    arguments?.getBoolean(AlarmBroadcastReceiver.EXTRA_SHOW_RATE_SESSION_FLAG)
+                            ?: false
             sessionDetailViewModel.showFeedbackButton.observe(viewLifecycleOwner, Observer {
                 if (it == true && openRateSession) {
                     openFeedbackDialog(sessionId)
@@ -302,7 +297,7 @@ class SessionDetailFragment : MainNavigationFragment(), SessionFeedbackFragment.
             // Default with the value passed from the activity, otherwise assume the fragment was
             // added from the navigation controller.
             val sessionId = getString(EXTRA_SESSION_ID)
-                ?: SessionDetailFragmentArgs.fromBundle(this).sessionId
+                    ?: SessionDetailFragmentArgs.fromBundle(this).sessionId
             sessionDetailViewModel.setSessionId(sessionId)
         }
     }
@@ -320,10 +315,10 @@ class SessionDetailFragment : MainNavigationFragment(), SessionFeedbackFragment.
         val menu = binding.sessionDetailBottomAppBar.menu
         val starMenu = menu.findItem(R.id.menu_item_star)
         sessionDetailViewModel.shouldShowStarInBottomNav.observe(
-            viewLifecycleOwner,
-            Observer { showStar ->
-                starMenu.isVisible = showStar == true
-            }
+                viewLifecycleOwner,
+                Observer { showStar ->
+                    starMenu.isVisible = showStar == true
+                }
         )
         sessionDetailViewModel.userEvent.observe(viewLifecycleOwner, Observer { userEvent ->
             userEvent?.let {
@@ -362,23 +357,23 @@ class SessionDetailFragment : MainNavigationFragment(), SessionFeedbackFragment.
 
     private fun openNotificationsPreferenceDialog() {
         NotificationsPreferenceDialogFragment()
-            .show(requireActivity().supportFragmentManager, DIALOG_NOTIFICATIONS_PREFERENCE)
+                .show(requireActivity().supportFragmentManager, DIALOG_NOTIFICATIONS_PREFERENCE)
     }
 
     private fun openRemoveReservationDialog(
-        activity: FragmentActivity,
-        parameters: RemoveReservationDialogParameters
+            activity: FragmentActivity,
+            parameters: RemoveReservationDialogParameters
     ) {
         RemoveReservationDialogFragment.newInstance(parameters)
-            .show(activity.supportFragmentManager, DIALOG_REMOVE_RESERVATION)
+                .show(activity.supportFragmentManager, DIALOG_REMOVE_RESERVATION)
     }
 
     private fun openSwapReservationDialog(
-        activity: FragmentActivity,
-        parameters: SwapRequestParameters
+            activity: FragmentActivity,
+            parameters: SwapRequestParameters
     ) {
         SwapReservationDialogFragment.newInstance(parameters)
-            .show(activity.supportFragmentManager, DIALOG_SWAP_RESERVATION)
+                .show(activity.supportFragmentManager, DIALOG_SWAP_RESERVATION)
     }
 
     private fun findSpeakerHeadshot(speakers: ViewGroup, speakerId: SpeakerId): View {
@@ -393,21 +388,21 @@ class SessionDetailFragment : MainNavigationFragment(), SessionFeedbackFragment.
 
     private fun addToCalendar(session: Session) {
         val intent = Intent(Intent.ACTION_INSERT)
-            .setData(CalendarContract.Events.CONTENT_URI)
-            .putExtra(CalendarContract.Events.TITLE, session.title)
-            .putExtra(CalendarContract.Events.EVENT_LOCATION, session.room?.name)
-            .putExtra(CalendarContract.Events.DESCRIPTION, session.getCalendarDescription(
-                getString(R.string.paragraph_delimiter),
-                getString(R.string.speaker_delimiter)
-            ))
-            .putExtra(
-                CalendarContract.EXTRA_EVENT_BEGIN_TIME,
-                session.startTime.toEpochMilli()
-            )
-            .putExtra(
-                CalendarContract.EXTRA_EVENT_END_TIME,
-                session.endTime.toEpochMilli()
-            )
+                .setData(CalendarContract.Events.CONTENT_URI)
+                .putExtra(CalendarContract.Events.TITLE, session.title)
+                .putExtra(CalendarContract.Events.EVENT_LOCATION, session.room?.name)
+                .putExtra(CalendarContract.Events.DESCRIPTION, session.getCalendarDescription(
+                        getString(R.string.paragraph_delimiter),
+                        getString(R.string.speaker_delimiter)
+                ))
+                .putExtra(
+                        CalendarContract.EXTRA_EVENT_BEGIN_TIME,
+                        session.startTime.toEpochMilli()
+                )
+                .putExtra(
+                        CalendarContract.EXTRA_EVENT_END_TIME,
+                        session.endTime.toEpochMilli()
+                )
         if (intent.resolveActivity(requireContext().packageManager) != null) {
             startActivity(intent)
         }
@@ -415,7 +410,7 @@ class SessionDetailFragment : MainNavigationFragment(), SessionFeedbackFragment.
 
     private fun openFeedbackDialog(sessionId: String) {
         SessionFeedbackFragment.createInstance(sessionId)
-            .show(childFragmentManager, FRAGMENT_SESSION_FEEDBACK)
+                .show(childFragmentManager, FRAGMENT_SESSION_FEEDBACK)
     }
 
     companion object {
@@ -430,5 +425,9 @@ class SessionDetailFragment : MainNavigationFragment(), SessionFeedbackFragment.
             }
             return SessionDetailFragment().apply { arguments = bundle }
         }
+    }
+
+    class SessionDetailFragmentModule : DependencyModule {
+        val tagRecycledViewPool: RecycledViewPool by lazy { RecycledViewPool() }
     }
 }
