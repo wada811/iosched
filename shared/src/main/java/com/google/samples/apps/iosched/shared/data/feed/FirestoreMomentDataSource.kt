@@ -23,10 +23,9 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.samples.apps.iosched.model.Moment
 import com.google.samples.apps.iosched.shared.data.document2020
 import com.google.samples.apps.iosched.shared.util.ColorUtils
-import java.util.concurrent.TimeUnit
-import javax.inject.Inject
 import org.threeten.bp.Instant
 import org.threeten.bp.ZoneId
+import java.util.concurrent.TimeUnit
 
 interface MomentDataSource {
     fun getMoments(): List<Moment>
@@ -35,7 +34,7 @@ interface MomentDataSource {
 /**
  * Moments data source backed by items in a FireStore collection.
  */
-class FirestoreMomentDataSource @Inject constructor(
+class FirestoreMomentDataSource(
     val firestore: FirebaseFirestore
 ) : MomentDataSource {
 
