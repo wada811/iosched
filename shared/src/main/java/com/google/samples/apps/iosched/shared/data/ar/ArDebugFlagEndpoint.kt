@@ -32,7 +32,7 @@ interface ArDebugFlagEndpoint {
     fun canDemoAr(): LiveData<Result<Boolean>>
 }
 
-class DefaultArDebugFlagEndpoint @Inject constructor(private val functions: FirebaseFunctions) :
+class DefaultArDebugFlagEndpoint(private val functions: FirebaseFunctions) :
     ArDebugFlagEndpoint {
 
     override fun canDemoAr(): LiveData<Result<Boolean>> {
