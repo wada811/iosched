@@ -70,6 +70,7 @@ import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
 import com.google.samples.apps.iosched.util.openWebsiteUrl
 import com.wada811.dependencyproperty.DependencyModule
 import com.wada811.dependencyproperty.dependency
+import com.wada811.dependencyproperty.dependencyModules
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
@@ -286,6 +287,11 @@ class SessionDetailFragment : MainNavigationFragment(), SessionFeedbackFragment.
             })
         }
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        dependencyModules.replaceModule(SessionDetailFragmentModule())
     }
 
     override fun onStart() {
