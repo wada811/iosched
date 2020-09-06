@@ -17,14 +17,12 @@
 package com.google.samples.apps.iosched.shared.domain.settings
 
 import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
-import com.google.samples.apps.iosched.shared.di.IoDispatcher
 import com.google.samples.apps.iosched.shared.domain.UseCase
-import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 
-class GetNotificationsSettingUseCase @Inject constructor(
+class GetNotificationsSettingUseCase(
     private val preferenceStorage: PreferenceStorage,
-    @IoDispatcher dispatcher: CoroutineDispatcher
+    dispatcher: CoroutineDispatcher
 ) : UseCase<Unit, Boolean>(dispatcher) {
     override suspend fun execute(parameters: Unit) = preferenceStorage.preferToReceiveNotifications
 }

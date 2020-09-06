@@ -17,17 +17,15 @@
 package com.google.samples.apps.iosched.shared.domain.prefs
 
 import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
-import com.google.samples.apps.iosched.shared.di.IoDispatcher
 import com.google.samples.apps.iosched.shared.domain.UseCase
-import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 
 /**
  * Records the user preference if the user wants to receive notifications from iosched.
  */
-open class NotificationsPrefSaveActionUseCase @Inject constructor(
+open class NotificationsPrefSaveActionUseCase(
     private val preferenceStorage: PreferenceStorage,
-    @IoDispatcher dispatcher: CoroutineDispatcher
+    dispatcher: CoroutineDispatcher
 ) : UseCase<Boolean, Boolean>(dispatcher) {
     override suspend fun execute(parameters: Boolean): Boolean {
         preferenceStorage.preferToReceiveNotifications = parameters

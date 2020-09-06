@@ -88,6 +88,8 @@ import com.google.samples.apps.iosched.shared.domain.sessions.StarReserveNotific
 import com.google.samples.apps.iosched.shared.domain.settings.GetThemeUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.ObserveThemeModeUseCase
+import com.google.samples.apps.iosched.shared.domain.settings.SetAnalyticsSettingUseCase
+import com.google.samples.apps.iosched.shared.domain.settings.SetTimeZoneUseCase
 import com.google.samples.apps.iosched.shared.domain.users.FeedbackUseCase
 import com.google.samples.apps.iosched.shared.domain.users.ReservationActionUseCase
 import com.google.samples.apps.iosched.shared.domain.users.StarEventAndNotifyUseCase
@@ -348,5 +350,39 @@ abstract class AbstractSharedDependencyModule(
             feedbackEndpoint,
             sessionAndUserEventRepository,
             coroutinesDependencyModule.ioDispatcher
+        )
+    val setTimeZoneUseCase: SetTimeZoneUseCase
+        get() = SetTimeZoneUseCase(
+            preferenceStorage,
+            coroutinesDependencyModule.ioDispatcher
+        )
+    val notificationsPrefSaveActionUseCase: NotificationsPrefSaveActionUseCase
+        get() = NotificationsPrefSaveActionUseCase(
+            preferenceStorage,
+            coroutinesDependencyModule.ioDispatcher
+        )
+    val getNotificationsSettingUseCase: GetNotificationsSettingUseCase
+        get() = GetNotificationsSettingUseCase(
+            preferenceStorage,
+            coroutinesDependencyModule.ioDispatcher
+        )
+    val setAnalyticsSettingUseCase: SetAnalyticsSettingUseCase
+        get() = SetAnalyticsSettingUseCase(
+            preferenceStorage,
+            coroutinesDependencyModule.ioDispatcher
+        )
+    val getAnalyticsSettingUseCase: GetAnalyticsSettingUseCase
+        get() = GetAnalyticsSettingUseCase(
+            preferenceStorage,
+            coroutinesDependencyModule.ioDispatcher
+        )
+    val setThemeUseCase: SetThemeUseCase
+        get() = SetThemeUseCase(
+            preferenceStorage,
+            coroutinesDependencyModule.ioDispatcher
+        )
+    val getAvailableThemesUseCase: GetAvailableThemesUseCase
+        get() = GetAvailableThemesUseCase(
+            coroutinesDependencyModule.mainImmediateDispatcher
         )
 }
