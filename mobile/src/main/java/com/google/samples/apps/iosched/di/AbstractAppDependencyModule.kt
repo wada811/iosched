@@ -29,6 +29,8 @@ import com.google.samples.apps.iosched.ui.filters.FiltersViewModelDelegate
 import com.google.samples.apps.iosched.ui.filters.FiltersViewModelDelegateImpl
 import com.google.samples.apps.iosched.ui.map.LoadGeoJsonFeaturesUseCase
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
+import com.google.samples.apps.iosched.ui.sessioncommon.DefaultEventActionsViewModelDelegate
+import com.google.samples.apps.iosched.ui.sessioncommon.EventActionsViewModelDelegate
 import com.google.samples.apps.iosched.ui.signin.FirebaseSignInViewModelDelegate
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.google.samples.apps.iosched.ui.theme.ThemedActivityDelegate
@@ -88,5 +90,13 @@ abstract class AbstractAppDependencyModule(
         get() = LoadGeoJsonFeaturesUseCase(
             context,
             coroutinesDependencyModule.ioDispatcher
+        )
+    val eventActionsViewModelDelegate: EventActionsViewModelDelegate
+        get() = DefaultEventActionsViewModelDelegate(
+            signInViewModelDelegate,
+            sharedDependencyModule.starEventAndNotifyUseCase,
+            snackbarMessageManager,
+            sharedDependencyModule.applicationScope,
+            coroutinesDependencyModule.mainDispatcher
         )
 }
