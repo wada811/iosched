@@ -16,17 +16,19 @@
 
 package com.google.samples.apps.iosched.ui.speaker
 
-import androidx.hilt.lifecycle.ViewModelInject
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import androidx.lifecycle.switchMap
+import com.google.samples.apps.iosched.di.AppDependencyModule
 import com.google.samples.apps.iosched.model.Speaker
 import com.google.samples.apps.iosched.model.SpeakerId
 import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
+import com.google.samples.apps.iosched.shared.di.SharedDependencyModule
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
 import com.google.samples.apps.iosched.shared.domain.speakers.LoadSpeakerUseCase
@@ -38,20 +40,22 @@ import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.shared.util.map
 import com.google.samples.apps.iosched.ui.sessioncommon.EventActionsViewModelDelegate
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
+import com.wada811.dependencyproperty.dependencyModule
 import kotlinx.coroutines.flow.collect
 import org.threeten.bp.ZoneId
 
 /**
  * Loads a [Speaker] and their sessions, handles event actions.
  */
-class SpeakerViewModel @ViewModelInject constructor(
-    private val loadSpeakerUseCase: LoadSpeakerUseCase,
-    private val loadSpeakerSessionsUseCase: LoadUserSessionsUseCase,
-    getTimeZoneUseCase: GetTimeZoneUseCase,
-    signInViewModelDelegate: SignInViewModelDelegate,
-    private val eventActionsViewModelDelegate: EventActionsViewModelDelegate,
-    private val analyticsHelper: AnalyticsHelper
-) : ViewModel(),
+class SpeakerViewModel @JvmOverloads constructor(
+    application: Application,
+    private val loadSpeakerUseCase: LoadSpeakerUseCase = application.dependencyModule<SharedDependencyModule>().loadSpeakerUseCase,
+    private val loadSpeakerSessionsUseCase: LoadUserSessionsUseCase = application.dependencyModule<SharedDependencyModule>().loadUserSessionsUseCase,
+    getTimeZoneUseCase: GetTimeZoneUseCase = application.dependencyModule<SharedDependencyModule>().getTimeZoneUseCase,
+    signInViewModelDelegate: SignInViewModelDelegate = application.dependencyModule<AppDependencyModule>().signInViewModelDelegate,
+    private val eventActionsViewModelDelegate: EventActionsViewModelDelegate = application.dependencyModule<AppDependencyModule>().eventActionsViewModelDelegate,
+    private val analyticsHelper: AnalyticsHelper = application.dependencyModule<AppDependencyModule>().analyticsHelper
+) : AndroidViewModel(application),
     SignInViewModelDelegate by signInViewModelDelegate,
     EventActionsViewModelDelegate by eventActionsViewModelDelegate {
 

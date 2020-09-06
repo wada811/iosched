@@ -96,6 +96,7 @@ import com.google.samples.apps.iosched.shared.domain.settings.ObserveThemeModeUs
 import com.google.samples.apps.iosched.shared.domain.settings.SetAnalyticsSettingUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.SetThemeUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.SetTimeZoneUseCase
+import com.google.samples.apps.iosched.shared.domain.speakers.LoadSpeakerUseCase
 import com.google.samples.apps.iosched.shared.domain.users.FeedbackUseCase
 import com.google.samples.apps.iosched.shared.domain.users.ReservationActionUseCase
 import com.google.samples.apps.iosched.shared.domain.users.StarEventAndNotifyUseCase
@@ -394,6 +395,11 @@ abstract class AbstractSharedDependencyModule(
     val notificationsPrefShownActionUseCase: NotificationsPrefShownActionUseCase
         get() = NotificationsPrefShownActionUseCase(
             preferenceStorage,
+            coroutinesDependencyModule.ioDispatcher
+        )
+    val loadSpeakerUseCase: LoadSpeakerUseCase
+        get() = LoadSpeakerUseCase(
+            conferenceDataRepository,
             coroutinesDependencyModule.ioDispatcher
         )
 }
