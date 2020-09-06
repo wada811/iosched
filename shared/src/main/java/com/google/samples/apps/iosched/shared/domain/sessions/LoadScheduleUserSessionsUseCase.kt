@@ -18,9 +18,8 @@ package com.google.samples.apps.iosched.shared.domain.sessions
 
 import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.model.userdata.UserSession
-import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
+import com.google.samples.apps.iosched.shared.data.userevent.SessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventMessage
-import com.google.samples.apps.iosched.shared.di.IoDispatcher
 import com.google.samples.apps.iosched.shared.domain.FlowUseCase
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDays
@@ -29,14 +28,13 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import org.threeten.bp.ZonedDateTime
 import timber.log.Timber
-import javax.inject.Inject
 
 /**
  * Loads sorted sessions for the Schedule.
  */
-open class LoadScheduleUserSessionsUseCase @Inject constructor(
-    private val userEventRepository: DefaultSessionAndUserEventRepository,
-    @IoDispatcher dispatcher: CoroutineDispatcher
+open class LoadScheduleUserSessionsUseCase(
+    private val userEventRepository: SessionAndUserEventRepository,
+    dispatcher: CoroutineDispatcher
 ) : FlowUseCase<LoadScheduleUserSessionsParameters, LoadScheduleUserSessionsResult>(dispatcher) {
 
     override fun execute(

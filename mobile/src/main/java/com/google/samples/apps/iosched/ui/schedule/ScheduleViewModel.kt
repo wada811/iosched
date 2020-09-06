@@ -16,21 +16,23 @@
 
 package com.google.samples.apps.iosched.ui.schedule
 
-import androidx.hilt.lifecycle.ViewModelInject
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.liveData
 import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
 import com.google.samples.apps.iosched.R
+import com.google.samples.apps.iosched.di.AppDependencyModule
 import com.google.samples.apps.iosched.model.ConferenceDay
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
+import com.google.samples.apps.iosched.shared.di.SharedDependencyModule
 import com.google.samples.apps.iosched.shared.domain.RefreshConferenceDataUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.ScheduleUiHintsShownUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.ConferenceDayIndexer
@@ -53,28 +55,30 @@ import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.sessioncommon.EventActions
 import com.google.samples.apps.iosched.ui.sessioncommon.stringRes
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
+import com.wada811.dependencyproperty.dependencyModule
 import kotlinx.coroutines.launch
 import org.threeten.bp.ZoneId
 import timber.log.Timber
-import java.util.UUID
+import java.util.*
 
 /**
  * Loads data and exposes it to the view.
  * By annotating the constructor with [@Inject], Dagger will use that constructor when needing to
  * create the object, so defining a [@Provides] method for this class won't be needed.
  */
-class ScheduleViewModel @ViewModelInject constructor(
-    private val loadScheduleUserSessionsUseCase: LoadScheduleUserSessionsUseCase,
-    signInViewModelDelegate: SignInViewModelDelegate,
-    private val starEventUseCase: StarEventAndNotifyUseCase,
-    scheduleUiHintsShownUseCase: ScheduleUiHintsShownUseCase,
-    topicSubscriber: TopicSubscriber,
-    private val snackbarMessageManager: SnackbarMessageManager,
-    getTimeZoneUseCase: GetTimeZoneUseCase,
-    private val refreshConferenceDataUseCase: RefreshConferenceDataUseCase,
-    observeConferenceDataUseCase: ObserveConferenceDataUseCase,
-    private val analyticsHelper: AnalyticsHelper
-) : ViewModel(),
+class ScheduleViewModel @JvmOverloads constructor(
+    application: Application,
+    private val loadScheduleUserSessionsUseCase: LoadScheduleUserSessionsUseCase = application.dependencyModule<SharedDependencyModule>().loadScheduleUserSessionsUseCase,
+    signInViewModelDelegate: SignInViewModelDelegate = application.dependencyModule<AppDependencyModule>().signInViewModelDelegate,
+    private val starEventUseCase: StarEventAndNotifyUseCase = application.dependencyModule<SharedDependencyModule>().starEventAndNotifyUseCase,
+    scheduleUiHintsShownUseCase: ScheduleUiHintsShownUseCase = application.dependencyModule<SharedDependencyModule>().scheduleUiHintsShownUseCase,
+    topicSubscriber: TopicSubscriber = application.dependencyModule<SharedDependencyModule>().topicSubscriber,
+    private val snackbarMessageManager: SnackbarMessageManager = application.dependencyModule<AppDependencyModule>().snackbarMessageManager,
+    getTimeZoneUseCase: GetTimeZoneUseCase = application.dependencyModule<SharedDependencyModule>().getTimeZoneUseCase,
+    private val refreshConferenceDataUseCase: RefreshConferenceDataUseCase = application.dependencyModule<SharedDependencyModule>().refreshConferenceDataUseCase,
+    observeConferenceDataUseCase: ObserveConferenceDataUseCase = application.dependencyModule<SharedDependencyModule>().observeConferenceDataUseCase,
+    private val analyticsHelper: AnalyticsHelper = application.dependencyModule<AppDependencyModule>().analyticsHelper
+) : AndroidViewModel(application),
     EventActions,
     SignInViewModelDelegate by signInViewModelDelegate {
 
@@ -271,8 +275,8 @@ class ScheduleViewModel @ViewModelInject constructor(
                 val result = starEventUseCase(
                     StarEventParameter(
                         it, userSession.copy(
-                            userEvent = userSession.userEvent.copy(isStarred = newIsStarredState)
-                        )
+                        userEvent = userSession.userEvent.copy(isStarred = newIsStarredState)
+                    )
                     )
                 )
                 // Show an error message if a star request fails

@@ -58,6 +58,7 @@ import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUs
 import com.google.samples.apps.iosched.shared.data.userevent.FirestoreUserEventDataSource
 import com.google.samples.apps.iosched.shared.data.userevent.SessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventDataSource
+import com.google.samples.apps.iosched.shared.domain.RefreshConferenceDataUseCase
 import com.google.samples.apps.iosched.shared.domain.agenda.LoadAgendaUseCase
 import com.google.samples.apps.iosched.shared.domain.auth.ObserveUserAuthStateUseCase
 import com.google.samples.apps.iosched.shared.domain.codelabs.GetCodelabsInfoCardShownUseCase
@@ -72,18 +73,22 @@ import com.google.samples.apps.iosched.shared.domain.prefs.MyLocationOptedInUseC
 import com.google.samples.apps.iosched.shared.domain.prefs.NotificationsPrefIsShownUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.OnboardingCompleteActionUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.OptIntoMyLocationUseCase
+import com.google.samples.apps.iosched.shared.domain.prefs.ScheduleUiHintsShownUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.StopSnackbarActionUseCase
 import com.google.samples.apps.iosched.shared.domain.search.FtsMatchStrategy
 import com.google.samples.apps.iosched.shared.domain.search.SessionTextMatchStrategy
 import com.google.samples.apps.iosched.shared.domain.search.SimpleMatchStrategy
+import com.google.samples.apps.iosched.shared.domain.sessions.LoadScheduleUserSessionsUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadStarredAndReservedSessionsUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.NotificationAlarmUpdater
+import com.google.samples.apps.iosched.shared.domain.sessions.ObserveConferenceDataUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.StarReserveNotificationAlarmUpdater
 import com.google.samples.apps.iosched.shared.domain.settings.GetThemeUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.ObserveThemeModeUseCase
 import com.google.samples.apps.iosched.shared.domain.users.ReservationActionUseCase
+import com.google.samples.apps.iosched.shared.domain.users.StarEventAndNotifyUseCase
 import com.google.samples.apps.iosched.shared.domain.users.SwapActionUseCase
 import com.google.samples.apps.iosched.shared.fcm.TopicSubscriber
 import com.google.samples.apps.iosched.shared.notifications.SessionAlarmManager
@@ -300,6 +305,32 @@ abstract class AbstractSharedDependencyModule(
     val markScheduleUiHintsShownUseCase: MarkScheduleUiHintsShownUseCase
         get() = MarkScheduleUiHintsShownUseCase(
             preferenceStorage,
+            coroutinesDependencyModule.ioDispatcher
+        )
+    val loadScheduleUserSessionsUseCase: LoadScheduleUserSessionsUseCase
+        get() = LoadScheduleUserSessionsUseCase(
+            sessionAndUserEventRepository,
+            coroutinesDependencyModule.ioDispatcher
+        )
+    val starEventAndNotifyUseCase: StarEventAndNotifyUseCase
+        get() = StarEventAndNotifyUseCase(
+            sessionAndUserEventRepository,
+            starReserveNotificationAlarmUpdater,
+            coroutinesDependencyModule.ioDispatcher
+        )
+    val scheduleUiHintsShownUseCase: ScheduleUiHintsShownUseCase
+        get() = ScheduleUiHintsShownUseCase(
+            preferenceStorage,
+            coroutinesDependencyModule.ioDispatcher
+        )
+    val refreshConferenceDataUseCase: RefreshConferenceDataUseCase
+        get() = RefreshConferenceDataUseCase(
+            conferenceDataRepository,
+            coroutinesDependencyModule.ioDispatcher
+        )
+    val observeConferenceDataUseCase: ObserveConferenceDataUseCase
+        get() = ObserveConferenceDataUseCase(
+            conferenceDataRepository,
             coroutinesDependencyModule.ioDispatcher
         )
 }
