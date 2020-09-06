@@ -29,19 +29,15 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
 import java.io.IOException
-import javax.inject.Inject
-import javax.inject.Named
-import javax.inject.Singleton
 
 /**
  * Single point of access to session data for the presentation layer.
  *
  * The session data is loaded from the bootstrap file.
  */
-@Singleton
-open class ConferenceDataRepository @Inject constructor(
-    @Named("remoteConfDataSource") private val remoteDataSource: ConferenceDataSource,
-    @Named("bootstrapConfDataSource") private val bootstrapDataSource: ConferenceDataSource,
+open class ConferenceDataRepository(
+    private val remoteDataSource: ConferenceDataSource,
+    private val bootstrapDataSource: ConferenceDataSource,
     private val appDatabase: AppDatabase
 ) {
 
