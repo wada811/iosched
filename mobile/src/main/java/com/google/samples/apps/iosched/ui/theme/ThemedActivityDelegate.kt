@@ -27,7 +27,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.runBlocking
-import javax.inject.Inject
 
 /**
  * Interface to implement activity theming via a ViewModel.
@@ -54,7 +53,7 @@ interface ThemedActivityDelegate {
     val currentTheme: Theme
 }
 
-class ThemedActivityDelegateImpl @Inject constructor(
+class ThemedActivityDelegateImpl(
     private val observeThemeUseCase: ObserveThemeModeUseCase,
     private val getThemeUseCase: GetThemeUseCase
 ) : ThemedActivityDelegate {
