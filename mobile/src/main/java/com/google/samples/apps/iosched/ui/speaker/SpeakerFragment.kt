@@ -70,6 +70,7 @@ class SpeakerFragment : MainNavigationFragment(), OnOffsetChangedListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        dependencyModules.replaceModule(SpeakerFragmentModule())
         speakerViewModel.setSpeakerId(SpeakerFragmentArgs.fromBundle(requireArguments()).speakerId)
 
         sharedElementEnterTransition =
@@ -163,11 +164,6 @@ class SpeakerFragment : MainNavigationFragment(), OnOffsetChangedListener {
                 analyticsHelper.sendScreenView(pageName, requireActivity())
             }
         })
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        dependencyModules.replaceModule(SpeakerFragmentModule())
     }
 
     override fun onOffsetChanged(appBarLayout: AppBarLayout, verticalOffset: Int) {
