@@ -21,10 +21,10 @@ import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.shared.data.session.SessionRepository
 import com.google.samples.apps.iosched.shared.domain.MediatorUseCase
 import com.google.samples.apps.iosched.shared.result.Result
-import javax.inject.Inject
 
-open class LoadSessionUseCase @Inject constructor(private val repository: SessionRepository) :
-    MediatorUseCase<String, Session>() {
+open class LoadSessionUseCase(
+    private val repository: SessionRepository
+) : MediatorUseCase<String, Session>() {
 
     override fun execute(parameters: SessionId) {
         val session = repository.getSessions().firstOrNull { it -> it.id == parameters }
