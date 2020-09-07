@@ -18,18 +18,16 @@ package com.google.samples.apps.iosched.shared.domain.sessions
 
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.userdata.UserSession
-import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
-import com.google.samples.apps.iosched.shared.di.IoDispatcher
+import com.google.samples.apps.iosched.shared.data.userevent.SessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.domain.UseCase
-import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 
 /**
  * A [UseCase] that returns the [UserSession]s for a user.
  */
-class LoadUserSessionOneShotUseCase @Inject constructor(
-    private val userEventRepository: DefaultSessionAndUserEventRepository,
-    @IoDispatcher dispatcher: CoroutineDispatcher
+class LoadUserSessionOneShotUseCase(
+    private val userEventRepository: SessionAndUserEventRepository,
+    dispatcher: CoroutineDispatcher
 ) : UseCase<Pair<String, SessionId>, UserSession>(dispatcher) {
 
     override suspend fun execute(parameters: Pair<String, SessionId>): UserSession {

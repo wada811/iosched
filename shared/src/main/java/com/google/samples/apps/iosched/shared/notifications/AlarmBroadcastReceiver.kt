@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.iosched.shared.notifications
 
+import android.app.Application
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -35,14 +36,14 @@ import androidx.core.net.toUri
 import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.R
-import com.google.samples.apps.iosched.shared.data.prefs.SharedPreferenceStorage
+import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
 import com.google.samples.apps.iosched.shared.data.signin.datasources.AuthIdDataSource
-import com.google.samples.apps.iosched.shared.di.ApplicationScope
+import com.google.samples.apps.iosched.shared.di.SharedDependencyModule
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadSessionOneShotUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionOneShotUseCase
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.result.Result.Success
-import dagger.hilt.android.AndroidEntryPoint
+import com.wada811.dependencyproperty.dependencyModule
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
@@ -50,34 +51,38 @@ import kotlinx.coroutines.launch
 import org.threeten.bp.Instant
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
-import javax.inject.Inject
 
 /**
  * Receives broadcast intents with information for session notifications.
  */
-@AndroidEntryPoint
 class AlarmBroadcastReceiver : BroadcastReceiver() {
+    private lateinit var context: Context
+    private val sharedPreferencesStorage: PreferenceStorage by lazy {
+        (context as Application).dependencyModule<SharedDependencyModule>().preferenceStorage
+    }
 
-    @Inject
-    lateinit var sharedPreferencesStorage: SharedPreferenceStorage
+    private val loadUserSession: LoadUserSessionOneShotUseCase by lazy {
+        (context as Application).dependencyModule<SharedDependencyModule>().loadUserSessionOneShotUseCase
+    }
 
-    @Inject
-    lateinit var loadUserSession: LoadUserSessionOneShotUseCase
+    private val loadSession: LoadSessionOneShotUseCase by lazy {
+        (context as Application).dependencyModule<SharedDependencyModule>().loadSessionOneShotUseCase
+    }
 
-    @Inject
-    lateinit var loadSession: LoadSessionOneShotUseCase
+    private val alarmManager: SessionAlarmManager by lazy {
+        (context as Application).dependencyModule<SharedDependencyModule>().sessionAlarmManager
+    }
 
-    @Inject
-    lateinit var alarmManager: SessionAlarmManager
+    private val authIdDataSource: AuthIdDataSource by lazy {
+        (context as Application).dependencyModule<SharedDependencyModule>().authIdDataSource
+    }
 
-    @Inject
-    lateinit var authIdDataSource: AuthIdDataSource
-
-    @ApplicationScope
-    @Inject
-    lateinit var externalScope: CoroutineScope
+    private val externalScope: CoroutineScope by lazy {
+        (context as Application).dependencyModule<SharedDependencyModule>().applicationScope
+    }
 
     override fun onReceive(context: Context, intent: Intent) {
+        this.context = context
         Timber.d("Alarm received")
 
         val sessionId = intent.getStringExtra(EXTRA_SESSION_ID) ?: return
@@ -242,7 +247,7 @@ class AlarmBroadcastReceiver : BroadcastReceiver() {
     @WorkerThread
     private fun showPostSessionNotification(context: Context, session: Session): Int {
         val notificationManager: NotificationManager = context.getSystemService()
-                ?: throw Exception("Notification Manager not found.")
+            ?: throw Exception("Notification Manager not found.")
 
         if (VERSION.SDK_INT >= VERSION_CODES.O) {
             makeNotificationChannelForPostSession(context, notificationManager)

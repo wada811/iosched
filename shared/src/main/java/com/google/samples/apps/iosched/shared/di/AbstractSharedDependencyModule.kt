@@ -87,7 +87,9 @@ import com.google.samples.apps.iosched.shared.domain.search.SessionTextMatchStra
 import com.google.samples.apps.iosched.shared.domain.search.SimpleMatchStrategy
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadPinnedSessionsJsonUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadScheduleUserSessionsUseCase
+import com.google.samples.apps.iosched.shared.domain.sessions.LoadSessionOneShotUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadStarredAndReservedSessionsUseCase
+import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionOneShotUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.NotificationAlarmUpdater
@@ -434,6 +436,16 @@ abstract class AbstractSharedDependencyModule(
         get() = LoadSearchFiltersUseCase(
             conferenceDataRepository,
             TagRepository(conferenceDataRepository),
+            coroutinesDependencyModule.ioDispatcher
+        )
+    val loadUserSessionOneShotUseCase: LoadUserSessionOneShotUseCase
+        get() = LoadUserSessionOneShotUseCase(
+            sessionAndUserEventRepository,
+            coroutinesDependencyModule.ioDispatcher
+        )
+    val loadSessionOneShotUseCase: LoadSessionOneShotUseCase
+        get() = LoadSessionOneShotUseCase(
+            sessionRepository,
             coroutinesDependencyModule.ioDispatcher
         )
 }
