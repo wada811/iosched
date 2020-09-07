@@ -39,10 +39,11 @@ class MainApplication : Application(), DependencyModulesHolder {
         sharedDependencyModule
     )
 
-    // Even if the var isn't used, needs to be initialized at application startup.
-    val analyticsHelper = dependency<AppDependencyModule, AnalyticsHelper> { it.analyticsHelper }.value
-
     override fun onCreate() {
+        // Even if the var isn't used, needs to be initialized at application startup.
+        val analyticsHelper = dependency<AppDependencyModule, AnalyticsHelper> { it.analyticsHelper }.value
+        analyticsHelper.toString()
+
         // ThreeTenBP for times and dates, called before super to be available for objects
         AndroidThreeTen.init(this)
 
