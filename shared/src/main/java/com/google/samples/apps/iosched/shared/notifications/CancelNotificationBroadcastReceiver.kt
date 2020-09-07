@@ -21,24 +21,16 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import androidx.core.content.getSystemService
-import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.qualifiers.ApplicationContext
 import timber.log.Timber
-import javax.inject.Inject
 
 /**
  * Receives broadcast intents with information to hide notifications.
  */
-@AndroidEntryPoint
 class CancelNotificationBroadcastReceiver : BroadcastReceiver() {
 
     companion object {
         const val NOTIFICATION_ID_EXTRA = "notification_id_extra"
     }
-
-    @Inject
-    @ApplicationContext
-    lateinit var context: Context
 
     override fun onReceive(context: Context, intent: Intent) {
         val notificationId = intent.getIntExtra(
