@@ -54,6 +54,7 @@ import com.google.samples.apps.iosched.shared.data.signin.datasources.AuthIdData
 import com.google.samples.apps.iosched.shared.data.signin.datasources.AuthStateUserDataSource
 import com.google.samples.apps.iosched.shared.data.signin.datasources.FirestoreRegisteredUserDataSource
 import com.google.samples.apps.iosched.shared.data.signin.datasources.RegisteredUserDataSource
+import com.google.samples.apps.iosched.shared.data.tag.TagRepository
 import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.data.userevent.FirestoreUserEventDataSource
 import com.google.samples.apps.iosched.shared.data.userevent.SessionAndUserEventRepository
@@ -80,6 +81,8 @@ import com.google.samples.apps.iosched.shared.domain.prefs.OptIntoMyLocationUseC
 import com.google.samples.apps.iosched.shared.domain.prefs.ScheduleUiHintsShownUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.StopSnackbarActionUseCase
 import com.google.samples.apps.iosched.shared.domain.search.FtsMatchStrategy
+import com.google.samples.apps.iosched.shared.domain.search.LoadSearchFiltersUseCase
+import com.google.samples.apps.iosched.shared.domain.search.SessionSearchUseCase
 import com.google.samples.apps.iosched.shared.domain.search.SessionTextMatchStrategy
 import com.google.samples.apps.iosched.shared.domain.search.SimpleMatchStrategy
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadPinnedSessionsJsonUseCase
@@ -419,6 +422,18 @@ abstract class AbstractSharedDependencyModule(
     val loadArDebugFlagUseCase: LoadArDebugFlagUseCase
         get() = LoadArDebugFlagUseCase(
             arDebugFlagEndpoint,
+            coroutinesDependencyModule.ioDispatcher
+        )
+    val sessionSearchUseCase: SessionSearchUseCase
+        get() = SessionSearchUseCase(
+            sessionAndUserEventRepository,
+            sessionTextMatchStrategy,
+            coroutinesDependencyModule.ioDispatcher
+        )
+    val loadSearchFiltersUseCase: LoadSearchFiltersUseCase
+        get() = LoadSearchFiltersUseCase(
+            conferenceDataRepository,
+            TagRepository(conferenceDataRepository),
             coroutinesDependencyModule.ioDispatcher
         )
 }

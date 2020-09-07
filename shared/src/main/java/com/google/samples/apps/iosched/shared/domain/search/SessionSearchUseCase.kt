@@ -20,7 +20,6 @@ import androidx.core.os.trace
 import com.google.samples.apps.iosched.model.filters.Filter
 import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.data.userevent.SessionAndUserEventRepository
-import com.google.samples.apps.iosched.shared.di.IoDispatcher
 import com.google.samples.apps.iosched.shared.domain.FlowUseCase
 import com.google.samples.apps.iosched.shared.domain.filters.UserSessionFilterMatcher
 import com.google.samples.apps.iosched.shared.result.Result
@@ -30,7 +29,6 @@ import com.google.samples.apps.iosched.shared.result.Result.Success
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
 
 data class SessionSearchUseCaseParams(
     val userId: String?,
@@ -38,10 +36,10 @@ data class SessionSearchUseCaseParams(
     val filters: List<Filter>
 )
 
-class SessionSearchUseCase @Inject constructor(
+class SessionSearchUseCase(
     private val repository: SessionAndUserEventRepository,
     private val textMatchStrategy: SessionTextMatchStrategy,
-    @IoDispatcher dispatcher: CoroutineDispatcher
+    dispatcher: CoroutineDispatcher
 ) : FlowUseCase<SessionSearchUseCaseParams, List<UserSession>>(dispatcher) {
 
     override fun execute(parameters: SessionSearchUseCaseParams): Flow<Result<List<UserSession>>> {
