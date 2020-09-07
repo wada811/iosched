@@ -27,13 +27,11 @@ import com.jakewharton.threetenabp.AndroidThreeTen
 import com.wada811.dependencyproperty.DependencyModules
 import com.wada811.dependencyproperty.DependencyModulesHolder
 import com.wada811.dependencyproperty.dependency
-import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 
 /**
  * Initialization of libraries.
  */
-@HiltAndroidApp
 class MainApplication : Application(), DependencyModulesHolder {
     private val sharedDependencyModule = SharedDependencyModule(this)
     override val dependencyModules: DependencyModules by dependencyModules(
