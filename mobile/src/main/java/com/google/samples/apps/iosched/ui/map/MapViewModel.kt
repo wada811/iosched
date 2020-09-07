@@ -17,11 +17,11 @@
 package com.google.samples.apps.iosched.ui.map
 
 import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.maps.CameraUpdate
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -53,7 +53,7 @@ class MapViewModel @JvmOverloads constructor(
     private val signInViewModelDelegate: SignInViewModelDelegate = application.dependencyModule<AppDependencyModule>().signInViewModelDelegate,
     private val optIntoMyLocationUseCase: OptIntoMyLocationUseCase = application.dependencyModule<SharedDependencyModule>().optIntoMyLocationUseCase,
     myLocationOptedInUseCase: MyLocationOptedInUseCase = application.dependencyModule<SharedDependencyModule>().myLocationOptedInUseCase
-) : ViewModel(), SignInViewModelDelegate by signInViewModelDelegate {
+) : AndroidViewModel(application), SignInViewModelDelegate by signInViewModelDelegate {
 
     /**
      * Area covered by the venue. Determines the viewport of the map.

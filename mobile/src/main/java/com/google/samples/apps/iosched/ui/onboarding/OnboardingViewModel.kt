@@ -17,6 +17,7 @@
 package com.google.samples.apps.iosched.ui.onboarding
 
 import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -36,7 +37,7 @@ class OnboardingViewModel @JvmOverloads constructor(
     application: Application,
     private val onboardingCompleteActionUseCase: OnboardingCompleteActionUseCase = application.dependencyModule<SharedDependencyModule>().onboardingCompleteActionUseCase,
     signInViewModelDelegate: SignInViewModelDelegate = application.dependencyModule<AppDependencyModule>().signInViewModelDelegate
-) : ViewModel(), SignInViewModelDelegate by signInViewModelDelegate {
+) : AndroidViewModel(application), SignInViewModelDelegate by signInViewModelDelegate {
 
     private val _navigateToMainActivity = MutableLiveData<Event<Unit>>()
     val navigateToMainActivity: LiveData<Event<Unit>> = _navigateToMainActivity

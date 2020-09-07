@@ -17,8 +17,8 @@
 package com.google.samples.apps.iosched.ui.reservation
 
 import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.di.AppDependencyModule
@@ -47,7 +47,7 @@ class RemoveReservationViewModel @JvmOverloads constructor(
     signInViewModelDelegate: SignInViewModelDelegate = application.dependencyModule<AppDependencyModule>().signInViewModelDelegate,
     private val loadUserSessionUseCase: LoadUserSessionUseCase = application.dependencyModule<SharedDependencyModule>().loadUserSessionUseCase,
     private val reservationActionUseCase: ReservationActionUseCase = application.dependencyModule<SharedDependencyModule>().reservationActionUseCase
-) : ViewModel(), SignInViewModelDelegate by signInViewModelDelegate {
+) : AndroidViewModel(application), SignInViewModelDelegate by signInViewModelDelegate {
 
     private var loadUserSessionJob: Job? = null
     private val _sessionId = MutableLiveData<SessionId>()
