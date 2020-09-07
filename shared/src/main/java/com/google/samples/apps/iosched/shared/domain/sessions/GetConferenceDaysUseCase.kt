@@ -18,9 +18,8 @@ package com.google.samples.apps.iosched.shared.domain.sessions
 
 import com.google.samples.apps.iosched.model.ConferenceDay
 import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
-import javax.inject.Inject
 
-class GetConferenceDaysUseCase @Inject constructor(
+class GetConferenceDaysUseCase(
     private val conferenceDataRepository: ConferenceDataRepository
 ) {
     operator fun invoke(): List<ConferenceDay> {
