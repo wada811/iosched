@@ -30,16 +30,6 @@ import kotlinx.coroutines.runBlocking
 
 /**
  * Interface to implement activity theming via a ViewModel.
- *
- * You can inject a implementation of this via Dagger2, then use the implementation as an interface
- * delegate to add the functionality without writing any code
- *
- * Example usage:
- * ```
- * class MyViewModel @Inject constructor(
- *     themedActivityDelegate: ThemedActivityDelegate
- * ) : ViewModel(), ThemedActivityDelegate by themedActivityDelegate {
- * ```
  */
 interface ThemedActivityDelegate {
     /**

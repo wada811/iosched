@@ -21,8 +21,8 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.wifi.WifiManager
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
-import com.google.samples.apps.iosched.shared.di.AbstractSharedDependencyModule
-import com.google.samples.apps.iosched.shared.di.CoroutinesDependencyModule
+import com.google.samples.apps.iosched.shared.di.AbstractSharedModule
+import com.google.samples.apps.iosched.shared.di.CoroutineDispatchers
 import com.google.samples.apps.iosched.shared.domain.internal.IOSchedHandler
 import com.google.samples.apps.iosched.shared.domain.internal.IOSchedMainHandler
 import com.google.samples.apps.iosched.ui.filters.FiltersViewModelDelegate
@@ -40,10 +40,10 @@ import com.google.samples.apps.iosched.util.signin.SignInHandler
 import com.google.samples.apps.iosched.util.wifi.WifiInstaller
 import com.wada811.dependencyproperty.DependencyModule
 
-abstract class AbstractAppDependencyModule(
+abstract class AbstractAppModule(
     protected val context: Context,
-    protected val sharedDependencyModule: AbstractSharedDependencyModule,
-    private val coroutinesDependencyModule: CoroutinesDependencyModule
+    protected val sharedModule: AbstractSharedModule,
+    private val coroutineDispatchers: CoroutineDispatchers
 ) : DependencyModule {
     val wifiManager: WifiManager
         get() = context.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
@@ -55,30 +55,30 @@ abstract class AbstractAppDependencyModule(
     abstract val signInHandler: SignInHandler
     val signInViewModelDelegate: SignInViewModelDelegate by lazy {
         FirebaseSignInViewModelDelegate(
-            sharedDependencyModule.observeUserAuthStateUseCase,
-            sharedDependencyModule.notificationsPrefIsShownUseCase,
-            coroutinesDependencyModule.ioDispatcher,
-            coroutinesDependencyModule.mainDispatcher,
-            sharedDependencyModule.featureFlags.isReservationFeatureEnabled
+            sharedModule.observeUserAuthStateUseCase,
+            sharedModule.notificationsPrefIsShownUseCase,
+            coroutineDispatchers.ioDispatcher,
+            coroutineDispatchers.mainDispatcher,
+            sharedModule.featureFlags.isReservationFeatureEnabled
         )
     }
     val analyticsHelper: AnalyticsHelper by lazy {
         FirebaseAnalyticsHelper(
-            sharedDependencyModule.applicationScope,
+            sharedModule.applicationScope,
             context,
             signInViewModelDelegate,
-            sharedDependencyModule.preferenceStorage
+            sharedModule.preferenceStorage
         )
     }
     val filtersViewModelDelegate: FiltersViewModelDelegate get() = FiltersViewModelDelegateImpl()
     val themedActivityDelegate: ThemedActivityDelegate
         get() = ThemedActivityDelegateImpl(
-            sharedDependencyModule.observeThemeModeUseCase,
-            sharedDependencyModule.getThemeUseCase
+            sharedModule.observeThemeModeUseCase,
+            sharedModule.getThemeUseCase
         )
     val snackbarMessageManager: SnackbarMessageManager by lazy {
         SnackbarMessageManager(
-            sharedDependencyModule.preferenceStorage
+            sharedModule.preferenceStorage
         )
     }
     val wifiInstaller: WifiInstaller
@@ -89,14 +89,14 @@ abstract class AbstractAppDependencyModule(
     val loadGeoJsonFeaturesUseCase: LoadGeoJsonFeaturesUseCase
         get() = LoadGeoJsonFeaturesUseCase(
             context,
-            coroutinesDependencyModule.ioDispatcher
+            coroutineDispatchers.ioDispatcher
         )
     val eventActionsViewModelDelegate: EventActionsViewModelDelegate
         get() = DefaultEventActionsViewModelDelegate(
             signInViewModelDelegate,
-            sharedDependencyModule.starEventAndNotifyUseCase,
+            sharedModule.starEventAndNotifyUseCase,
             snackbarMessageManager,
-            sharedDependencyModule.applicationScope,
-            coroutinesDependencyModule.mainDispatcher
+            sharedModule.applicationScope,
+            coroutineDispatchers.mainDispatcher
         )
 }

@@ -35,7 +35,6 @@ buildscript {
         classpath("androidx.benchmark:benchmark-gradle-plugin:${Versions.BENCHMARK}")
         classpath("androidx.navigation:navigation-safe-args-gradle-plugin:${Versions.NAVIGATION}")
         classpath("io.fabric.tools:gradle:${Versions.FABRIC}")
-        classpath("com.google.dagger:hilt-android-gradle-plugin:${Versions.HILT}")
     }
 }
 

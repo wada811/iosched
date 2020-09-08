@@ -26,13 +26,13 @@ import androidx.lifecycle.liveData
 import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
 import com.google.samples.apps.iosched.R
-import com.google.samples.apps.iosched.di.AppDependencyModule
+import com.google.samples.apps.iosched.di.AppModule
 import com.google.samples.apps.iosched.model.ConferenceDay
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
-import com.google.samples.apps.iosched.shared.di.SharedDependencyModule
+import com.google.samples.apps.iosched.shared.di.SharedModule
 import com.google.samples.apps.iosched.shared.domain.RefreshConferenceDataUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.ScheduleUiHintsShownUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.ConferenceDayIndexer
@@ -59,25 +59,23 @@ import com.wada811.dependencyproperty.dependencyModule
 import kotlinx.coroutines.launch
 import org.threeten.bp.ZoneId
 import timber.log.Timber
-import java.util.*
+import java.util.UUID
 
 /**
  * Loads data and exposes it to the view.
- * By annotating the constructor with [@Inject], Dagger will use that constructor when needing to
- * create the object, so defining a [@Provides] method for this class won't be needed.
  */
 class ScheduleViewModel @JvmOverloads constructor(
     application: Application,
-    private val loadScheduleUserSessionsUseCase: LoadScheduleUserSessionsUseCase = application.dependencyModule<SharedDependencyModule>().loadScheduleUserSessionsUseCase,
-    signInViewModelDelegate: SignInViewModelDelegate = application.dependencyModule<AppDependencyModule>().signInViewModelDelegate,
-    private val starEventUseCase: StarEventAndNotifyUseCase = application.dependencyModule<SharedDependencyModule>().starEventAndNotifyUseCase,
-    scheduleUiHintsShownUseCase: ScheduleUiHintsShownUseCase = application.dependencyModule<SharedDependencyModule>().scheduleUiHintsShownUseCase,
-    topicSubscriber: TopicSubscriber = application.dependencyModule<SharedDependencyModule>().topicSubscriber,
-    private val snackbarMessageManager: SnackbarMessageManager = application.dependencyModule<AppDependencyModule>().snackbarMessageManager,
-    getTimeZoneUseCase: GetTimeZoneUseCase = application.dependencyModule<SharedDependencyModule>().getTimeZoneUseCase,
-    private val refreshConferenceDataUseCase: RefreshConferenceDataUseCase = application.dependencyModule<SharedDependencyModule>().refreshConferenceDataUseCase,
-    observeConferenceDataUseCase: ObserveConferenceDataUseCase = application.dependencyModule<SharedDependencyModule>().observeConferenceDataUseCase,
-    private val analyticsHelper: AnalyticsHelper = application.dependencyModule<AppDependencyModule>().analyticsHelper
+    private val loadScheduleUserSessionsUseCase: LoadScheduleUserSessionsUseCase = application.dependencyModule<SharedModule>().loadScheduleUserSessionsUseCase,
+    signInViewModelDelegate: SignInViewModelDelegate = application.dependencyModule<AppModule>().signInViewModelDelegate,
+    private val starEventUseCase: StarEventAndNotifyUseCase = application.dependencyModule<SharedModule>().starEventAndNotifyUseCase,
+    scheduleUiHintsShownUseCase: ScheduleUiHintsShownUseCase = application.dependencyModule<SharedModule>().scheduleUiHintsShownUseCase,
+    topicSubscriber: TopicSubscriber = application.dependencyModule<SharedModule>().topicSubscriber,
+    private val snackbarMessageManager: SnackbarMessageManager = application.dependencyModule<AppModule>().snackbarMessageManager,
+    getTimeZoneUseCase: GetTimeZoneUseCase = application.dependencyModule<SharedModule>().getTimeZoneUseCase,
+    private val refreshConferenceDataUseCase: RefreshConferenceDataUseCase = application.dependencyModule<SharedModule>().refreshConferenceDataUseCase,
+    observeConferenceDataUseCase: ObserveConferenceDataUseCase = application.dependencyModule<SharedModule>().observeConferenceDataUseCase,
+    private val analyticsHelper: AnalyticsHelper = application.dependencyModule<AppModule>().analyticsHelper
 ) : AndroidViewModel(application),
     EventActions,
     SignInViewModelDelegate by signInViewModelDelegate {

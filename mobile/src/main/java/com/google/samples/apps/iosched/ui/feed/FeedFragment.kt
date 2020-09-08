@@ -31,7 +31,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.google.common.collect.ImmutableMap
 import com.google.samples.apps.iosched.databinding.FragmentFeedBinding
-import com.google.samples.apps.iosched.di.AppDependencyModule
+import com.google.samples.apps.iosched.di.AppModule
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.result.EventObserver
@@ -55,8 +55,8 @@ class FeedFragment : MainNavigationFragment() {
         private const val BUNDLE_KEY_SESSIONS_LAYOUT_MANAGER_STATE = "sessions_layout_manager"
     }
 
-    private val snackbarMessageManager by dependency<AppDependencyModule, SnackbarMessageManager> { it.snackbarMessageManager }
-    private val analyticsHelper by dependency<AppDependencyModule, AnalyticsHelper> { it.analyticsHelper }
+    private val snackbarMessageManager by dependency<AppModule, SnackbarMessageManager> { it.snackbarMessageManager }
+    private val analyticsHelper by dependency<AppModule, AnalyticsHelper> { it.analyticsHelper }
 
     private val model: FeedViewModel by viewModels()
     private val mainActivityViewModel: MainActivityViewModel by activityViewModels()

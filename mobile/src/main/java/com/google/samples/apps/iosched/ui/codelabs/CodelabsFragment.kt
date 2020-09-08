@@ -28,11 +28,11 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView.RecycledViewPool
 import com.google.samples.apps.iosched.databinding.FragmentCodelabsBinding
-import com.google.samples.apps.iosched.di.AppDependencyModule
+import com.google.samples.apps.iosched.di.AppModule
 import com.google.samples.apps.iosched.model.Codelab
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
-import com.google.samples.apps.iosched.shared.di.SharedDependencyModule
+import com.google.samples.apps.iosched.shared.di.SharedModule
 import com.google.samples.apps.iosched.ui.MainActivityViewModel
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
 import com.google.samples.apps.iosched.ui.signin.setupProfileMenuItem
@@ -54,9 +54,9 @@ class CodelabsFragment : MainNavigationFragment(), CodelabsActionsHandler {
 
     private val tagRecycledViewPool: RecycledViewPool by dependency<CodelabsFragmentModule, RecycledViewPool> { it.tagRecycledViewPool }
 
-    private val mapFeatureEnabled by dependency<SharedDependencyModule, Boolean> { it.featureFlags.isMapFeatureEnabled }
+    private val mapFeatureEnabled by dependency<SharedModule, Boolean> { it.featureFlags.isMapFeatureEnabled }
 
-    private val analyticsHelper by dependency<AppDependencyModule, AnalyticsHelper> { it.analyticsHelper }
+    private val analyticsHelper by dependency<AppModule, AnalyticsHelper> { it.analyticsHelper }
 
     private lateinit var binding: FragmentCodelabsBinding
     private val codelabsViewModel: CodelabsViewModel by viewModels()

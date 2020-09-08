@@ -19,7 +19,7 @@ package com.google.samples.apps.iosched.ui.prefs
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.samples.apps.iosched.shared.di.SharedDependencyModule
+import com.google.samples.apps.iosched.shared.di.SharedModule
 import com.google.samples.apps.iosched.shared.domain.prefs.StopSnackbarActionUseCase
 import com.wada811.dependencyproperty.dependencyModule
 import kotlinx.coroutines.launch
@@ -29,7 +29,7 @@ import kotlinx.coroutines.launch
  */
 class SnackbarPreferenceViewModel @JvmOverloads constructor(
     application: Application,
-    private val stopSnackbarActionUseCase: StopSnackbarActionUseCase = application.dependencyModule<SharedDependencyModule>().stopSnackbarActionUseCase
+    private val stopSnackbarActionUseCase: StopSnackbarActionUseCase = application.dependencyModule<SharedModule>().stopSnackbarActionUseCase
 ) : AndroidViewModel(application) {
 
     fun onStopClicked() {

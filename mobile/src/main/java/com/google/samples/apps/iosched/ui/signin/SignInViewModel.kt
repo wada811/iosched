@@ -21,7 +21,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.google.samples.apps.iosched.di.AppDependencyModule
+import com.google.samples.apps.iosched.di.AppModule
 import com.google.samples.apps.iosched.shared.result.Event
 import com.wada811.dependencyproperty.dependencyModule
 import kotlinx.coroutines.launch
@@ -32,7 +32,7 @@ import timber.log.Timber
  */
 class SignInViewModel @JvmOverloads constructor(
     application: Application,
-    signInViewModelDelegate: SignInViewModelDelegate = application.dependencyModule<AppDependencyModule>().signInViewModelDelegate
+    signInViewModelDelegate: SignInViewModelDelegate = application.dependencyModule<AppModule>().signInViewModelDelegate
 ) : AndroidViewModel(application), SignInViewModelDelegate by signInViewModelDelegate {
 
     private val _dismissDialogAction = MutableLiveData<Event<Unit>>()

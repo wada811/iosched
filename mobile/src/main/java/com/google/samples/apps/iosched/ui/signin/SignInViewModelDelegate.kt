@@ -43,17 +43,6 @@ enum class SignInEvent {
 
 /**
  * Interface to implement sign-in functionality in a ViewModel.
- *
- * You can inject a implementation of this via Dagger2, then use the implementation as an interface
- * delegate to add sign in functionality without writing any code
- *
- * Example usage
- *
- * ```
- * class MyViewModel @Inject constructor(
- *     signInViewModelComponent: SignInViewModelDelegate
- * ) : ViewModel(), SignInViewModelDelegate by signInViewModelComponent {
- * ```
  */
 interface SignInViewModelDelegate {
     /**

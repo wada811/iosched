@@ -23,7 +23,7 @@ import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.lifecycle.coroutineScope
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.samples.apps.iosched.R
-import com.google.samples.apps.iosched.shared.di.SharedDependencyModule
+import com.google.samples.apps.iosched.shared.di.SharedModule
 import com.google.samples.apps.iosched.shared.domain.users.SwapActionUseCase
 import com.google.samples.apps.iosched.shared.domain.users.SwapRequestParameters
 import com.google.samples.apps.iosched.util.makeBold
@@ -55,7 +55,7 @@ class SwapReservationDialogFragment : AppCompatDialogFragment() {
         }
     }
 
-    private val swapActionUseCase by dependency<SharedDependencyModule, SwapActionUseCase> { it.swapActionUseCase }
+    private val swapActionUseCase by dependency<SharedModule, SwapActionUseCase> { it.swapActionUseCase }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val context = requireContext()

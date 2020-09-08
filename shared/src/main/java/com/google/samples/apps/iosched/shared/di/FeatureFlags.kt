@@ -19,7 +19,7 @@ package com.google.samples.apps.iosched.shared.di
 import com.google.samples.apps.iosched.shared.data.config.AppConfigDataSource
 
 
-class FeatureFlags(val appConfigDataSource: AppConfigDataSource) {
+class FeatureFlags(private val appConfigDataSource: AppConfigDataSource) {
     val isExploreArFeatureEnabled: Boolean = appConfigDataSource.isExploreArFeatureEnabled()
     val isMapFeatureEnabled: Boolean get() = appConfigDataSource.isMapFeatureEnabled()
     val isCodelabsFeatureEnabled: Boolean get() = appConfigDataSource.isCodelabsFeatureEnabled()

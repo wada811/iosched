@@ -38,7 +38,7 @@ import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.R
 import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
 import com.google.samples.apps.iosched.shared.data.signin.datasources.AuthIdDataSource
-import com.google.samples.apps.iosched.shared.di.SharedDependencyModule
+import com.google.samples.apps.iosched.shared.di.SharedModule
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadSessionOneShotUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionOneShotUseCase
 import com.google.samples.apps.iosched.shared.result.Result
@@ -58,27 +58,27 @@ import java.util.concurrent.TimeUnit
 class AlarmBroadcastReceiver : BroadcastReceiver() {
     private lateinit var context: Context
     private val sharedPreferencesStorage: PreferenceStorage by lazy {
-        (context as Application).dependencyModule<SharedDependencyModule>().preferenceStorage
+        (context as Application).dependencyModule<SharedModule>().preferenceStorage
     }
 
     private val loadUserSession: LoadUserSessionOneShotUseCase by lazy {
-        (context as Application).dependencyModule<SharedDependencyModule>().loadUserSessionOneShotUseCase
+        (context as Application).dependencyModule<SharedModule>().loadUserSessionOneShotUseCase
     }
 
     private val loadSession: LoadSessionOneShotUseCase by lazy {
-        (context as Application).dependencyModule<SharedDependencyModule>().loadSessionOneShotUseCase
+        (context as Application).dependencyModule<SharedModule>().loadSessionOneShotUseCase
     }
 
     private val alarmManager: SessionAlarmManager by lazy {
-        (context as Application).dependencyModule<SharedDependencyModule>().sessionAlarmManager
+        (context as Application).dependencyModule<SharedModule>().sessionAlarmManager
     }
 
     private val authIdDataSource: AuthIdDataSource by lazy {
-        (context as Application).dependencyModule<SharedDependencyModule>().authIdDataSource
+        (context as Application).dependencyModule<SharedModule>().authIdDataSource
     }
 
     private val externalScope: CoroutineScope by lazy {
-        (context as Application).dependencyModule<SharedDependencyModule>().applicationScope
+        (context as Application).dependencyModule<SharedModule>().applicationScope
     }
 
     override fun onReceive(context: Context, intent: Intent) {

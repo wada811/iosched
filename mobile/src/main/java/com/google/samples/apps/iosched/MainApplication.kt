@@ -19,9 +19,9 @@ package com.google.samples.apps.iosched
 import android.app.Application
 import android.os.StrictMode
 import android.os.StrictMode.ThreadPolicy.Builder
-import com.google.samples.apps.iosched.di.AppDependencyModule
+import com.google.samples.apps.iosched.di.AppModule
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
-import com.google.samples.apps.iosched.shared.di.SharedDependencyModule
+import com.google.samples.apps.iosched.shared.di.SharedModule
 import com.google.samples.apps.iosched.util.CrashlyticsTree
 import com.jakewharton.threetenabp.AndroidThreeTen
 import com.wada811.dependencyproperty.DependencyModules
@@ -33,21 +33,21 @@ import timber.log.Timber
  * Initialization of libraries.
  */
 class MainApplication : Application(), DependencyModulesHolder {
-    private val sharedDependencyModule = SharedDependencyModule(this)
+    private val sharedModule = SharedModule(this)
     override val dependencyModules: DependencyModules by dependencyModules(
-        AppDependencyModule(this, sharedDependencyModule),
-        sharedDependencyModule
+        AppModule(this, sharedModule),
+        sharedModule
     )
 
     override fun onCreate() {
         // Even if the var isn't used, needs to be initialized at application startup.
-        val analyticsHelper = dependency<AppDependencyModule, AnalyticsHelper> { it.analyticsHelper }.value
+        val analyticsHelper = dependency<AppModule, AnalyticsHelper> { it.analyticsHelper }.value
         analyticsHelper.toString()
 
         // ThreeTenBP for times and dates, called before super to be available for objects
         AndroidThreeTen.init(this)
 
-        // Enable strict mode before Dagger creates graph
+        // Enable strict mode
         if (BuildConfig.DEBUG) {
             enableStrictMode()
         }

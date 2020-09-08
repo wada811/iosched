@@ -26,7 +26,7 @@ import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavDirections
 import com.google.samples.apps.iosched.R
-import com.google.samples.apps.iosched.di.AppDependencyModule
+import com.google.samples.apps.iosched.di.AppModule
 import com.google.samples.apps.iosched.model.Announcement
 import com.google.samples.apps.iosched.model.Moment
 import com.google.samples.apps.iosched.model.Session
@@ -34,7 +34,7 @@ import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
-import com.google.samples.apps.iosched.shared.di.SharedDependencyModule
+import com.google.samples.apps.iosched.shared.di.SharedModule
 import com.google.samples.apps.iosched.shared.domain.feed.ConferenceState
 import com.google.samples.apps.iosched.shared.domain.feed.ConferenceState.ENDED
 import com.google.samples.apps.iosched.shared.domain.feed.ConferenceState.UPCOMING
@@ -67,22 +67,20 @@ import org.threeten.bp.ZonedDateTime
 
 /**
  * Loads data and exposes it to the view.
- * By annotating the constructor with [@Inject], Dagger will use that constructor when needing to
- * create the object, so defining a [@Provides] method for this class won't be needed.
  */
 class FeedViewModel @JvmOverloads constructor(
     application: Application,
-    private val loadCurrentMomentUseCase: LoadCurrentMomentUseCase = application.dependencyModule<SharedDependencyModule>().loadCurrentMomentUseCase,
-    loadAnnouncementsUseCase: LoadAnnouncementsUseCase = application.dependencyModule<SharedDependencyModule>().loadAnnouncementsUseCase,
-    private val loadStarredAndReservedSessionsUseCase: LoadStarredAndReservedSessionsUseCase = application.dependencyModule<SharedDependencyModule>().loadStarredAndReservedSessionsUseCase,
-    getTimeZoneUseCase: GetTimeZoneUseCase = application.dependencyModule<SharedDependencyModule>().getTimeZoneUseCase,
-    getConferenceStateUseCase: GetConferenceStateUseCase = application.dependencyModule<SharedDependencyModule>().getConferenceStateUseCase,
-    private val timeProvider: TimeProvider = application.dependencyModule<SharedDependencyModule>().timeProvider,
-    private val analyticsHelper: AnalyticsHelper = application.dependencyModule<AppDependencyModule>().analyticsHelper,
-    private val signInViewModelDelegate: SignInViewModelDelegate = application.dependencyModule<AppDependencyModule>().signInViewModelDelegate,
-    themedActivityDelegate: ThemedActivityDelegate = application.dependencyModule<AppDependencyModule>().themedActivityDelegate,
-    private val isReservationEnabledByRemoteConfig: Boolean = application.dependencyModule<SharedDependencyModule>().featureFlags.isReservationFeatureEnabled,
-    private val isMapEnabledByRemoteConfig: Boolean = application.dependencyModule<SharedDependencyModule>().featureFlags.isMapFeatureEnabled
+    private val loadCurrentMomentUseCase: LoadCurrentMomentUseCase = application.dependencyModule<SharedModule>().loadCurrentMomentUseCase,
+    loadAnnouncementsUseCase: LoadAnnouncementsUseCase = application.dependencyModule<SharedModule>().loadAnnouncementsUseCase,
+    private val loadStarredAndReservedSessionsUseCase: LoadStarredAndReservedSessionsUseCase = application.dependencyModule<SharedModule>().loadStarredAndReservedSessionsUseCase,
+    getTimeZoneUseCase: GetTimeZoneUseCase = application.dependencyModule<SharedModule>().getTimeZoneUseCase,
+    getConferenceStateUseCase: GetConferenceStateUseCase = application.dependencyModule<SharedModule>().getConferenceStateUseCase,
+    private val timeProvider: TimeProvider = application.dependencyModule<SharedModule>().timeProvider,
+    private val analyticsHelper: AnalyticsHelper = application.dependencyModule<AppModule>().analyticsHelper,
+    private val signInViewModelDelegate: SignInViewModelDelegate = application.dependencyModule<AppModule>().signInViewModelDelegate,
+    themedActivityDelegate: ThemedActivityDelegate = application.dependencyModule<AppModule>().themedActivityDelegate,
+    private val isReservationEnabledByRemoteConfig: Boolean = application.dependencyModule<SharedModule>().featureFlags.isReservationFeatureEnabled,
+    private val isMapEnabledByRemoteConfig: Boolean = application.dependencyModule<SharedModule>().featureFlags.isMapFeatureEnabled
 ) : AndroidViewModel(application),
     FeedEventListener,
     ThemedActivityDelegate by themedActivityDelegate,

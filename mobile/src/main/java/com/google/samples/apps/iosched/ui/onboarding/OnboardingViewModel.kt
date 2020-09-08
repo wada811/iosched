@@ -20,10 +20,9 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.samples.apps.iosched.di.AppDependencyModule
-import com.google.samples.apps.iosched.shared.di.SharedDependencyModule
+import com.google.samples.apps.iosched.di.AppModule
+import com.google.samples.apps.iosched.shared.di.SharedModule
 import com.google.samples.apps.iosched.shared.domain.prefs.OnboardingCompleteActionUseCase
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
@@ -35,8 +34,8 @@ import kotlinx.coroutines.launch
  */
 class OnboardingViewModel @JvmOverloads constructor(
     application: Application,
-    private val onboardingCompleteActionUseCase: OnboardingCompleteActionUseCase = application.dependencyModule<SharedDependencyModule>().onboardingCompleteActionUseCase,
-    signInViewModelDelegate: SignInViewModelDelegate = application.dependencyModule<AppDependencyModule>().signInViewModelDelegate
+    private val onboardingCompleteActionUseCase: OnboardingCompleteActionUseCase = application.dependencyModule<SharedModule>().onboardingCompleteActionUseCase,
+    signInViewModelDelegate: SignInViewModelDelegate = application.dependencyModule<AppModule>().signInViewModelDelegate
 ) : AndroidViewModel(application), SignInViewModelDelegate by signInViewModelDelegate {
 
     private val _navigateToMainActivity = MutableLiveData<Event<Unit>>()

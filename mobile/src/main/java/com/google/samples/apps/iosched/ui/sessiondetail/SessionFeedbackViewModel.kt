@@ -23,10 +23,10 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.google.samples.apps.iosched.R
-import com.google.samples.apps.iosched.di.AppDependencyModule
+import com.google.samples.apps.iosched.di.AppModule
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.userdata.UserSession
-import com.google.samples.apps.iosched.shared.di.SharedDependencyModule
+import com.google.samples.apps.iosched.shared.di.SharedModule
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCase
 import com.google.samples.apps.iosched.shared.domain.users.FeedbackParameter
 import com.google.samples.apps.iosched.shared.domain.users.FeedbackUseCase
@@ -42,9 +42,9 @@ import kotlinx.coroutines.launch
 @ExperimentalCoroutinesApi
 class SessionFeedbackViewModel @JvmOverloads constructor(
     application: Application,
-    private val signInViewModelDelegate: SignInViewModelDelegate = application.dependencyModule<AppDependencyModule>().signInViewModelDelegate,
-    private val loadUserSessionUseCase: LoadUserSessionUseCase = application.dependencyModule<SharedDependencyModule>().loadUserSessionUseCase,
-    private val feedbackUseCase: FeedbackUseCase = application.dependencyModule<SharedDependencyModule>().feedbackUseCase
+    private val signInViewModelDelegate: SignInViewModelDelegate = application.dependencyModule<AppModule>().signInViewModelDelegate,
+    private val loadUserSessionUseCase: LoadUserSessionUseCase = application.dependencyModule<SharedModule>().loadUserSessionUseCase,
+    private val feedbackUseCase: FeedbackUseCase = application.dependencyModule<SharedModule>().feedbackUseCase
 ) : AndroidViewModel(application),
     SignInViewModelDelegate by signInViewModelDelegate {
 

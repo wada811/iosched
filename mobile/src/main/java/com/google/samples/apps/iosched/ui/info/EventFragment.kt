@@ -32,9 +32,9 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentInfoEventBinding
-import com.google.samples.apps.iosched.di.AppDependencyModule
+import com.google.samples.apps.iosched.di.AppModule
 import com.google.samples.apps.iosched.model.ConferenceWifiInfo
-import com.google.samples.apps.iosched.shared.di.SharedDependencyModule
+import com.google.samples.apps.iosched.shared.di.SharedModule
 import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.setUpSnackbar
@@ -44,9 +44,9 @@ import com.wada811.dependencyproperty.dependency
 
 class EventFragment : Fragment() {
 
-    private val snackbarMessageManager by dependency<AppDependencyModule, SnackbarMessageManager> { it.snackbarMessageManager }
+    private val snackbarMessageManager by dependency<AppModule, SnackbarMessageManager> { it.snackbarMessageManager }
 
-    private val assistantAppEnabled by dependency<SharedDependencyModule, Boolean> { it.featureFlags.isAssistantAppFeatureEnabled }
+    private val assistantAppEnabled by dependency<SharedModule, Boolean> { it.featureFlags.isAssistantAppFeatureEnabled }
 
     private val eventInfoViewModel: EventInfoViewModel by viewModels()
 

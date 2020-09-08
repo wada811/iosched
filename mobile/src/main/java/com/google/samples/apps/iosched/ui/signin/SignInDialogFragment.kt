@@ -28,7 +28,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.samples.apps.iosched.databinding.DialogSignInBinding
-import com.google.samples.apps.iosched.di.AppDependencyModule
+import com.google.samples.apps.iosched.di.AppModule
 import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.ui.signin.SignInEvent.RequestSignIn
 import com.google.samples.apps.iosched.util.executeAfter
@@ -40,7 +40,7 @@ import com.wada811.dependencyproperty.dependency
  */
 class SignInDialogFragment : AppCompatDialogFragment() {
 
-    private val signInHandler: SignInHandler by dependency<AppDependencyModule, SignInHandler> { it.signInHandler }
+    private val signInHandler: SignInHandler by dependency<AppModule, SignInHandler> { it.signInHandler }
 
     private val signInViewModel: SignInViewModel by viewModels()
 

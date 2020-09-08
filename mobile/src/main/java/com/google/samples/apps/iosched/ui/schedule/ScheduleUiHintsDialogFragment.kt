@@ -22,7 +22,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatDialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.samples.apps.iosched.R
-import com.google.samples.apps.iosched.shared.di.SharedDependencyModule
+import com.google.samples.apps.iosched.shared.di.SharedModule
 import com.google.samples.apps.iosched.shared.domain.prefs.MarkScheduleUiHintsShownUseCase
 import com.wada811.dependencyproperty.dependency
 import kotlinx.coroutines.GlobalScope
@@ -33,7 +33,7 @@ import kotlinx.coroutines.launch
  */
 class ScheduleUiHintsDialogFragment : AppCompatDialogFragment() {
 
-    private val markScheduleUiHintsShownUseCase by dependency<SharedDependencyModule, MarkScheduleUiHintsShownUseCase> { it.markScheduleUiHintsShownUseCase }
+    private val markScheduleUiHintsShownUseCase by dependency<SharedModule, MarkScheduleUiHintsShownUseCase> { it.markScheduleUiHintsShownUseCase }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return MaterialAlertDialogBuilder(requireContext())

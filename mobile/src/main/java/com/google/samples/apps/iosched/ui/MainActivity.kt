@@ -40,10 +40,10 @@ import com.google.android.material.navigation.NavigationView
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.ar.ArActivity
 import com.google.samples.apps.iosched.databinding.NavigationHeaderBinding
-import com.google.samples.apps.iosched.di.AppDependencyModule
+import com.google.samples.apps.iosched.di.AppModule
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
-import com.google.samples.apps.iosched.shared.di.SharedDependencyModule
+import com.google.samples.apps.iosched.shared.di.SharedModule
 import com.google.samples.apps.iosched.shared.domain.ar.ArConstants
 import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
@@ -84,17 +84,17 @@ class MainActivity : AppCompatActivity(), NavigationHost {
         )
     }
 
-    private val snackbarMessageManager by dependency<AppDependencyModule, SnackbarMessageManager> { it.snackbarMessageManager }
+    private val snackbarMessageManager by dependency<AppModule, SnackbarMessageManager> { it.snackbarMessageManager }
 
-    private val connectivityManager by dependency<AppDependencyModule, ConnectivityManager> { it.connectivityManager }
+    private val connectivityManager by dependency<AppModule, ConnectivityManager> { it.connectivityManager }
 
-    private val analyticsHelper by dependency<AppDependencyModule, AnalyticsHelper> { it.analyticsHelper }
+    private val analyticsHelper by dependency<AppModule, AnalyticsHelper> { it.analyticsHelper }
 
-    private val mapFeatureEnabled by dependency<SharedDependencyModule, Boolean> { it.featureFlags.isMapFeatureEnabled }
+    private val mapFeatureEnabled by dependency<SharedModule, Boolean> { it.featureFlags.isMapFeatureEnabled }
 
-    private val codelabsFeatureEnabled by dependency<SharedDependencyModule, Boolean> { it.featureFlags.isCodelabsFeatureEnabled }
+    private val codelabsFeatureEnabled by dependency<SharedModule, Boolean> { it.featureFlags.isCodelabsFeatureEnabled }
 
-    private val exploreArFeatureEnabled by dependency<SharedDependencyModule, Boolean> { it.featureFlags.isExploreArFeatureEnabled }
+    private val exploreArFeatureEnabled by dependency<SharedModule, Boolean> { it.featureFlags.isExploreArFeatureEnabled }
 
     private val viewModel: MainActivityViewModel by viewModels()
 

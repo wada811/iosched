@@ -33,12 +33,12 @@ import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import androidx.recyclerview.widget.RecyclerView.RecycledViewPool
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentScheduleBinding
-import com.google.samples.apps.iosched.di.AppDependencyModule
+import com.google.samples.apps.iosched.di.AppModule
 import com.google.samples.apps.iosched.model.ConferenceDay
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
-import com.google.samples.apps.iosched.shared.di.SharedDependencyModule
+import com.google.samples.apps.iosched.shared.di.SharedModule
 import com.google.samples.apps.iosched.shared.domain.sessions.ConferenceDayIndexer
 import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.TimeUtils
@@ -77,13 +77,13 @@ class ScheduleFragment : MainNavigationFragment() {
         private const val DIALOG_SCHEDULE_HINTS = "dialog_schedule_hints"
     }
 
-    private val analyticsHelper by dependency<AppDependencyModule, AnalyticsHelper> { it.analyticsHelper }
+    private val analyticsHelper by dependency<AppModule, AnalyticsHelper> { it.analyticsHelper }
 
     private val tagViewPool: RecycledViewPool by dependency<ScheduleFragmentModule, RecycledViewPool> { it.tagViewPool }
 
-    private val searchScheduleFeatureEnabled by dependency<SharedDependencyModule, Boolean> { it.featureFlags.isSearchScheduleFeatureEnabled }
+    private val searchScheduleFeatureEnabled by dependency<SharedModule, Boolean> { it.featureFlags.isSearchScheduleFeatureEnabled }
 
-    private val snackbarMessageManager by dependency<AppDependencyModule, SnackbarMessageManager> { it.snackbarMessageManager }
+    private val snackbarMessageManager by dependency<AppModule, SnackbarMessageManager> { it.snackbarMessageManager }
 
     private val scheduleViewModel: ScheduleViewModel by viewModels()
     private val snackbarPrefsViewModel: SnackbarPreferenceViewModel by activityViewModels()

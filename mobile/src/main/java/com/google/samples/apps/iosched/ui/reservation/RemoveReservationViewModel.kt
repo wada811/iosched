@@ -21,10 +21,10 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.google.samples.apps.iosched.R
-import com.google.samples.apps.iosched.di.AppDependencyModule
+import com.google.samples.apps.iosched.di.AppModule
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.userdata.UserSession
-import com.google.samples.apps.iosched.shared.di.SharedDependencyModule
+import com.google.samples.apps.iosched.shared.di.SharedModule
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCase
 import com.google.samples.apps.iosched.shared.domain.users.ReservationActionUseCase
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction
@@ -44,9 +44,9 @@ import kotlinx.coroutines.launch
 @ExperimentalCoroutinesApi
 class RemoveReservationViewModel @JvmOverloads constructor(
     application: Application,
-    signInViewModelDelegate: SignInViewModelDelegate = application.dependencyModule<AppDependencyModule>().signInViewModelDelegate,
-    private val loadUserSessionUseCase: LoadUserSessionUseCase = application.dependencyModule<SharedDependencyModule>().loadUserSessionUseCase,
-    private val reservationActionUseCase: ReservationActionUseCase = application.dependencyModule<SharedDependencyModule>().reservationActionUseCase
+    signInViewModelDelegate: SignInViewModelDelegate = application.dependencyModule<AppModule>().signInViewModelDelegate,
+    private val loadUserSessionUseCase: LoadUserSessionUseCase = application.dependencyModule<SharedModule>().loadUserSessionUseCase,
+    private val reservationActionUseCase: ReservationActionUseCase = application.dependencyModule<SharedModule>().reservationActionUseCase
 ) : AndroidViewModel(application), SignInViewModelDelegate by signInViewModelDelegate {
 
     private var loadUserSessionJob: Job? = null

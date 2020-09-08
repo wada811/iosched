@@ -23,7 +23,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import com.google.samples.apps.iosched.model.Block
-import com.google.samples.apps.iosched.shared.di.SharedDependencyModule
+import com.google.samples.apps.iosched.shared.di.SharedModule
 import com.google.samples.apps.iosched.shared.domain.agenda.LoadAgendaUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
 import com.google.samples.apps.iosched.shared.result.data
@@ -34,8 +34,8 @@ import org.threeten.bp.ZoneId
 
 class AgendaViewModel @JvmOverloads constructor(
     application: Application,
-    private val loadAgendaUseCase: LoadAgendaUseCase = application.dependencyModule<SharedDependencyModule>().loadAgendaUseCase,
-    private val getTimeZoneUseCase: GetTimeZoneUseCase = application.dependencyModule<SharedDependencyModule>().getTimeZoneUseCase
+    private val loadAgendaUseCase: LoadAgendaUseCase = application.dependencyModule<SharedModule>().loadAgendaUseCase,
+    private val getTimeZoneUseCase: GetTimeZoneUseCase = application.dependencyModule<SharedModule>().getTimeZoneUseCase
 ) : AndroidViewModel(application) {
 
     private val _agenda = MutableLiveData<List<Block>>()

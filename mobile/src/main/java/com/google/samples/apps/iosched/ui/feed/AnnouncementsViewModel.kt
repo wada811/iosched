@@ -20,7 +20,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
-import com.google.samples.apps.iosched.shared.di.SharedDependencyModule
+import com.google.samples.apps.iosched.shared.di.SharedModule
 import com.google.samples.apps.iosched.shared.domain.feed.LoadAnnouncementsUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
 import com.google.samples.apps.iosched.shared.result.Result.Loading
@@ -32,9 +32,9 @@ import org.threeten.bp.ZoneId
 
 class AnnouncementsViewModel @JvmOverloads constructor(
     application: Application,
-    private val loadAnnouncementsUseCase: LoadAnnouncementsUseCase = application.dependencyModule<SharedDependencyModule>().loadAnnouncementsUseCase,
-    private val getTimeZoneUseCase: GetTimeZoneUseCase = application.dependencyModule<SharedDependencyModule>().getTimeZoneUseCase,
-    private val timeProvider: TimeProvider = application.dependencyModule<SharedDependencyModule>().timeProvider
+    private val loadAnnouncementsUseCase: LoadAnnouncementsUseCase = application.dependencyModule<SharedModule>().loadAnnouncementsUseCase,
+    private val getTimeZoneUseCase: GetTimeZoneUseCase = application.dependencyModule<SharedModule>().getTimeZoneUseCase,
+    private val timeProvider: TimeProvider = application.dependencyModule<SharedModule>().timeProvider
 ) : AndroidViewModel(application) {
 
 

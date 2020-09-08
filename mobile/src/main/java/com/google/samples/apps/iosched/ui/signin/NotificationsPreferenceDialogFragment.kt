@@ -23,7 +23,7 @@ import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.samples.apps.iosched.R
-import com.google.samples.apps.iosched.shared.di.SharedDependencyModule
+import com.google.samples.apps.iosched.shared.di.SharedModule
 import com.google.samples.apps.iosched.shared.domain.prefs.NotificationsPrefSaveActionUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.NotificationsPrefShownActionUseCase
 import com.wada811.dependencyproperty.dependency
@@ -35,8 +35,8 @@ import kotlinx.coroutines.launch
  */
 class NotificationsPreferenceDialogFragment : AppCompatDialogFragment() {
 
-    private val notificationsPrefSaveActionUseCase by dependency<SharedDependencyModule, NotificationsPrefSaveActionUseCase> { it.notificationsPrefSaveActionUseCase }
-    private val notificationsPrefShownActionUseCase by dependency<SharedDependencyModule, NotificationsPrefShownActionUseCase> { it.notificationsPrefShownActionUseCase }
+    private val notificationsPrefSaveActionUseCase by dependency<SharedModule, NotificationsPrefSaveActionUseCase> { it.notificationsPrefSaveActionUseCase }
+    private val notificationsPrefShownActionUseCase by dependency<SharedModule, NotificationsPrefShownActionUseCase> { it.notificationsPrefShownActionUseCase }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return MaterialAlertDialogBuilder(requireContext())

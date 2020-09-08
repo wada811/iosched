@@ -24,7 +24,7 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.viewModelScope
-import com.google.samples.apps.iosched.di.AppDependencyModule
+import com.google.samples.apps.iosched.di.AppModule
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.SpeakerId
 import com.google.samples.apps.iosched.model.filters.Filter
@@ -32,7 +32,7 @@ import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserInfo
-import com.google.samples.apps.iosched.shared.di.SharedDependencyModule
+import com.google.samples.apps.iosched.shared.di.SharedModule
 import com.google.samples.apps.iosched.shared.domain.search.LoadSearchFiltersUseCase
 import com.google.samples.apps.iosched.shared.domain.search.SessionSearchUseCase
 import com.google.samples.apps.iosched.shared.domain.search.SessionSearchUseCaseParams
@@ -54,12 +54,12 @@ import org.threeten.bp.ZoneId
 
 class SearchViewModel @JvmOverloads constructor(
     application: Application,
-    private val analyticsHelper: AnalyticsHelper = application.dependencyModule<AppDependencyModule>().analyticsHelper,
-    private val searchUseCase: SessionSearchUseCase = application.dependencyModule<SharedDependencyModule>().sessionSearchUseCase,
-    getTimeZoneUseCase: GetTimeZoneUseCase = application.dependencyModule<SharedDependencyModule>().getTimeZoneUseCase,
-    loadFiltersUseCase: LoadSearchFiltersUseCase = application.dependencyModule<SharedDependencyModule>().loadSearchFiltersUseCase,
-    signInViewModelDelegate: SignInViewModelDelegate = application.dependencyModule<AppDependencyModule>().signInViewModelDelegate,
-    filtersViewModelDelegate: FiltersViewModelDelegate = application.dependencyModule<AppDependencyModule>().filtersViewModelDelegate
+    private val analyticsHelper: AnalyticsHelper = application.dependencyModule<AppModule>().analyticsHelper,
+    private val searchUseCase: SessionSearchUseCase = application.dependencyModule<SharedModule>().sessionSearchUseCase,
+    getTimeZoneUseCase: GetTimeZoneUseCase = application.dependencyModule<SharedModule>().getTimeZoneUseCase,
+    loadFiltersUseCase: LoadSearchFiltersUseCase = application.dependencyModule<SharedModule>().loadSearchFiltersUseCase,
+    signInViewModelDelegate: SignInViewModelDelegate = application.dependencyModule<AppModule>().signInViewModelDelegate,
+    filtersViewModelDelegate: FiltersViewModelDelegate = application.dependencyModule<AppModule>().filtersViewModelDelegate
 ) : AndroidViewModel(application),
     EventActions,
     SignInViewModelDelegate by signInViewModelDelegate,

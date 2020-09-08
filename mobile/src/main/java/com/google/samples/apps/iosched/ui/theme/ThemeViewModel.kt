@@ -18,7 +18,7 @@ package com.google.samples.apps.iosched.ui.theme
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import com.google.samples.apps.iosched.di.AppDependencyModule
+import com.google.samples.apps.iosched.di.AppModule
 import com.wada811.dependencyproperty.dependencyModule
 
 /**
@@ -27,5 +27,5 @@ import com.wada811.dependencyproperty.dependencyModule
  */
 class ThemeViewModel @JvmOverloads constructor(
     application: Application,
-    themedActivityDelegate: ThemedActivityDelegate = application.dependencyModule<AppDependencyModule>().themedActivityDelegate
+    themedActivityDelegate: ThemedActivityDelegate = application.dependencyModule<AppModule>().themedActivityDelegate
 ) : AndroidViewModel(application), ThemedActivityDelegate by themedActivityDelegate

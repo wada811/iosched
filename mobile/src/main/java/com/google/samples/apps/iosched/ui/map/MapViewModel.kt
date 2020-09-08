@@ -31,10 +31,10 @@ import com.google.maps.android.data.geojson.GeoJsonFeature
 import com.google.maps.android.data.geojson.GeoJsonLayer
 import com.google.maps.android.data.geojson.GeoJsonPoint
 import com.google.samples.apps.iosched.BuildConfig
-import com.google.samples.apps.iosched.di.AppDependencyModule
+import com.google.samples.apps.iosched.di.AppModule
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
-import com.google.samples.apps.iosched.shared.di.SharedDependencyModule
+import com.google.samples.apps.iosched.shared.di.SharedModule
 import com.google.samples.apps.iosched.shared.domain.prefs.MyLocationOptedInUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.OptIntoMyLocationUseCase
 import com.google.samples.apps.iosched.shared.result.Event
@@ -48,11 +48,11 @@ import kotlinx.coroutines.launch
 
 class MapViewModel @JvmOverloads constructor(
     application: Application,
-    private val loadGeoJsonFeaturesUseCase: LoadGeoJsonFeaturesUseCase = application.dependencyModule<AppDependencyModule>().loadGeoJsonFeaturesUseCase,
-    private val analyticsHelper: AnalyticsHelper = application.dependencyModule<AppDependencyModule>().analyticsHelper,
-    private val signInViewModelDelegate: SignInViewModelDelegate = application.dependencyModule<AppDependencyModule>().signInViewModelDelegate,
-    private val optIntoMyLocationUseCase: OptIntoMyLocationUseCase = application.dependencyModule<SharedDependencyModule>().optIntoMyLocationUseCase,
-    myLocationOptedInUseCase: MyLocationOptedInUseCase = application.dependencyModule<SharedDependencyModule>().myLocationOptedInUseCase
+    private val loadGeoJsonFeaturesUseCase: LoadGeoJsonFeaturesUseCase = application.dependencyModule<AppModule>().loadGeoJsonFeaturesUseCase,
+    private val analyticsHelper: AnalyticsHelper = application.dependencyModule<AppModule>().analyticsHelper,
+    private val signInViewModelDelegate: SignInViewModelDelegate = application.dependencyModule<AppModule>().signInViewModelDelegate,
+    private val optIntoMyLocationUseCase: OptIntoMyLocationUseCase = application.dependencyModule<SharedModule>().optIntoMyLocationUseCase,
+    myLocationOptedInUseCase: MyLocationOptedInUseCase = application.dependencyModule<SharedModule>().myLocationOptedInUseCase
 ) : AndroidViewModel(application), SignInViewModelDelegate by signInViewModelDelegate {
 
     /**

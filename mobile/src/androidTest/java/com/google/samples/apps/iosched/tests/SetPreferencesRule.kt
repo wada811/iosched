@@ -17,7 +17,7 @@
 package com.google.samples.apps.iosched.tests
 
 import androidx.test.core.app.ApplicationProvider
-import com.google.samples.apps.iosched.shared.di.SharedDependencyModule
+import com.google.samples.apps.iosched.shared.di.SharedModule
 import com.wada811.dependencyproperty.dependencyModule
 import org.junit.rules.TestWatcher
 import org.junit.runner.Description
@@ -32,7 +32,7 @@ class SetPreferencesRule : TestWatcher() {
         super.starting(description)
 
         ApplicationProvider.getApplicationContext<MainTestApplication>()
-            .dependencyModule<SharedDependencyModule>()
+            .dependencyModule<SharedModule>()
             .preferenceStorage
             .apply {
                 onboardingCompleted = true

@@ -40,13 +40,13 @@ import androidx.transition.TransitionInflater
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.R.style
 import com.google.samples.apps.iosched.databinding.FragmentSessionDetailBinding
-import com.google.samples.apps.iosched.di.AppDependencyModule
+import com.google.samples.apps.iosched.di.AppModule
 import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.SpeakerId
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
-import com.google.samples.apps.iosched.shared.di.SharedDependencyModule
+import com.google.samples.apps.iosched.shared.di.SharedModule
 import com.google.samples.apps.iosched.shared.domain.users.SwapRequestParameters
 import com.google.samples.apps.iosched.shared.notifications.AlarmBroadcastReceiver
 import com.google.samples.apps.iosched.shared.result.EventObserver
@@ -78,16 +78,16 @@ class SessionDetailFragment : MainNavigationFragment(), SessionFeedbackFragment.
 
     private var shareString = ""
 
-    private val snackbarMessageManager by dependency<AppDependencyModule, SnackbarMessageManager> { it.snackbarMessageManager }
+    private val snackbarMessageManager by dependency<AppModule, SnackbarMessageManager> { it.snackbarMessageManager }
 
     private val sessionDetailViewModel: SessionDetailViewModel by viewModels()
     private val snackbarPrefsViewModel: SnackbarPreferenceViewModel by activityViewModels()
 
-    private val analyticsHelper by dependency<AppDependencyModule, AnalyticsHelper> { it.analyticsHelper }
+    private val analyticsHelper by dependency<AppModule, AnalyticsHelper> { it.analyticsHelper }
 
     private val tagRecycledViewPool: RecycledViewPool by dependency<SessionDetailFragmentModule, RecycledViewPool> { it.tagRecycledViewPool }
 
-    private val isMapEnabled: Boolean by dependency<SharedDependencyModule, Boolean> { it.featureFlags.isMapFeatureEnabled }
+    private val isMapEnabled: Boolean by dependency<SharedModule, Boolean> { it.featureFlags.isMapFeatureEnabled }
 
     private var session: Session? = null
 

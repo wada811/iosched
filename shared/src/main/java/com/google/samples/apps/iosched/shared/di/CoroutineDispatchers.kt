@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Google LLC
+ * Copyright 2020 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,12 +16,12 @@
 
 package com.google.samples.apps.iosched.shared.di
 
-import javax.inject.Qualifier
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 
-@Qualifier
-@Target(
-    AnnotationTarget.FUNCTION, AnnotationTarget.PROPERTY_GETTER,
-    AnnotationTarget.PROPERTY_SETTER, AnnotationTarget.FIELD,
-    AnnotationTarget.VALUE_PARAMETER
-)
-annotation class MainThreadHandler
+open class CoroutineDispatchers {
+    open val defaultDispatcher: CoroutineDispatcher = Dispatchers.Default
+    open val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
+    open val mainDispatcher: CoroutineDispatcher = Dispatchers.Main
+    open val mainImmediateDispatcher: CoroutineDispatcher = Dispatchers.Main.immediate
+}

@@ -19,7 +19,6 @@ plugins {
     kotlin("android")
     kotlin("android.extensions")
     kotlin("kapt")
-    id("dagger.hilt.android.plugin")
 }
 
 android {
@@ -43,10 +42,10 @@ android {
         buildConfigField("String", "CONFERENCE_DAY2_CONCERT_START", properties["conference_day2_concert_start"] as String)
 
         buildConfigField("String",
-                "BOOTSTRAP_CONF_DATA_FILENAME", properties["bootstrap_conference_data_filename"] as String)
+            "BOOTSTRAP_CONF_DATA_FILENAME", properties["bootstrap_conference_data_filename"] as String)
 
         buildConfigField("String",
-                "CONFERENCE_WIFI_OFFERING_START", properties["conference_wifi_offering_start"] as String)
+            "CONFERENCE_WIFI_OFFERING_START", properties["conference_wifi_offering_start"] as String)
 
         consumerProguardFiles("consumer-proguard-rules.pro")
 
@@ -151,10 +150,8 @@ dependencies {
     api(Libs.COROUTINES)
     testImplementation(Libs.COROUTINES_TEST)
 
-    // Dagger Hilt
+    // DependencyProperty
     implementation(Libs.DEPENDENCY_PROPERTY)
-    implementation(Libs.HILT_ANDROID)
-    kapt(Libs.HILT_COMPILER)
 
     // Firebase
     api(Libs.FIREBASE_AUTH)

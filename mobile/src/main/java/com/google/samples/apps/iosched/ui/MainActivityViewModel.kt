@@ -23,8 +23,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.liveData
 import androidx.lifecycle.switchMap
-import com.google.samples.apps.iosched.di.AppDependencyModule
-import com.google.samples.apps.iosched.shared.di.SharedDependencyModule
+import com.google.samples.apps.iosched.di.AppModule
+import com.google.samples.apps.iosched.shared.di.SharedModule
 import com.google.samples.apps.iosched.shared.domain.ar.LoadArDebugFlagUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadPinnedSessionsJsonUseCase
 import com.google.samples.apps.iosched.shared.result.Event
@@ -37,10 +37,10 @@ import kotlinx.coroutines.flow.collect
 
 class MainActivityViewModel @JvmOverloads constructor(
     application: Application,
-    signInViewModelDelegate: SignInViewModelDelegate = application.dependencyModule<AppDependencyModule>().signInViewModelDelegate,
-    themedActivityDelegate: ThemedActivityDelegate = application.dependencyModule<AppDependencyModule>().themedActivityDelegate,
-    loadPinnedSessionsUseCase: LoadPinnedSessionsJsonUseCase = application.dependencyModule<SharedDependencyModule>().loadPinnedSessionsJsonUseCase,
-    loadArDebugFlagUseCase: LoadArDebugFlagUseCase = application.dependencyModule<SharedDependencyModule>().loadArDebugFlagUseCase,
+    signInViewModelDelegate: SignInViewModelDelegate = application.dependencyModule<AppModule>().signInViewModelDelegate,
+    themedActivityDelegate: ThemedActivityDelegate = application.dependencyModule<AppModule>().themedActivityDelegate,
+    loadPinnedSessionsUseCase: LoadPinnedSessionsJsonUseCase = application.dependencyModule<SharedModule>().loadPinnedSessionsJsonUseCase,
+    loadArDebugFlagUseCase: LoadArDebugFlagUseCase = application.dependencyModule<SharedModule>().loadArDebugFlagUseCase,
     context: Context = application
 ) : AndroidViewModel(application),
     SignInViewModelDelegate by signInViewModelDelegate,

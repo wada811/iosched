@@ -18,7 +18,7 @@ package com.google.samples.apps.iosched.shared.data.job
 
 import android.app.job.JobParameters
 import android.app.job.JobService
-import com.google.samples.apps.iosched.shared.di.SharedDependencyModule
+import com.google.samples.apps.iosched.shared.di.SharedModule
 import com.google.samples.apps.iosched.shared.domain.RefreshConferenceDataUseCase
 import com.google.samples.apps.iosched.shared.result.succeeded
 import com.wada811.dependencyproperty.dependency
@@ -35,7 +35,7 @@ import timber.log.Timber
  */
 class ConferenceDataService : JobService() {
 
-    private val refreshEventDataUseCase: RefreshConferenceDataUseCase by application.dependency<SharedDependencyModule, RefreshConferenceDataUseCase> { it.refreshConferenceDataUseCase }
+    private val refreshEventDataUseCase: RefreshConferenceDataUseCase by application.dependency<SharedModule, RefreshConferenceDataUseCase> { it.refreshConferenceDataUseCase }
 
     private val serviceScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
 
