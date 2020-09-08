@@ -28,15 +28,15 @@ import com.google.samples.apps.iosched.shared.domain.agenda.LoadAgendaUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
 import com.google.samples.apps.iosched.shared.result.data
 import com.google.samples.apps.iosched.shared.util.TimeUtils
-import com.wada811.dependencyproperty.dependency
+import com.wada811.dependencyproperty.dependencyModule
 import kotlinx.coroutines.launch
 import org.threeten.bp.ZoneId
 
-class AgendaViewModel(
-    application: Application
+class AgendaViewModel @JvmOverloads constructor(
+    application: Application,
+    private val loadAgendaUseCase: LoadAgendaUseCase = application.dependencyModule<SharedDependencyModule>().loadAgendaUseCase,
+    private val getTimeZoneUseCase: GetTimeZoneUseCase = application.dependencyModule<SharedDependencyModule>().getTimeZoneUseCase
 ) : AndroidViewModel(application) {
-    private val loadAgendaUseCase by dependency<SharedDependencyModule, LoadAgendaUseCase> { it.loadAgendaUseCase }
-    private val getTimeZoneUseCase by dependency<SharedDependencyModule, GetTimeZoneUseCase> { it.getTimeZoneUseCase }
 
     private val _agenda = MutableLiveData<List<Block>>()
     val agenda: LiveData<List<Block>> = _agenda
