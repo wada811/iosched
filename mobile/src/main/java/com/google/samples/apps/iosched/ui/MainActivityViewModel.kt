@@ -17,6 +17,7 @@
 package com.google.samples.apps.iosched.ui
 
 import android.app.Application
+import android.content.Context
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -39,7 +40,8 @@ class MainActivityViewModel @JvmOverloads constructor(
     signInViewModelDelegate: SignInViewModelDelegate = application.dependencyModule<AppDependencyModule>().signInViewModelDelegate,
     themedActivityDelegate: ThemedActivityDelegate = application.dependencyModule<AppDependencyModule>().themedActivityDelegate,
     loadPinnedSessionsUseCase: LoadPinnedSessionsJsonUseCase = application.dependencyModule<SharedDependencyModule>().loadPinnedSessionsJsonUseCase,
-    loadArDebugFlagUseCase: LoadArDebugFlagUseCase = application.dependencyModule<SharedDependencyModule>().loadArDebugFlagUseCase
+    loadArDebugFlagUseCase: LoadArDebugFlagUseCase = application.dependencyModule<SharedDependencyModule>().loadArDebugFlagUseCase,
+    context: Context = application
 ) : AndroidViewModel(application),
     SignInViewModelDelegate by signInViewModelDelegate,
     ThemedActivityDelegate by themedActivityDelegate {
@@ -78,7 +80,7 @@ class MainActivityViewModel @JvmOverloads constructor(
         }
     }
 
-    val arCoreAvailability = ArCoreAvailabilityLiveData(application)
+    val arCoreAvailability = ArCoreAvailabilityLiveData(context)
 
     fun onProfileClicked() {
         if (isSignedIn()) {

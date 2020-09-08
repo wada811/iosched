@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.iosched.ui
 
+import android.app.Application
 import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.firebase.functions.FirebaseFunctions
@@ -55,6 +56,7 @@ class MainActivityViewModelTest {
         themedActivityDelegate: ThemedActivityDelegate = FakeThemedActivityDelegate()
     ): MainActivityViewModel {
         return MainActivityViewModel(
+            Application(),
             signInViewModelDelegate = signInViewModelDelegate,
             themedActivityDelegate = themedActivityDelegate,
             loadPinnedSessionsUseCase = LoadPinnedSessionsJsonUseCase(

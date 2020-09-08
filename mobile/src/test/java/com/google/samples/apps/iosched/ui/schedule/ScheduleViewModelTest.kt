@@ -18,6 +18,7 @@
 
 package com.google.samples.apps.iosched.ui.schedule
 
+import android.app.Application
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
@@ -450,6 +451,7 @@ class ScheduleViewModelTest {
         analyticsHelper: AnalyticsHelper = FakeAnalyticsHelper()
     ): ScheduleViewModel {
         return ScheduleViewModel(
+            Application(),
             loadScheduleUserSessionsUseCase = loadScheduleSessionsUseCase,
             signInViewModelDelegate = signInViewModelDelegate,
             starEventUseCase = starEventUseCase,

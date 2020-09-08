@@ -18,6 +18,7 @@
 
 package com.google.samples.apps.iosched.ui.onboarding
 
+import android.app.Application
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
@@ -52,7 +53,7 @@ class OnboardingViewModelTest {
         val prefs = mock<PreferenceStorage>()
         val onboardingCompleteActionUseCase = OnboardingCompleteActionUseCase(prefs, testDispatcher)
         val signInDelegate = FakeSignInViewModelDelegate()
-        val viewModel = OnboardingViewModel(onboardingCompleteActionUseCase, signInDelegate)
+        val viewModel = OnboardingViewModel(Application(), onboardingCompleteActionUseCase, signInDelegate)
 
         // When getStarted is called
         viewModel.getStartedClick()
@@ -71,7 +72,7 @@ class OnboardingViewModelTest {
         val prefs = mock<PreferenceStorage>()
         val onboardingCompleteActionUseCase = OnboardingCompleteActionUseCase(prefs, testDispatcher)
         val signInDelegate = FakeSignInViewModelDelegate()
-        val viewModel = OnboardingViewModel(onboardingCompleteActionUseCase, signInDelegate)
+        val viewModel = OnboardingViewModel(Application(), onboardingCompleteActionUseCase, signInDelegate)
 
         // When getStarted is called
         viewModel.onSigninClicked()

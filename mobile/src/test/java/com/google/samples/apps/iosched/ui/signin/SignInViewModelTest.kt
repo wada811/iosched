@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.iosched.ui.signin
 
+import android.app.Application
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.test.data.MainCoroutineRule
@@ -41,7 +42,7 @@ class SignInViewModelTest {
         val signInViewModelDelegate = FakeSignInViewModelDelegate().apply {
             injectIsSignedIn = true
         }
-        val viewModel = SignInViewModel(signInViewModelDelegate)
+        val viewModel = SignInViewModel(Application(), signInViewModelDelegate)
 
         // When sign out is requested
         viewModel.onSignOut()
@@ -56,7 +57,7 @@ class SignInViewModelTest {
         val signInViewModelDelegate = FakeSignInViewModelDelegate().apply {
             injectIsSignedIn = false
         }
-        val viewModel = SignInViewModel(signInViewModelDelegate)
+        val viewModel = SignInViewModel(Application(), signInViewModelDelegate)
 
         // When sign out is requested
         viewModel.onSignIn()
@@ -68,7 +69,7 @@ class SignInViewModelTest {
     @Test
     fun onCancel_dialogDismiss() {
         // Given a view model with a signed in user
-        val viewModel = SignInViewModel(FakeSignInViewModelDelegate())
+        val viewModel = SignInViewModel(Application(), FakeSignInViewModelDelegate())
 
         // When cancel is requested
         viewModel.onCancel()

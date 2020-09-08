@@ -18,6 +18,7 @@
 
 package com.google.samples.apps.iosched.ui
 
+import android.app.Application
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.shared.domain.prefs.OnboardingCompletedUseCase
@@ -49,7 +50,7 @@ class LaunchViewModelTest {
         val prefs = FakePreferenceStorage(onboardingCompleted = false)
         val onboardingCompletedUseCase =
             OnboardingCompletedUseCase(prefs, coroutineRule.testDispatcher)
-        val viewModel = LaunchViewModel(onboardingCompletedUseCase)
+        val viewModel = LaunchViewModel(Application(), onboardingCompletedUseCase)
 
         // When launchDestination is observed
         // Then verify user is navigated to the onboarding activity
@@ -63,7 +64,7 @@ class LaunchViewModelTest {
         val prefs = FakePreferenceStorage(onboardingCompleted = true)
         val onboardingCompletedUseCase =
             OnboardingCompletedUseCase(prefs, coroutineRule.testDispatcher)
-        val viewModel = LaunchViewModel(onboardingCompletedUseCase)
+        val viewModel = LaunchViewModel(Application(), onboardingCompletedUseCase)
 
         // When launchDestination is observed
         // Then verify user is navigated to the main activity

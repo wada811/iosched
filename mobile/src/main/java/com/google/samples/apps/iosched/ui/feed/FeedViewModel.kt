@@ -58,7 +58,6 @@ import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailFragmentDir
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.google.samples.apps.iosched.ui.theme.ThemedActivityDelegate
 import com.google.samples.apps.iosched.util.combine
-import com.wada811.dependencyproperty.dependency
 import com.wada811.dependencyproperty.dependencyModule
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
@@ -81,7 +80,9 @@ class FeedViewModel @JvmOverloads constructor(
     private val timeProvider: TimeProvider = application.dependencyModule<SharedDependencyModule>().timeProvider,
     private val analyticsHelper: AnalyticsHelper = application.dependencyModule<AppDependencyModule>().analyticsHelper,
     private val signInViewModelDelegate: SignInViewModelDelegate = application.dependencyModule<AppDependencyModule>().signInViewModelDelegate,
-    themedActivityDelegate: ThemedActivityDelegate = application.dependencyModule<AppDependencyModule>().themedActivityDelegate
+    themedActivityDelegate: ThemedActivityDelegate = application.dependencyModule<AppDependencyModule>().themedActivityDelegate,
+    private val isReservationEnabledByRemoteConfig: Boolean = application.dependencyModule<SharedDependencyModule>().featureFlags.isReservationFeatureEnabled,
+    private val isMapEnabledByRemoteConfig: Boolean = application.dependencyModule<SharedDependencyModule>().featureFlags.isMapFeatureEnabled
 ) : AndroidViewModel(application),
     FeedEventListener,
     ThemedActivityDelegate by themedActivityDelegate,
@@ -102,9 +103,6 @@ class FeedViewModel @JvmOverloads constructor(
         private object NoSessionsContainer
     }
 
-    private val isReservationEnabledByRemoteConfig: Boolean by dependency<SharedDependencyModule, Boolean> { it.featureFlags.isReservationFeatureEnabled }
-
-    private val isMapEnabledByRemoteConfig: Boolean by dependency<SharedDependencyModule, Boolean> { it.featureFlags.isMapFeatureEnabled }
 
     val feed: LiveData<List<Any>>
 
