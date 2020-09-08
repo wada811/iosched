@@ -36,9 +36,11 @@ import com.google.samples.apps.iosched.shared.fcm.StagingTopicSubscriber
 import com.google.samples.apps.iosched.shared.fcm.TopicSubscriber
 
 class SharedDependencyModule(
-    context: Context
+    context: Context,
+    coroutinesDependencyModule: CoroutinesDependencyModule = CoroutinesDependencyModule()
 ) : AbstractSharedDependencyModule(
-    context
+    context,
+    coroutinesDependencyModule
 ) {
     override val remoteConfDataSource: ConferenceDataSource by lazy { FakeConferenceDataSource }
     override val bootstrapConfDataSource: ConferenceDataSource by lazy { FakeConferenceDataSource }

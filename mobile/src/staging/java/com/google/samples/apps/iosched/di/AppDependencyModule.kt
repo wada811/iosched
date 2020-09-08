@@ -18,16 +18,19 @@ package com.google.samples.apps.iosched.di
 
 import android.content.Context
 import com.google.samples.apps.iosched.shared.di.AbstractSharedDependencyModule
+import com.google.samples.apps.iosched.shared.di.CoroutinesDependencyModule
 import com.google.samples.apps.iosched.util.signin.SignInHandler
 import com.google.samples.apps.iosched.util.signin.StagingAuthenticatedUser
 import com.google.samples.apps.iosched.util.signin.StagingSignInHandler
 
 class AppDependencyModule(
     context: Context,
-    sharedDependencyModule: AbstractSharedDependencyModule
+    sharedDependencyModule: AbstractSharedDependencyModule,
+    coroutinesDependencyModule: CoroutinesDependencyModule = CoroutinesDependencyModule()
 ) : AbstractAppDependencyModule(
     context,
-    sharedDependencyModule
+    sharedDependencyModule,
+    coroutinesDependencyModule
 ) {
     override val signInHandler: SignInHandler
         get() = StagingSignInHandler(StagingAuthenticatedUser(context))

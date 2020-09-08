@@ -24,12 +24,7 @@ import androidx.test.espresso.matcher.ViewMatchers.withParent
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.samples.apps.iosched.R
-import com.google.samples.apps.iosched.R.id
-import com.google.samples.apps.iosched.di.CoroutinesModule
 import com.google.samples.apps.iosched.tests.SetPreferencesRule
-import dagger.hilt.android.testing.HiltAndroidRule
-import dagger.hilt.android.testing.HiltAndroidTest
-import dagger.hilt.android.testing.UninstallModules
 import org.hamcrest.CoreMatchers.allOf
 import org.hamcrest.CoreMatchers.instanceOf
 import org.junit.Rule
@@ -39,24 +34,19 @@ import org.junit.runner.RunWith
 /**
  * Espresso tests for the Map screen.
  */
-@HiltAndroidTest
-@UninstallModules(CoroutinesModule::class)
 @RunWith(AndroidJUnit4::class)
 class MapTest {
 
-    @get:Rule(order = 0)
-    var hiltRule = HiltAndroidRule(this)
-
     // Sets the preferences so no welcome screens are shown
-    @get:Rule(order = 1)
+    @get:Rule(order = 0)
     var preferencesRule = SetPreferencesRule()
 
-    @get:Rule(order = 2)
+    @get:Rule(order = 1)
     var activityRule = MainActivityTestRule(R.id.navigation_map)
 
     @Test
     fun map_basicViewsDisplayed() {
-        onView(allOf(instanceOf(TextView::class.java), withParent(withId(id.toolbar))))
+        onView(allOf(instanceOf(TextView::class.java), withParent(withId(R.id.toolbar))))
             .check(matches(withText(R.string.title_map)))
     }
 }

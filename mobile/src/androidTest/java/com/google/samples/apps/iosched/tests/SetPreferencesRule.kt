@@ -17,11 +17,8 @@
 package com.google.samples.apps.iosched.tests
 
 import androidx.test.core.app.ApplicationProvider
-import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
-import dagger.hilt.EntryPoint
-import dagger.hilt.InstallIn
-import dagger.hilt.android.EntryPointAccessors
-import dagger.hilt.android.components.ApplicationComponent
+import com.google.samples.apps.iosched.shared.di.SharedDependencyModule
+import com.wada811.dependencyproperty.dependencyModule
 import org.junit.rules.TestWatcher
 import org.junit.runner.Description
 
@@ -31,25 +28,19 @@ import org.junit.runner.Description
  */
 class SetPreferencesRule : TestWatcher() {
 
-    @InstallIn(ApplicationComponent::class)
-    @EntryPoint
-    interface SetPreferencesRuleEntryPoint {
-        fun preferenceStorage(): PreferenceStorage
-    }
-
     override fun starting(description: Description?) {
         super.starting(description)
 
-        EntryPointAccessors.fromApplication(
-            ApplicationProvider.getApplicationContext(),
-            SetPreferencesRuleEntryPoint::class.java
-        ).preferenceStorage().apply {
-            onboardingCompleted = true
-            scheduleUiHintsShown = true
-            preferConferenceTimeZone = true
-            selectedFilters = ""
-            sendUsageStatistics = false
-            notificationsPreferenceShown = true
-        }
+        ApplicationProvider.getApplicationContext<MainTestApplication>()
+            .dependencyModule<SharedDependencyModule>()
+            .preferenceStorage
+            .apply {
+                onboardingCompleted = true
+                scheduleUiHintsShown = true
+                preferConferenceTimeZone = true
+                selectedFilters = ""
+                sendUsageStatistics = false
+                notificationsPreferenceShown = true
+            }
     }
 }

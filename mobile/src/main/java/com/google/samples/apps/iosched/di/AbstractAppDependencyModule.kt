@@ -43,7 +43,7 @@ import com.wada811.dependencyproperty.DependencyModule
 abstract class AbstractAppDependencyModule(
     protected val context: Context,
     protected val sharedDependencyModule: AbstractSharedDependencyModule,
-    private val coroutinesDependencyModule: CoroutinesDependencyModule = CoroutinesDependencyModule()
+    private val coroutinesDependencyModule: CoroutinesDependencyModule
 ) : DependencyModule {
     val wifiManager: WifiManager
         get() = context.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
