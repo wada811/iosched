@@ -33,6 +33,8 @@ import com.google.samples.apps.iosched.shared.data.feedback.FeedbackEndpoint
 import com.google.samples.apps.iosched.shared.data.signin.datasources.AuthIdDataSource
 import com.google.samples.apps.iosched.shared.data.signin.datasources.AuthStateUserDataSource
 import com.google.samples.apps.iosched.shared.data.signin.datasources.FirebaseAuthStateUserDataSource
+import com.google.samples.apps.iosched.shared.data.signin.datasources.FirestoreRegisteredUserDataSource
+import com.google.samples.apps.iosched.shared.data.signin.datasources.RegisteredUserDataSource
 import com.google.samples.apps.iosched.shared.fcm.FcmTokenUpdater
 import com.google.samples.apps.iosched.shared.fcm.FcmTopicSubscriber
 import com.google.samples.apps.iosched.shared.fcm.TopicSubscriber
@@ -68,6 +70,9 @@ class SharedModule(
     }
     override val appConfigDataSource: AppConfigDataSource by lazy {
         RemoteAppConfigDataSource(firebaseRemoteConfig, coroutineDispatchers.ioDispatcher)
+    }
+    override val registeredUserDataSource: RegisteredUserDataSource by lazy {
+        FirestoreRegisteredUserDataSource(firebaseFirestore)
     }
     override val authStateUserDataSource: AuthStateUserDataSource by lazy {
         FirebaseAuthStateUserDataSource(

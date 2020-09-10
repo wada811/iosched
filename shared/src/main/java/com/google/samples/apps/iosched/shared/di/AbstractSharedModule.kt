@@ -52,7 +52,6 @@ import com.google.samples.apps.iosched.shared.data.session.DefaultSessionReposit
 import com.google.samples.apps.iosched.shared.data.session.SessionRepository
 import com.google.samples.apps.iosched.shared.data.signin.datasources.AuthIdDataSource
 import com.google.samples.apps.iosched.shared.data.signin.datasources.AuthStateUserDataSource
-import com.google.samples.apps.iosched.shared.data.signin.datasources.FirestoreRegisteredUserDataSource
 import com.google.samples.apps.iosched.shared.data.signin.datasources.RegisteredUserDataSource
 import com.google.samples.apps.iosched.shared.data.tag.TagRepository
 import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
@@ -189,9 +188,7 @@ abstract class AbstractSharedModule(
     val applicationScope: CoroutineScope by lazy {
         CoroutineScope(SupervisorJob() + coroutineDispatchers.defaultDispatcher)
     }
-    val registeredUserDataSource: RegisteredUserDataSource by lazy {
-        FirestoreRegisteredUserDataSource(firebaseFirestore)
-    }
+    abstract val registeredUserDataSource: RegisteredUserDataSource
     val firebaseAuth: FirebaseAuth by lazy {
         Firebase.auth
     }

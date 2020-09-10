@@ -30,8 +30,10 @@ import com.google.samples.apps.iosched.shared.data.feed.FakeMomentDataSource
 import com.google.samples.apps.iosched.shared.data.feed.MomentDataSource
 import com.google.samples.apps.iosched.shared.data.feedback.FeedbackEndpoint
 import com.google.samples.apps.iosched.shared.data.login.datasources.StagingAuthStateUserDataSource
+import com.google.samples.apps.iosched.shared.data.login.datasources.StagingRegisteredUserDataSource
 import com.google.samples.apps.iosched.shared.data.signin.datasources.AuthIdDataSource
 import com.google.samples.apps.iosched.shared.data.signin.datasources.AuthStateUserDataSource
+import com.google.samples.apps.iosched.shared.data.signin.datasources.RegisteredUserDataSource
 import com.google.samples.apps.iosched.shared.fcm.StagingTopicSubscriber
 import com.google.samples.apps.iosched.shared.fcm.TopicSubscriber
 
@@ -50,6 +52,9 @@ class SharedModule(
     override val arDebugFlagEndpoint: ArDebugFlagEndpoint by lazy { FakeArDebugFlagEndpoint }
     override val topicSubscriber: TopicSubscriber by lazy { StagingTopicSubscriber() }
     override val appConfigDataSource: AppConfigDataSource by lazy { FakeAppConfigDataSource() }
+    override val registeredUserDataSource: RegisteredUserDataSource by lazy {
+        StagingRegisteredUserDataSource(true)
+    }
     override val authStateUserDataSource: AuthStateUserDataSource by lazy {
         StagingAuthStateUserDataSource(
             isRegistered = true,
