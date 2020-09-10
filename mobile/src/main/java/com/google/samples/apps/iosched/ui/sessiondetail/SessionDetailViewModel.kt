@@ -33,7 +33,7 @@ import com.google.samples.apps.iosched.model.userdata.UserEvent
 import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
-import com.google.samples.apps.iosched.shared.di.CoroutineDispatchers
+import com.google.samples.apps.iosched.shared.di.CoroutineModule
 import com.google.samples.apps.iosched.shared.di.SharedModule
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsUseCase
@@ -98,7 +98,7 @@ class SessionDetailViewModel @JvmOverloads constructor(
     private val networkUtils: NetworkUtils = application.dependencyModule<SharedModule>().networkUtils,
     private val analyticsHelper: AnalyticsHelper = application.dependencyModule<AppModule>().analyticsHelper,
     private val isReservationEnabledByRemoteConfig: Boolean = application.dependencyModule<SharedModule>().featureFlags.isReservationFeatureEnabled,
-    defaultDispatcher: CoroutineDispatcher = CoroutineDispatchers().defaultDispatcher
+    defaultDispatcher: CoroutineDispatcher = CoroutineModule().defaultDispatcher
 ) : AndroidViewModel(application), SessionDetailEventListener, EventActions,
     SignInViewModelDelegate by signInViewModelDelegate {
 

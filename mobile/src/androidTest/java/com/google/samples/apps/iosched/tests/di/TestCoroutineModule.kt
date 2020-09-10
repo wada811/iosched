@@ -14,14 +14,17 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.shared.di
+package com.google.samples.apps.iosched.tests.di
 
+import android.os.AsyncTask
+import com.google.samples.apps.iosched.shared.di.CoroutineModule
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.asCoroutineDispatcher
 
-open class CoroutineDispatchers {
-    open val defaultDispatcher: CoroutineDispatcher = Dispatchers.Default
-    open val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
-    open val mainDispatcher: CoroutineDispatcher = Dispatchers.Main
-    open val mainImmediateDispatcher: CoroutineDispatcher = Dispatchers.Main.immediate
+class TestCoroutineModule : CoroutineModule() {
+    override val defaultDispatcher: CoroutineDispatcher = AsyncTask.THREAD_POOL_EXECUTOR.asCoroutineDispatcher()
+    override val ioDispatcher: CoroutineDispatcher = AsyncTask.THREAD_POOL_EXECUTOR.asCoroutineDispatcher()
+    override val mainDispatcher: CoroutineDispatcher = Dispatchers.Main
+    override val mainImmediateDispatcher: CoroutineDispatcher = Dispatchers.Main.immediate
 }

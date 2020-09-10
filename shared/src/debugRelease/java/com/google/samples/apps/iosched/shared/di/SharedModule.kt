@@ -16,7 +16,7 @@
 
 package com.google.samples.apps.iosched.shared.di
 
-import android.content.Context
+import android.app.Application
 import com.google.samples.apps.iosched.shared.data.BootstrapConferenceDataSource
 import com.google.samples.apps.iosched.shared.data.ConferenceDataSource
 import com.google.samples.apps.iosched.shared.data.NetworkConferenceDataSource
@@ -41,16 +41,10 @@ import com.google.samples.apps.iosched.shared.fcm.FcmTokenUpdater
 import com.google.samples.apps.iosched.shared.fcm.FcmTopicSubscriber
 import com.google.samples.apps.iosched.shared.fcm.TopicSubscriber
 
-class SharedModule(
-    private val context: Context,
-    coroutineDispatchers: CoroutineDispatchers = CoroutineDispatchers()
-) : AbstractSharedModule(
-    context,
-    coroutineDispatchers
-) {
+class SharedModule(application: Application) : AbstractSharedModule(application) {
     override val remoteConfDataSource: ConferenceDataSource by lazy {
         NetworkConferenceDataSource(
-            context,
+            application,
             networkUtils
         )
     }
@@ -62,7 +56,7 @@ class SharedModule(
         FirestoreMomentDataSource(firebaseFirestore)
     }
     override val userEventDataSource: UserEventDataSource by lazy {
-        FirestoreUserEventDataSource(firebaseFirestore, coroutineDispatchers.ioDispatcher)
+        FirestoreUserEventDataSource(firebaseFirestore, coroutineModule.ioDispatcher)
     }
     override val feedbackEndpoint: FeedbackEndpoint by lazy {
         DefaultFeedbackEndpoint(firebaseFunctions)
@@ -74,7 +68,7 @@ class SharedModule(
         FcmTopicSubscriber()
     }
     override val appConfigDataSource: AppConfigDataSource by lazy {
-        RemoteAppConfigDataSource(firebaseRemoteConfig, coroutineDispatchers.ioDispatcher)
+        RemoteAppConfigDataSource(firebaseRemoteConfig, coroutineModule.ioDispatcher)
     }
     override val registeredUserDataSource: RegisteredUserDataSource by lazy {
         FirestoreRegisteredUserDataSource(firebaseFirestore)
@@ -82,9 +76,9 @@ class SharedModule(
     override val authStateUserDataSource: AuthStateUserDataSource by lazy {
         FirebaseAuthStateUserDataSource(
             firebaseAuth,
-            FcmTokenUpdater(applicationScope, coroutineDispatchers.mainDispatcher, firebaseFirestore),
+            FcmTokenUpdater(applicationScope, coroutineModule.mainDispatcher, firebaseFirestore),
             notificationAlarmUpdater,
-            coroutineDispatchers.ioDispatcher
+            coroutineModule.ioDispatcher
         )
     }
     override val authIdDataSource: AuthIdDataSource by lazy {

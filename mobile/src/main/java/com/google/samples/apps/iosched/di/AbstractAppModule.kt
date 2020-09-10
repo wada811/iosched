@@ -16,13 +16,15 @@
 
 package com.google.samples.apps.iosched.di
 
+import android.app.Application
 import android.content.ClipboardManager
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.wifi.WifiManager
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.di.AbstractSharedModule
-import com.google.samples.apps.iosched.shared.di.CoroutineDispatchers
+import com.google.samples.apps.iosched.shared.di.CoroutineModule
+import com.google.samples.apps.iosched.shared.di.SharedModule
 import com.google.samples.apps.iosched.ui.filters.FiltersViewModelDelegate
 import com.google.samples.apps.iosched.ui.filters.FiltersViewModelDelegateImpl
 import com.google.samples.apps.iosched.ui.map.LoadGeoJsonFeaturesUseCase
@@ -37,32 +39,31 @@ import com.google.samples.apps.iosched.util.FirebaseAnalyticsHelper
 import com.google.samples.apps.iosched.util.signin.SignInHandler
 import com.google.samples.apps.iosched.util.wifi.WifiInstaller
 import com.wada811.dependencyproperty.DependencyModule
+import com.wada811.dependencyproperty.dependencyModule
 
-abstract class AbstractAppModule(
-    protected val context: Context,
-    private val sharedModule: AbstractSharedModule,
-    private val coroutineDispatchers: CoroutineDispatchers
-) : DependencyModule {
+abstract class AbstractAppModule(protected val application: Application) : DependencyModule {
+    protected val sharedModule: AbstractSharedModule by lazy { application.dependencyModule<SharedModule>() }
+    private val coroutineModule: CoroutineModule by lazy { application.dependencyModule<CoroutineModule>() }
     private val wifiManager: WifiManager
-        get() = context.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
+        get() = application.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
     val connectivityManager: ConnectivityManager
-        get() = context.applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        get() = application.applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
     private val clipboardManager: ClipboardManager
-        get() = context.applicationContext.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        get() = application.applicationContext.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
     abstract val signInHandler: SignInHandler
     val signInViewModelDelegate: SignInViewModelDelegate by lazy {
         FirebaseSignInViewModelDelegate(
             sharedModule.observeUserAuthStateUseCase,
             sharedModule.notificationsPrefIsShownUseCase,
-            coroutineDispatchers.ioDispatcher,
-            coroutineDispatchers.mainDispatcher,
+            coroutineModule.ioDispatcher,
+            coroutineModule.mainDispatcher,
             sharedModule.featureFlags.isReservationFeatureEnabled
         )
     }
     val analyticsHelper: AnalyticsHelper by lazy {
         FirebaseAnalyticsHelper(
             sharedModule.applicationScope,
-            context,
+            application,
             signInViewModelDelegate,
             sharedModule.preferenceStorage
         )
@@ -85,8 +86,8 @@ abstract class AbstractAppModule(
         )
     val loadGeoJsonFeaturesUseCase: LoadGeoJsonFeaturesUseCase
         get() = LoadGeoJsonFeaturesUseCase(
-            context,
-            coroutineDispatchers.ioDispatcher
+            application,
+            coroutineModule.ioDispatcher
         )
     val eventActionsViewModelDelegate: EventActionsViewModelDelegate
         get() = DefaultEventActionsViewModelDelegate(
@@ -94,6 +95,6 @@ abstract class AbstractAppModule(
             sharedModule.starEventAndNotifyUseCase,
             snackbarMessageManager,
             sharedModule.applicationScope,
-            coroutineDispatchers.mainDispatcher
+            coroutineModule.mainDispatcher
         )
 }

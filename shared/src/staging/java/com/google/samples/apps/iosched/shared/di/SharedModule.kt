@@ -16,7 +16,7 @@
 
 package com.google.samples.apps.iosched.shared.di
 
-import android.content.Context
+import android.app.Application
 import com.google.samples.apps.iosched.shared.data.ConferenceDataSource
 import com.google.samples.apps.iosched.shared.data.FakeAnnouncementDataSource
 import com.google.samples.apps.iosched.shared.data.FakeAppConfigDataSource
@@ -39,13 +39,7 @@ import com.google.samples.apps.iosched.shared.data.userevent.UserEventDataSource
 import com.google.samples.apps.iosched.shared.fcm.StagingTopicSubscriber
 import com.google.samples.apps.iosched.shared.fcm.TopicSubscriber
 
-class SharedModule(
-    context: Context,
-    coroutineDispatchers: CoroutineDispatchers = CoroutineDispatchers()
-) : AbstractSharedModule(
-    context,
-    coroutineDispatchers
-) {
+class SharedModule(application: Application) : AbstractSharedModule(application) {
     override val remoteConfDataSource: ConferenceDataSource by lazy { FakeConferenceDataSource }
     override val bootstrapConfDataSource: ConferenceDataSource by lazy { FakeConferenceDataSource }
     override val announcementDataSource: AnnouncementDataSource by lazy { FakeAnnouncementDataSource }
@@ -62,7 +56,7 @@ class SharedModule(
         StagingAuthStateUserDataSource(
             isRegistered = true,
             isSignedIn = true,
-            context = context,
+            context = application,
             userId = "StagingTest",
             notificationAlarmUpdater = notificationAlarmUpdater
         )

@@ -16,22 +16,12 @@
 
 package com.google.samples.apps.iosched.di
 
-import android.content.Context
-import com.google.samples.apps.iosched.shared.di.AbstractSharedModule
-import com.google.samples.apps.iosched.shared.di.CoroutineDispatchers
+import android.app.Application
 import com.google.samples.apps.iosched.util.signin.SignInHandler
 import com.google.samples.apps.iosched.util.signin.StagingAuthenticatedUser
 import com.google.samples.apps.iosched.util.signin.StagingSignInHandler
 
-class AppModule(
-    context: Context,
-    sharedModule: AbstractSharedModule,
-    coroutineDispatchers: CoroutineDispatchers = CoroutineDispatchers()
-) : AbstractAppModule(
-    context,
-    sharedModule,
-    coroutineDispatchers
-) {
+class AppModule(application: Application) : AbstractAppModule(application) {
     override val signInHandler: SignInHandler
-        get() = StagingSignInHandler(StagingAuthenticatedUser(context))
+        get() = StagingSignInHandler(StagingAuthenticatedUser(application))
 }

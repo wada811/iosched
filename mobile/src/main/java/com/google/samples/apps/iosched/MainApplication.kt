@@ -21,6 +21,7 @@ import android.os.StrictMode
 import android.os.StrictMode.ThreadPolicy.Builder
 import com.google.samples.apps.iosched.di.AppModule
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
+import com.google.samples.apps.iosched.shared.di.CoroutineModule
 import com.google.samples.apps.iosched.shared.di.SharedModule
 import com.google.samples.apps.iosched.util.CrashlyticsTree
 import com.jakewharton.threetenabp.AndroidThreeTen
@@ -33,11 +34,7 @@ import timber.log.Timber
  * Initialization of libraries.
  */
 class MainApplication : Application(), DependencyModulesHolder {
-    private val sharedModule = SharedModule(this)
-    override val dependencyModules: DependencyModules by dependencyModules(
-        AppModule(this, sharedModule),
-        sharedModule
-    )
+    override val dependencyModules: DependencyModules by dependencyModules(AppModule(this), SharedModule(this), CoroutineModule())
 
     override fun onCreate() {
         // ThreeTenBP for times and dates, called before super to be available for objects

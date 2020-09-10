@@ -16,21 +16,11 @@
 
 package com.google.samples.apps.iosched.di
 
-import android.content.Context
-import com.google.samples.apps.iosched.shared.di.AbstractSharedModule
-import com.google.samples.apps.iosched.shared.di.CoroutineDispatchers
+import android.app.Application
 import com.google.samples.apps.iosched.util.signin.FirebaseAuthSignInHandler
 import com.google.samples.apps.iosched.util.signin.SignInHandler
 
-class AppModule(
-    context: Context,
-    sharedModule: AbstractSharedModule,
-    coroutineDispatchers: CoroutineDispatchers = CoroutineDispatchers()
-) : AbstractAppModule(
-    context,
-    sharedModule,
-    coroutineDispatchers
-) {
+class AppModule(application: Application) : AbstractAppModule(application) {
     override val signInHandler: SignInHandler
         get() = FirebaseAuthSignInHandler(sharedModule.applicationScope)
 }

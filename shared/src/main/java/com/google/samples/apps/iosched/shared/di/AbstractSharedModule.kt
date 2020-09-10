@@ -16,7 +16,7 @@
 
 package com.google.samples.apps.iosched.shared.di
 
-import android.content.Context
+import android.app.Application
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -113,19 +113,18 @@ import com.google.samples.apps.iosched.shared.time.DefaultTimeProvider
 import com.google.samples.apps.iosched.shared.time.TimeProvider
 import com.google.samples.apps.iosched.shared.util.NetworkUtils
 import com.wada811.dependencyproperty.DependencyModule
+import com.wada811.dependencyproperty.dependencyModule
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 
-abstract class AbstractSharedModule(
-    private val context: Context,
-    private val coroutineDispatchers: CoroutineDispatchers
-) : DependencyModule {
+abstract class AbstractSharedModule(protected val application: Application) : DependencyModule {
+    protected val coroutineModule: CoroutineModule by lazy { application.dependencyModule<CoroutineModule>() }
     val networkUtils: NetworkUtils
-        get() = NetworkUtils(context)
+        get() = NetworkUtils(application)
     abstract val remoteConfDataSource: ConferenceDataSource
     abstract val bootstrapConfDataSource: ConferenceDataSource
     private val appDatabase: AppDatabase by lazy {
-        AppDatabase.buildDatabase(context)
+        AppDatabase.buildDatabase(application)
     }
     private val conferenceDataRepository: ConferenceDataRepository by lazy {
         ConferenceDataRepository(remoteConfDataSource, bootstrapConfDataSource, appDatabase)
@@ -183,14 +182,14 @@ abstract class AbstractSharedModule(
         GsonBuilder().create()
     }
     val applicationScope: CoroutineScope by lazy {
-        CoroutineScope(SupervisorJob() + coroutineDispatchers.defaultDispatcher)
+        CoroutineScope(SupervisorJob() + coroutineModule.defaultDispatcher)
     }
     abstract val registeredUserDataSource: RegisteredUserDataSource
     val firebaseAuth: FirebaseAuth by lazy {
         Firebase.auth
     }
     val sessionAlarmManager: SessionAlarmManager by lazy {
-        SessionAlarmManager(context)
+        SessionAlarmManager(application)
     }
     val notificationAlarmUpdater: NotificationAlarmUpdater by lazy {
         NotificationAlarmUpdater(sessionAlarmManager, sessionAndUserEventRepository, applicationScope)
@@ -203,37 +202,37 @@ abstract class AbstractSharedModule(
             authStateUserDataSource,
             topicSubscriber,
             applicationScope,
-            coroutineDispatchers.ioDispatcher
+            coroutineModule.ioDispatcher
         )
     }
     val preferenceStorage: PreferenceStorage by lazy {
-        SharedPreferenceStorage(context)
+        SharedPreferenceStorage(application)
     }
     val notificationsPrefIsShownUseCase: NotificationsPrefIsShownUseCase by lazy {
         NotificationsPrefIsShownUseCase(
             preferenceStorage,
-            coroutineDispatchers.ioDispatcher
+            coroutineModule.ioDispatcher
         )
     }
     val observeThemeModeUseCase: ObserveThemeModeUseCase
         get() = ObserveThemeModeUseCase(
             preferenceStorage,
-            coroutineDispatchers.defaultDispatcher
+            coroutineModule.defaultDispatcher
         )
     val getThemeUseCase: GetThemeUseCase
         get() = GetThemeUseCase(
             preferenceStorage,
-            coroutineDispatchers.ioDispatcher
+            coroutineModule.ioDispatcher
         )
     val loadAgendaUseCase: LoadAgendaUseCase
         get() = LoadAgendaUseCase(
             agendaRepository,
-            coroutineDispatchers.ioDispatcher
+            coroutineModule.ioDispatcher
         )
     val getTimeZoneUseCase: GetTimeZoneUseCase
         get() = GetTimeZoneUseCase(
             preferenceStorage,
-            coroutineDispatchers.ioDispatcher
+            coroutineModule.ioDispatcher
         )
     private val codelabsRepository: CodelabsRepository by lazy {
         CodelabsRepository(conferenceDataRepository)
@@ -241,68 +240,68 @@ abstract class AbstractSharedModule(
     val loadCodelabsUseCase: LoadCodelabsUseCase
         get() = LoadCodelabsUseCase(
             codelabsRepository,
-            coroutineDispatchers.ioDispatcher
+            coroutineModule.ioDispatcher
         )
     val getCodelabsInfoCardShownUseCase: GetCodelabsInfoCardShownUseCase
         get() = GetCodelabsInfoCardShownUseCase(
             preferenceStorage,
-            coroutineDispatchers.ioDispatcher
+            coroutineModule.ioDispatcher
         )
     val setCodelabsInfoCardShownUseCase: SetCodelabsInfoCardShownUseCase
         get() = SetCodelabsInfoCardShownUseCase(
             preferenceStorage,
-            coroutineDispatchers.ioDispatcher
+            coroutineModule.ioDispatcher
         )
     val loadAnnouncementsUseCase: LoadAnnouncementsUseCase
         get() = LoadAnnouncementsUseCase(
             feedRepository,
-            coroutineDispatchers.ioDispatcher
+            coroutineModule.ioDispatcher
         )
     val loadCurrentMomentUseCase: LoadCurrentMomentUseCase
         get() = LoadCurrentMomentUseCase(
             feedRepository,
-            coroutineDispatchers.ioDispatcher
+            coroutineModule.ioDispatcher
         )
     val loadStarredAndReservedSessionsUseCase: LoadStarredAndReservedSessionsUseCase
         get() = LoadStarredAndReservedSessionsUseCase(
             sessionAndUserEventRepository,
-            coroutineDispatchers.ioDispatcher
+            coroutineModule.ioDispatcher
         )
     val getConferenceStateUseCase: GetConferenceStateUseCase
         get() = GetConferenceStateUseCase(
             timeProvider,
-            coroutineDispatchers.mainDispatcher
+            coroutineModule.mainDispatcher
         )
     val loadWifiInfoUseCase: LoadWifiInfoUseCase by lazy {
         LoadWifiInfoUseCase(
             appConfigDataSource,
-            coroutineDispatchers.ioDispatcher
+            coroutineModule.ioDispatcher
         )
     }
     val optIntoMyLocationUseCase: OptIntoMyLocationUseCase
         get() = OptIntoMyLocationUseCase(
             preferenceStorage,
-            coroutineDispatchers.ioDispatcher
+            coroutineModule.ioDispatcher
         )
     val myLocationOptedInUseCase: MyLocationOptedInUseCase
         get() = MyLocationOptedInUseCase(
             preferenceStorage,
-            coroutineDispatchers.ioDispatcher
+            coroutineModule.ioDispatcher
         )
     val onboardingCompleteActionUseCase: OnboardingCompleteActionUseCase
         get() = OnboardingCompleteActionUseCase(
             preferenceStorage,
-            coroutineDispatchers.ioDispatcher
+            coroutineModule.ioDispatcher
         )
     val stopSnackbarActionUseCase: StopSnackbarActionUseCase
         get() = StopSnackbarActionUseCase(
             preferenceStorage,
-            coroutineDispatchers.ioDispatcher
+            coroutineModule.ioDispatcher
         )
     val loadUserSessionUseCase: LoadUserSessionUseCase
         get() = LoadUserSessionUseCase(
             sessionAndUserEventRepository,
-            coroutineDispatchers.ioDispatcher
+            coroutineModule.ioDispatcher
         )
     private val starReserveNotificationAlarmUpdater: StarReserveNotificationAlarmUpdater by lazy {
         StarReserveNotificationAlarmUpdater(sessionAlarmManager)
@@ -311,135 +310,135 @@ abstract class AbstractSharedModule(
         get() = ReservationActionUseCase(
             sessionAndUserEventRepository,
             starReserveNotificationAlarmUpdater,
-            coroutineDispatchers.ioDispatcher
+            coroutineModule.ioDispatcher
         )
     val swapActionUseCase: SwapActionUseCase
         get() = SwapActionUseCase(
             sessionAndUserEventRepository,
-            coroutineDispatchers.ioDispatcher
+            coroutineModule.ioDispatcher
         )
     val markScheduleUiHintsShownUseCase: MarkScheduleUiHintsShownUseCase
         get() = MarkScheduleUiHintsShownUseCase(
             preferenceStorage,
-            coroutineDispatchers.ioDispatcher
+            coroutineModule.ioDispatcher
         )
     val loadScheduleUserSessionsUseCase: LoadScheduleUserSessionsUseCase
         get() = LoadScheduleUserSessionsUseCase(
             sessionAndUserEventRepository,
-            coroutineDispatchers.ioDispatcher
+            coroutineModule.ioDispatcher
         )
     val starEventAndNotifyUseCase: StarEventAndNotifyUseCase
         get() = StarEventAndNotifyUseCase(
             sessionAndUserEventRepository,
             starReserveNotificationAlarmUpdater,
-            coroutineDispatchers.ioDispatcher
+            coroutineModule.ioDispatcher
         )
     val scheduleUiHintsShownUseCase: ScheduleUiHintsShownUseCase
         get() = ScheduleUiHintsShownUseCase(
             preferenceStorage,
-            coroutineDispatchers.ioDispatcher
+            coroutineModule.ioDispatcher
         )
     val refreshConferenceDataUseCase: RefreshConferenceDataUseCase
         get() = RefreshConferenceDataUseCase(
             conferenceDataRepository,
-            coroutineDispatchers.ioDispatcher
+            coroutineModule.ioDispatcher
         )
     val observeConferenceDataUseCase: ObserveConferenceDataUseCase
         get() = ObserveConferenceDataUseCase(
             conferenceDataRepository,
-            coroutineDispatchers.ioDispatcher
+            coroutineModule.ioDispatcher
         )
     val loadUserSessionsUseCase: LoadUserSessionsUseCase
         get() = LoadUserSessionsUseCase(
             sessionAndUserEventRepository,
-            coroutineDispatchers.ioDispatcher
+            coroutineModule.ioDispatcher
         )
     val feedbackUseCase: FeedbackUseCase
         get() = FeedbackUseCase(
             feedbackEndpoint,
             sessionAndUserEventRepository,
-            coroutineDispatchers.ioDispatcher
+            coroutineModule.ioDispatcher
         )
     val setTimeZoneUseCase: SetTimeZoneUseCase
         get() = SetTimeZoneUseCase(
             preferenceStorage,
-            coroutineDispatchers.ioDispatcher
+            coroutineModule.ioDispatcher
         )
     val notificationsPrefSaveActionUseCase: NotificationsPrefSaveActionUseCase
         get() = NotificationsPrefSaveActionUseCase(
             preferenceStorage,
-            coroutineDispatchers.ioDispatcher
+            coroutineModule.ioDispatcher
         )
     val getNotificationsSettingUseCase: GetNotificationsSettingUseCase
         get() = GetNotificationsSettingUseCase(
             preferenceStorage,
-            coroutineDispatchers.ioDispatcher
+            coroutineModule.ioDispatcher
         )
     val setAnalyticsSettingUseCase: SetAnalyticsSettingUseCase
         get() = SetAnalyticsSettingUseCase(
             preferenceStorage,
-            coroutineDispatchers.ioDispatcher
+            coroutineModule.ioDispatcher
         )
     val getAnalyticsSettingUseCase: GetAnalyticsSettingUseCase
         get() = GetAnalyticsSettingUseCase(
             preferenceStorage,
-            coroutineDispatchers.ioDispatcher
+            coroutineModule.ioDispatcher
         )
     val setThemeUseCase: SetThemeUseCase
         get() = SetThemeUseCase(
             preferenceStorage,
-            coroutineDispatchers.ioDispatcher
+            coroutineModule.ioDispatcher
         )
     val getAvailableThemesUseCase: GetAvailableThemesUseCase
         get() = GetAvailableThemesUseCase(
-            coroutineDispatchers.mainImmediateDispatcher
+            coroutineModule.mainImmediateDispatcher
         )
     val notificationsPrefShownActionUseCase: NotificationsPrefShownActionUseCase
         get() = NotificationsPrefShownActionUseCase(
             preferenceStorage,
-            coroutineDispatchers.ioDispatcher
+            coroutineModule.ioDispatcher
         )
     val loadSpeakerUseCase: LoadSpeakerUseCase
         get() = LoadSpeakerUseCase(
             conferenceDataRepository,
-            coroutineDispatchers.ioDispatcher
+            coroutineModule.ioDispatcher
         )
     val onboardingCompletedUseCase: OnboardingCompletedUseCase
         get() = OnboardingCompletedUseCase(
             preferenceStorage,
-            coroutineDispatchers.ioDispatcher
+            coroutineModule.ioDispatcher
         )
     val loadPinnedSessionsJsonUseCase: LoadPinnedSessionsJsonUseCase
         get() = LoadPinnedSessionsJsonUseCase(
             sessionAndUserEventRepository,
             gson,
-            coroutineDispatchers.ioDispatcher
+            coroutineModule.ioDispatcher
         )
     val loadArDebugFlagUseCase: LoadArDebugFlagUseCase
         get() = LoadArDebugFlagUseCase(
             arDebugFlagEndpoint,
-            coroutineDispatchers.ioDispatcher
+            coroutineModule.ioDispatcher
         )
     val sessionSearchUseCase: SessionSearchUseCase
         get() = SessionSearchUseCase(
             sessionAndUserEventRepository,
             sessionTextMatchStrategy,
-            coroutineDispatchers.ioDispatcher
+            coroutineModule.ioDispatcher
         )
     val loadSearchFiltersUseCase: LoadSearchFiltersUseCase
         get() = LoadSearchFiltersUseCase(
             conferenceDataRepository,
             TagRepository(conferenceDataRepository),
-            coroutineDispatchers.ioDispatcher
+            coroutineModule.ioDispatcher
         )
     val loadUserSessionOneShotUseCase: LoadUserSessionOneShotUseCase
         get() = LoadUserSessionOneShotUseCase(
             sessionAndUserEventRepository,
-            coroutineDispatchers.ioDispatcher
+            coroutineModule.ioDispatcher
         )
     val loadSessionOneShotUseCase: LoadSessionOneShotUseCase
         get() = LoadSessionOneShotUseCase(
             sessionRepository,
-            coroutineDispatchers.ioDispatcher
+            coroutineModule.ioDispatcher
         )
 }
