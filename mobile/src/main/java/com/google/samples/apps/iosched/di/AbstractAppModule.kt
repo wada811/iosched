@@ -23,8 +23,6 @@ import android.net.wifi.WifiManager
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.di.AbstractSharedModule
 import com.google.samples.apps.iosched.shared.di.CoroutineDispatchers
-import com.google.samples.apps.iosched.shared.domain.internal.IOSchedHandler
-import com.google.samples.apps.iosched.shared.domain.internal.IOSchedMainHandler
 import com.google.samples.apps.iosched.ui.filters.FiltersViewModelDelegate
 import com.google.samples.apps.iosched.ui.filters.FiltersViewModelDelegateImpl
 import com.google.samples.apps.iosched.ui.map.LoadGeoJsonFeaturesUseCase
@@ -42,16 +40,15 @@ import com.wada811.dependencyproperty.DependencyModule
 
 abstract class AbstractAppModule(
     protected val context: Context,
-    protected val sharedModule: AbstractSharedModule,
+    private val sharedModule: AbstractSharedModule,
     private val coroutineDispatchers: CoroutineDispatchers
 ) : DependencyModule {
-    val wifiManager: WifiManager
+    private val wifiManager: WifiManager
         get() = context.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
     val connectivityManager: ConnectivityManager
         get() = context.applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-    val clipboardManager: ClipboardManager
+    private val clipboardManager: ClipboardManager
         get() = context.applicationContext.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-    val mainThreadHandler: IOSchedHandler by lazy { IOSchedMainHandler() }
     abstract val signInHandler: SignInHandler
     val signInViewModelDelegate: SignInViewModelDelegate by lazy {
         FirebaseSignInViewModelDelegate(

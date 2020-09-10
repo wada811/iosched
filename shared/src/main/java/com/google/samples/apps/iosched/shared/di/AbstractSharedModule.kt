@@ -118,29 +118,29 @@ import kotlinx.coroutines.SupervisorJob
 
 abstract class AbstractSharedModule(
     private val context: Context,
-    protected val coroutineDispatchers: CoroutineDispatchers
+    private val coroutineDispatchers: CoroutineDispatchers
 ) : DependencyModule {
     val networkUtils: NetworkUtils
         get() = NetworkUtils(context)
     abstract val remoteConfDataSource: ConferenceDataSource
     abstract val bootstrapConfDataSource: ConferenceDataSource
-    val appDatabase: AppDatabase by lazy {
+    private val appDatabase: AppDatabase by lazy {
         AppDatabase.buildDatabase(context)
     }
-    val conferenceDataRepository: ConferenceDataRepository by lazy {
+    private val conferenceDataRepository: ConferenceDataRepository by lazy {
         ConferenceDataRepository(remoteConfDataSource, bootstrapConfDataSource, appDatabase)
     }
     abstract val announcementDataSource: AnnouncementDataSource
     abstract val momentsDataSource: MomentDataSource
-    val feedRepository: FeedRepository by lazy {
+    private val feedRepository: FeedRepository by lazy {
         DefaultFeedRepository(announcementDataSource, momentsDataSource)
     }
-    val sessionRepository: SessionRepository by lazy {
+    private val sessionRepository: SessionRepository by lazy {
         DefaultSessionRepository(conferenceDataRepository)
     }
     abstract val userEventDataSource: UserEventDataSource
     abstract val feedbackEndpoint: FeedbackEndpoint
-    val sessionAndUserEventRepository: SessionAndUserEventRepository by lazy {
+    private val sessionAndUserEventRepository: SessionAndUserEventRepository by lazy {
         DefaultSessionAndUserEventRepository(userEventDataSource, sessionRepository)
     }
     val firebaseFirestore: FirebaseFirestore by lazy {
@@ -173,10 +173,10 @@ abstract class AbstractSharedModule(
     val featureFlags: FeatureFlags by lazy {
         FeatureFlags(appConfigDataSource)
     }
-    val sessionTextMatchStrategy: SessionTextMatchStrategy by lazy {
+    private val sessionTextMatchStrategy: SessionTextMatchStrategy by lazy {
         if (featureFlags.isSearchUsingRoomFeatureEnabled) FtsMatchStrategy(appDatabase) else SimpleMatchStrategy
     }
-    val agendaRepository: AgendaRepository by lazy {
+    private val agendaRepository: AgendaRepository by lazy {
         DefaultAgendaRepository(appConfigDataSource)
     }
     val gson: Gson by lazy {
@@ -235,7 +235,7 @@ abstract class AbstractSharedModule(
             preferenceStorage,
             coroutineDispatchers.ioDispatcher
         )
-    val codelabsRepository: CodelabsRepository by lazy {
+    private val codelabsRepository: CodelabsRepository by lazy {
         CodelabsRepository(conferenceDataRepository)
     }
     val loadCodelabsUseCase: LoadCodelabsUseCase
@@ -304,7 +304,7 @@ abstract class AbstractSharedModule(
             sessionAndUserEventRepository,
             coroutineDispatchers.ioDispatcher
         )
-    val starReserveNotificationAlarmUpdater: StarReserveNotificationAlarmUpdater by lazy {
+    private val starReserveNotificationAlarmUpdater: StarReserveNotificationAlarmUpdater by lazy {
         StarReserveNotificationAlarmUpdater(sessionAlarmManager)
     }
     val reservationActionUseCase: ReservationActionUseCase
