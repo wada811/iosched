@@ -34,6 +34,8 @@ import com.google.samples.apps.iosched.shared.data.login.datasources.StagingRegi
 import com.google.samples.apps.iosched.shared.data.signin.datasources.AuthIdDataSource
 import com.google.samples.apps.iosched.shared.data.signin.datasources.AuthStateUserDataSource
 import com.google.samples.apps.iosched.shared.data.signin.datasources.RegisteredUserDataSource
+import com.google.samples.apps.iosched.shared.data.userevent.FakeUserEventDataSource
+import com.google.samples.apps.iosched.shared.data.userevent.UserEventDataSource
 import com.google.samples.apps.iosched.shared.fcm.StagingTopicSubscriber
 import com.google.samples.apps.iosched.shared.fcm.TopicSubscriber
 
@@ -48,6 +50,7 @@ class SharedModule(
     override val bootstrapConfDataSource: ConferenceDataSource by lazy { FakeConferenceDataSource }
     override val announcementDataSource: AnnouncementDataSource by lazy { FakeAnnouncementDataSource }
     override val momentsDataSource: MomentDataSource by lazy { FakeMomentDataSource }
+    override val userEventDataSource: UserEventDataSource by lazy { FakeUserEventDataSource }
     override val feedbackEndpoint: FeedbackEndpoint by lazy { FakeFeedbackEndpoint }
     override val arDebugFlagEndpoint: ArDebugFlagEndpoint by lazy { FakeArDebugFlagEndpoint }
     override val topicSubscriber: TopicSubscriber by lazy { StagingTopicSubscriber() }

@@ -55,7 +55,6 @@ import com.google.samples.apps.iosched.shared.data.signin.datasources.AuthStateU
 import com.google.samples.apps.iosched.shared.data.signin.datasources.RegisteredUserDataSource
 import com.google.samples.apps.iosched.shared.data.tag.TagRepository
 import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
-import com.google.samples.apps.iosched.shared.data.userevent.FirestoreUserEventDataSource
 import com.google.samples.apps.iosched.shared.data.userevent.SessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventDataSource
 import com.google.samples.apps.iosched.shared.domain.RefreshConferenceDataUseCase
@@ -139,9 +138,7 @@ abstract class AbstractSharedModule(
     val sessionRepository: SessionRepository by lazy {
         DefaultSessionRepository(conferenceDataRepository)
     }
-    val userEventDataSource: UserEventDataSource by lazy {
-        FirestoreUserEventDataSource(firebaseFirestore, coroutineDispatchers.ioDispatcher)
-    }
+    abstract val userEventDataSource: UserEventDataSource
     abstract val feedbackEndpoint: FeedbackEndpoint
     val sessionAndUserEventRepository: SessionAndUserEventRepository by lazy {
         DefaultSessionAndUserEventRepository(userEventDataSource, sessionRepository)
