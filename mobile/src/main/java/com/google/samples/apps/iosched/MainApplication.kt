@@ -40,10 +40,6 @@ class MainApplication : Application(), DependencyModulesHolder {
     )
 
     override fun onCreate() {
-        // Even if the var isn't used, needs to be initialized at application startup.
-        val analyticsHelper = dependency<AppModule, AnalyticsHelper> { it.analyticsHelper }.value
-        analyticsHelper.toString()
-
         // ThreeTenBP for times and dates, called before super to be available for objects
         AndroidThreeTen.init(this)
 
@@ -52,6 +48,10 @@ class MainApplication : Application(), DependencyModulesHolder {
             enableStrictMode()
         }
         super.onCreate()
+
+        val analyticsHelper = dependency<AppModule, AnalyticsHelper> { it.analyticsHelper }.value
+        // Even if the var isn't used, needs to be initialized at application startup.
+        analyticsHelper.toString()
 
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
