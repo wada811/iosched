@@ -17,17 +17,15 @@
 package com.google.samples.apps.iosched.shared.domain
 
 import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
-import com.google.samples.apps.iosched.shared.di.IoDispatcher
-import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import timber.log.Timber
 
 /**
  * Forces a refresh in the conference data repository.
  */
-open class RefreshConferenceDataUseCase @Inject constructor(
+open class RefreshConferenceDataUseCase(
     private val repository: ConferenceDataRepository,
-    @IoDispatcher dispatcher: CoroutineDispatcher
+    dispatcher: CoroutineDispatcher
 ) : UseCase<Any, Boolean>(dispatcher) {
 
     override suspend fun execute(parameters: Any): Boolean {

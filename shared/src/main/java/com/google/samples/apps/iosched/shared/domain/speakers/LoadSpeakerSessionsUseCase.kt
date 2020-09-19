@@ -20,18 +20,16 @@ import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.Speaker
 import com.google.samples.apps.iosched.model.SpeakerId
 import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
-import com.google.samples.apps.iosched.shared.di.IoDispatcher
 import com.google.samples.apps.iosched.shared.domain.UseCase
-import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 
 /**
  * Loads a [Speaker] and the IDs of any [com.google.samples.apps.iosched.model.Session]s
  * they are speaking in.
  */
-open class LoadSpeakerUseCase @Inject constructor(
+open class LoadSpeakerUseCase(
     private val conferenceDataRepository: ConferenceDataRepository,
-    @IoDispatcher dispatcher: CoroutineDispatcher
+    dispatcher: CoroutineDispatcher
 ) : UseCase<SpeakerId, LoadSpeakerUseCaseResult>(dispatcher) {
 
     override suspend fun execute(parameters: SpeakerId): LoadSpeakerUseCaseResult {

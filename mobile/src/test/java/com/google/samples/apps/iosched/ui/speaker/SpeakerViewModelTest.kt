@@ -18,6 +18,7 @@
 
 package com.google.samples.apps.iosched.ui.speaker
 
+import android.app.Application
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.androidtest.util.observeForTesting
@@ -50,7 +51,8 @@ import org.junit.Test
 class SpeakerViewModelTest {
 
     // Executes tasks in the Architecture Components in the same thread
-    @get:Rule var instantTaskExecutorRule = InstantTaskExecutorRule()
+    @get:Rule
+    var instantTaskExecutorRule = InstantTaskExecutorRule()
 
     // Overrides Dispatchers.Main used in Coroutines
     @get:Rule
@@ -121,6 +123,7 @@ class SpeakerViewModelTest {
         analyticsHelper: AnalyticsHelper = FakeAnalyticsHelper()
     ): SpeakerViewModel {
         return SpeakerViewModel(
+            Application(),
             loadSpeakerUseCase,
             loadSpeakerSessionsUseCase,
             getTimeZoneUseCase,

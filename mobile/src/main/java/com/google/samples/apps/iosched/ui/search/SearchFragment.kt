@@ -31,6 +31,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView.RecycledViewPool
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentSearchBinding
+import com.google.samples.apps.iosched.di.AppModule
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
@@ -39,19 +40,15 @@ import com.google.samples.apps.iosched.ui.search.SearchFragmentDirections.Compan
 import com.google.samples.apps.iosched.ui.sessioncommon.SessionsAdapter
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
 import com.google.samples.apps.iosched.util.openWebsiteUrl
-import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
-import javax.inject.Named
+import com.wada811.dependencyproperty.DependencyModule
+import com.wada811.dependencyproperty.dependency
+import com.wada811.dependencyproperty.dependencyModules
 
-@AndroidEntryPoint
 class SearchFragment : MainNavigationFragment() {
 
-    @Inject
-    lateinit var analyticsHelper: AnalyticsHelper
+    private val analyticsHelper by dependency<AppModule, AnalyticsHelper> { it.analyticsHelper }
 
-    @Inject
-    @field:Named("tagViewPool")
-    lateinit var tagViewPool: RecycledViewPool
+    private val tagViewPool: RecycledViewPool by dependency<SearchFragmentModule, RecycledViewPool> { it.tagViewPool }
 
     private lateinit var binding: FragmentSearchBinding
 
@@ -92,6 +89,7 @@ class SearchFragment : MainNavigationFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        dependencyModules.replaceModule(SearchFragmentModule())
         binding.viewModel = viewModel
 
         binding.includeSearchAppbar.toolbar.apply {
@@ -165,5 +163,9 @@ class SearchFragment : MainNavigationFragment() {
 
     private fun findFiltersFragment(): SearchFilterFragment {
         return childFragmentManager.findFragmentById(R.id.filter_sheet) as SearchFilterFragment
+    }
+
+    class SearchFragmentModule : DependencyModule {
+        val tagViewPool: RecycledViewPool by lazy { RecycledViewPool() }
     }
 }

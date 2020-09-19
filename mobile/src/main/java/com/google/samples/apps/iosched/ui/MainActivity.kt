@@ -40,11 +40,10 @@ import com.google.android.material.navigation.NavigationView
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.ar.ArActivity
 import com.google.samples.apps.iosched.databinding.NavigationHeaderBinding
+import com.google.samples.apps.iosched.di.AppModule
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
-import com.google.samples.apps.iosched.shared.di.CodelabsEnabledFlag
-import com.google.samples.apps.iosched.shared.di.ExploreArEnabledFlag
-import com.google.samples.apps.iosched.shared.di.MapFeatureEnabledFlag
+import com.google.samples.apps.iosched.shared.di.SharedModule
 import com.google.samples.apps.iosched.shared.domain.ar.ArConstants
 import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
@@ -59,12 +58,10 @@ import com.google.samples.apps.iosched.util.signin.FirebaseAuthErrorCodeConverte
 import com.google.samples.apps.iosched.util.updateForTheme
 import com.google.samples.apps.iosched.widget.HashtagIoDecoration
 import com.google.samples.apps.iosched.widget.NavigationBarContentFrameLayout
-import dagger.hilt.android.AndroidEntryPoint
+import com.wada811.dependencyproperty.dependency
 import timber.log.Timber
 import java.util.UUID
-import javax.inject.Inject
 
-@AndroidEntryPoint
 class MainActivity : AppCompatActivity(), NavigationHost {
 
     companion object {
@@ -87,29 +84,17 @@ class MainActivity : AppCompatActivity(), NavigationHost {
         )
     }
 
-    @Inject
-    lateinit var snackbarMessageManager: SnackbarMessageManager
+    private val snackbarMessageManager by dependency<AppModule, SnackbarMessageManager> { it.snackbarMessageManager }
 
-    @Inject
-    lateinit var connectivityManager: ConnectivityManager
+    private val connectivityManager by dependency<AppModule, ConnectivityManager> { it.connectivityManager }
 
-    @Inject
-    lateinit var analyticsHelper: AnalyticsHelper
+    private val analyticsHelper by dependency<AppModule, AnalyticsHelper> { it.analyticsHelper }
 
-    @Inject
-    @JvmField
-    @MapFeatureEnabledFlag
-    var mapFeatureEnabled: Boolean = false
+    private val mapFeatureEnabled by dependency<SharedModule, Boolean> { it.featureFlags.isMapFeatureEnabled }
 
-    @Inject
-    @JvmField
-    @CodelabsEnabledFlag
-    var codelabsFeatureEnabled: Boolean = false
+    private val codelabsFeatureEnabled by dependency<SharedModule, Boolean> { it.featureFlags.isCodelabsFeatureEnabled }
 
-    @Inject
-    @JvmField
-    @ExploreArEnabledFlag
-    var exploreArFeatureEnabled: Boolean = false
+    private val exploreArFeatureEnabled by dependency<SharedModule, Boolean> { it.featureFlags.isExploreArFeatureEnabled }
 
     private val viewModel: MainActivityViewModel by viewModels()
 
@@ -156,8 +141,8 @@ class MainActivity : AppCompatActivity(), NavigationHost {
 
         content = findViewById(R.id.content_container)
         content.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
-                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
-                View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+            View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
+            View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
         // Make the content ViewGroup ignore insets so that it does not use the default padding
         content.setOnApplyWindowInsetsListener(NoopWindowInsetsListener)
 

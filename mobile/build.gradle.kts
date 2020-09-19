@@ -21,7 +21,6 @@ plugins {
     kotlin("kapt")
     id("androidx.navigation.safeargs.kotlin")
     id("io.fabric")
-    id("dagger.hilt.android.plugin")
 }
 
 android {
@@ -35,11 +34,11 @@ android {
         testInstrumentationRunner = "com.google.samples.apps.iosched.tests.CustomTestRunner"
 
         buildConfigField("com.google.android.gms.maps.model.LatLng",
-                "MAP_VIEWPORT_BOUND_NE",
-                "new com.google.android.gms.maps.model.LatLng(${properties["map_viewport_bound_ne"]})")
+            "MAP_VIEWPORT_BOUND_NE",
+            "new com.google.android.gms.maps.model.LatLng(${properties["map_viewport_bound_ne"]})")
         buildConfigField("com.google.android.gms.maps.model.LatLng",
-                "MAP_VIEWPORT_BOUND_SW",
-                "new com.google.android.gms.maps.model.LatLng(${properties["map_viewport_bound_sw"]})")
+            "MAP_VIEWPORT_BOUND_SW",
+            "new com.google.android.gms.maps.model.LatLng(${properties["map_viewport_bound_sw"]})")
 
         buildConfigField("float", "MAP_CAMERA_FOCUS_ZOOM", properties["map_camera_focus_zoom"] as String)
 
@@ -69,8 +68,8 @@ android {
             manifestPlaceholders = mapOf("crashlyticsEnabled" to true)
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             resValue("string",
-                    "google_maps_key",
-                    "AIzaSyD5jqwKMm1SeoYsW25vxCXfTlhDBeZ4H5c")
+                "google_maps_key",
+                "AIzaSyD5jqwKMm1SeoYsW25vxCXfTlhDBeZ4H5c")
 
             buildConfigField("String", "MAP_TILE_URL_BASE", "\"https://storage.googleapis.com/io2019-festivus-prod/images/maptiles\"")
         }
@@ -78,8 +77,8 @@ android {
             versionNameSuffix = "-debug"
             manifestPlaceholders = mapOf("crashlyticsEnabled" to false)
             resValue("string",
-                    "google_maps_key",
-                    "AIzaSyAhJx57ikQH9rYc8IT8W3d2As5cGHMBvuo")
+                "google_maps_key",
+                "AIzaSyAhJx57ikQH9rYc8IT8W3d2As5cGHMBvuo")
 
             buildConfigField("String", "MAP_TILE_URL_BASE", "\"https://storage.googleapis.com/io2019-festivus/images/maptiles\"")
         }
@@ -147,6 +146,7 @@ dependencies {
     api(platform(project(":depconstraints")))
     kapt(platform(project(":depconstraints")))
 
+    implementation(project(":model"))
     implementation(project(":shared"))
     implementation(project(":ar"))
     testImplementation(project(":test-shared"))
@@ -180,14 +180,8 @@ dependencies {
     testImplementation(Libs.ROOM_KTX)
     testImplementation(Libs.ROOM_RUNTIME)
 
-    // Dagger Hilt
-    implementation(Libs.HILT_ANDROID)
-    implementation(Libs.HILT_VIEWMODEL)
-    androidTestImplementation(Libs.HILT_TESTING)
-    kapt(Libs.HILT_COMPILER)
-    kapt(Libs.ANDROIDX_HILT_COMPILER)
-    kaptAndroidTest(Libs.HILT_COMPILER)
-    kaptAndroidTest(Libs.ANDROIDX_HILT_COMPILER)
+    // DependencyProperty
+    implementation(Libs.DEPENDENCY_PROPERTY)
 
     // Glide
     implementation(Libs.GLIDE)

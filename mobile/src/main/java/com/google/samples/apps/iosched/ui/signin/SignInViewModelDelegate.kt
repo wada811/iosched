@@ -24,9 +24,6 @@ import androidx.lifecycle.liveData
 import androidx.lifecycle.map
 import androidx.lifecycle.switchMap
 import com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserInfo
-import com.google.samples.apps.iosched.shared.di.IoDispatcher
-import com.google.samples.apps.iosched.shared.di.MainDispatcher
-import com.google.samples.apps.iosched.shared.di.ReservationEnabledFlag
 import com.google.samples.apps.iosched.shared.domain.auth.ObserveUserAuthStateUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.NotificationsPrefIsShownUseCase
 import com.google.samples.apps.iosched.shared.result.Event
@@ -34,7 +31,6 @@ import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.result.Result.Success
 import com.google.samples.apps.iosched.shared.result.data
 import com.google.samples.apps.iosched.ui.signin.SignInEvent.RequestSignOut
-import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -47,17 +43,6 @@ enum class SignInEvent {
 
 /**
  * Interface to implement sign-in functionality in a ViewModel.
- *
- * You can inject a implementation of this via Dagger2, then use the implementation as an interface
- * delegate to add sign in functionality without writing any code
- *
- * Example usage
- *
- * ```
- * class MyViewModel @Inject constructor(
- *     signInViewModelComponent: SignInViewModelDelegate
- * ) : ViewModel(), SignInViewModelDelegate by signInViewModelComponent {
- * ```
  */
 interface SignInViewModelDelegate {
     /**
@@ -113,12 +98,12 @@ interface SignInViewModelDelegate {
 /**
  * Implementation of SignInViewModelDelegate that uses Firebase's auth mechanisms.
  */
-internal class FirebaseSignInViewModelDelegate @Inject constructor(
+internal class FirebaseSignInViewModelDelegate(
     observeUserAuthStateUseCase: ObserveUserAuthStateUseCase,
     private val notificationsPrefIsShownUseCase: NotificationsPrefIsShownUseCase,
-    @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
-    @MainDispatcher private val mainDispatcher: CoroutineDispatcher,
-    @ReservationEnabledFlag val isReservationEnabledByRemoteConfig: Boolean
+    private val ioDispatcher: CoroutineDispatcher,
+    private val mainDispatcher: CoroutineDispatcher,
+    private val isReservationEnabledByRemoteConfig: Boolean
 ) : SignInViewModelDelegate {
 
     override val performSignInEvent = MutableLiveData<Event<SignInEvent>>()

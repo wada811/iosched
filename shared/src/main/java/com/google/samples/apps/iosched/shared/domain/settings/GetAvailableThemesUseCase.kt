@@ -18,13 +18,11 @@ package com.google.samples.apps.iosched.shared.domain.settings
 
 import androidx.core.os.BuildCompat
 import com.google.samples.apps.iosched.model.Theme
-import com.google.samples.apps.iosched.shared.di.MainImmediateDispatcher
 import com.google.samples.apps.iosched.shared.domain.UseCase
-import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 
-class GetAvailableThemesUseCase @Inject constructor(
-    @MainImmediateDispatcher dispatcher: CoroutineDispatcher
+class GetAvailableThemesUseCase(
+    dispatcher: CoroutineDispatcher
 ) : UseCase<Unit, List<Theme>>(dispatcher) {
 
     override suspend fun execute(parameters: Unit): List<Theme> = when {

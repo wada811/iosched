@@ -18,14 +18,12 @@ package com.google.samples.apps.iosched.shared.domain.codelabs
 
 import com.google.samples.apps.iosched.model.Codelab
 import com.google.samples.apps.iosched.shared.data.codelabs.CodelabsRepository
-import com.google.samples.apps.iosched.shared.di.IoDispatcher
 import com.google.samples.apps.iosched.shared.domain.UseCase
-import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 
-class LoadCodelabsUseCase @Inject constructor(
+class LoadCodelabsUseCase(
     private val repository: CodelabsRepository,
-    @IoDispatcher ioDispatcher: CoroutineDispatcher
+    ioDispatcher: CoroutineDispatcher
 ) : UseCase<Unit, List<Codelab>>(ioDispatcher) {
 
     override suspend fun execute(parameters: Unit): List<Codelab> {

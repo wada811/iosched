@@ -17,14 +17,12 @@
 package com.google.samples.apps.iosched.shared.domain.codelabs
 
 import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
-import com.google.samples.apps.iosched.shared.di.IoDispatcher
 import com.google.samples.apps.iosched.shared.domain.UseCase
-import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 
-open class GetCodelabsInfoCardShownUseCase @Inject constructor(
+open class GetCodelabsInfoCardShownUseCase(
     private val preferenceStorage: PreferenceStorage,
-    @IoDispatcher dispatcher: CoroutineDispatcher
+    dispatcher: CoroutineDispatcher
 ) : UseCase<Unit, Boolean>(dispatcher) {
 
     override suspend fun execute(parameters: Unit) = preferenceStorage.codelabsInfoShown

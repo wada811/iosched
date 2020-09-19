@@ -27,20 +27,9 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.runBlocking
-import javax.inject.Inject
 
 /**
  * Interface to implement activity theming via a ViewModel.
- *
- * You can inject a implementation of this via Dagger2, then use the implementation as an interface
- * delegate to add the functionality without writing any code
- *
- * Example usage:
- * ```
- * class MyViewModel @Inject constructor(
- *     themedActivityDelegate: ThemedActivityDelegate
- * ) : ViewModel(), ThemedActivityDelegate by themedActivityDelegate {
- * ```
  */
 interface ThemedActivityDelegate {
     /**
@@ -54,7 +43,7 @@ interface ThemedActivityDelegate {
     val currentTheme: Theme
 }
 
-class ThemedActivityDelegateImpl @Inject constructor(
+class ThemedActivityDelegateImpl(
     private val observeThemeUseCase: ObserveThemeModeUseCase,
     private val getThemeUseCase: GetThemeUseCase
 ) : ThemedActivityDelegate {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Google LLC
+ * Copyright 2020 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,26 +14,13 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.shared.di
+package com.google.samples.apps.iosched.di
 
-import javax.inject.Qualifier
+import android.app.Application
+import com.google.samples.apps.iosched.util.signin.FirebaseAuthSignInHandler
+import com.google.samples.apps.iosched.util.signin.SignInHandler
 
-@Retention(AnnotationRetention.BINARY)
-@Qualifier
-annotation class DefaultDispatcher
-
-@Retention(AnnotationRetention.BINARY)
-@Qualifier
-annotation class IoDispatcher
-
-@Retention(AnnotationRetention.BINARY)
-@Qualifier
-annotation class MainDispatcher
-
-@Retention(AnnotationRetention.BINARY)
-@Qualifier
-annotation class MainImmediateDispatcher
-
-@Retention(AnnotationRetention.BINARY)
-@Qualifier
-annotation class ApplicationScope
+class AppModule(application: Application) : AbstractAppModule(application) {
+    override val signInHandler: SignInHandler
+        get() = FirebaseAuthSignInHandler(sharedModule.applicationScope)
+}

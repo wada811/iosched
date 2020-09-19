@@ -17,20 +17,18 @@
 package com.google.samples.apps.iosched.shared.domain.sessions
 
 import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
-import com.google.samples.apps.iosched.shared.di.IoDispatcher
 import com.google.samples.apps.iosched.shared.domain.FlowUseCase
 import com.google.samples.apps.iosched.shared.result.Result
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
 
 /**
  * Forces a refresh in the conference data repository.
  */
-open class ObserveConferenceDataUseCase @Inject constructor(
+open class ObserveConferenceDataUseCase(
     private val repository: ConferenceDataRepository,
-    @IoDispatcher dispatcher: CoroutineDispatcher
+    dispatcher: CoroutineDispatcher
 ) : FlowUseCase<Unit, Long>(dispatcher) {
 
     override fun execute(parameters: Unit): Flow<Result<Long>> =

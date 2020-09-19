@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.iosched.ui.map
 
+import android.app.Application
 import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.android.gms.maps.model.LatLng
@@ -41,9 +42,11 @@ import org.mockito.Mockito.mock
 class MapViewModelTest {
 
     // Executes tasks in the Architecture Components in the same thread
-    @get:Rule var instantTaskExecutorRule = InstantTaskExecutorRule()
+    @get:Rule
+    var instantTaskExecutorRule = InstantTaskExecutorRule()
 
-    @get:Rule var coroutineRule = MainCoroutineRule()
+    @get:Rule
+    var coroutineRule = MainCoroutineRule()
 
     private val storage = FakePreferenceStorage()
     private val signInViewModelDelegate = FakeSignInViewModelDelegate()
@@ -55,6 +58,7 @@ class MapViewModelTest {
     fun createViewModel() {
         // Create ViewModel with the test data
         viewModel = MapViewModel(
+            Application(),
             LoadGeoJsonFeaturesUseCase(mock(Context::class.java), testDispatcher),
             FakeAnalyticsHelper(),
             signInViewModelDelegate,

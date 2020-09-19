@@ -18,11 +18,8 @@ package com.google.samples.apps.iosched.shared.data.codelabs
 
 import com.google.samples.apps.iosched.model.Codelab
 import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-open class CodelabsRepository @Inject constructor(
+open class CodelabsRepository(
     private val conferenceDataRepository: ConferenceDataRepository
 ) {
     fun getCodelabs(): List<Codelab> = conferenceDataRepository.getOfflineConferenceData().codelabs

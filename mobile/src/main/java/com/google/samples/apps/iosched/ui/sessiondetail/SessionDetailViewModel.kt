@@ -16,14 +16,15 @@
 
 package com.google.samples.apps.iosched.ui.sessiondetail
 
-import androidx.hilt.lifecycle.ViewModelInject
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import com.google.samples.apps.iosched.R
+import com.google.samples.apps.iosched.di.AppModule
 import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.SessionType
@@ -32,8 +33,8 @@ import com.google.samples.apps.iosched.model.userdata.UserEvent
 import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
-import com.google.samples.apps.iosched.shared.di.DefaultDispatcher
-import com.google.samples.apps.iosched.shared.di.ReservationEnabledFlag
+import com.google.samples.apps.iosched.shared.di.CoroutineModule
+import com.google.samples.apps.iosched.shared.di.SharedModule
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
@@ -64,6 +65,7 @@ import com.google.samples.apps.iosched.ui.sessioncommon.EventActions
 import com.google.samples.apps.iosched.ui.sessioncommon.stringRes
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.google.samples.apps.iosched.util.combine
+import com.wada811.dependencyproperty.dependencyModule
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
@@ -83,20 +85,21 @@ private const val SIXTY_SECONDS = 60_000L
  * Loads [Session] data and exposes it to the session detail view.
  */
 @ExperimentalCoroutinesApi
-class SessionDetailViewModel @ViewModelInject constructor(
-    private val signInViewModelDelegate: SignInViewModelDelegate,
-    private val loadUserSessionUseCase: LoadUserSessionUseCase,
-    private val loadRelatedSessionUseCase: LoadUserSessionsUseCase,
-    private val starEventUseCase: StarEventAndNotifyUseCase,
-    private val reservationActionUseCase: ReservationActionUseCase,
-    getTimeZoneUseCase: GetTimeZoneUseCase,
-    private val snackbarMessageManager: SnackbarMessageManager,
-    timeProvider: TimeProvider,
-    private val networkUtils: NetworkUtils,
-    private val analyticsHelper: AnalyticsHelper,
-    @ReservationEnabledFlag val isReservationEnabledByRemoteConfig: Boolean,
-    @DefaultDispatcher defaultDispatcher: CoroutineDispatcher
-) : ViewModel(), SessionDetailEventListener, EventActions,
+class SessionDetailViewModel @JvmOverloads constructor(
+    application: Application,
+    private val signInViewModelDelegate: SignInViewModelDelegate = application.dependencyModule<AppModule>().signInViewModelDelegate,
+    private val loadUserSessionUseCase: LoadUserSessionUseCase = application.dependencyModule<SharedModule>().loadUserSessionUseCase,
+    private val loadRelatedSessionUseCase: LoadUserSessionsUseCase = application.dependencyModule<SharedModule>().loadUserSessionsUseCase,
+    private val starEventUseCase: StarEventAndNotifyUseCase = application.dependencyModule<SharedModule>().starEventAndNotifyUseCase,
+    private val reservationActionUseCase: ReservationActionUseCase = application.dependencyModule<SharedModule>().reservationActionUseCase,
+    getTimeZoneUseCase: GetTimeZoneUseCase = application.dependencyModule<SharedModule>().getTimeZoneUseCase,
+    private val snackbarMessageManager: SnackbarMessageManager = application.dependencyModule<AppModule>().snackbarMessageManager,
+    timeProvider: TimeProvider = application.dependencyModule<SharedModule>().timeProvider,
+    private val networkUtils: NetworkUtils = application.dependencyModule<SharedModule>().networkUtils,
+    private val analyticsHelper: AnalyticsHelper = application.dependencyModule<AppModule>().analyticsHelper,
+    private val isReservationEnabledByRemoteConfig: Boolean = application.dependencyModule<SharedModule>().featureFlags.isReservationFeatureEnabled,
+    defaultDispatcher: CoroutineDispatcher = CoroutineModule().defaultDispatcher
+) : AndroidViewModel(application), SessionDetailEventListener, EventActions,
     SignInViewModelDelegate by signInViewModelDelegate {
 
     // Keeps track of the coroutine that listens for a user session
@@ -436,8 +439,8 @@ class SessionDetailViewModel @ViewModelInject constructor(
                 val result = starEventUseCase(
                     StarEventParameter(
                         it, userSession.copy(
-                            userEvent = userSession.userEvent.copy(isStarred = newIsStarredState)
-                        )
+                        userEvent = userSession.userEvent.copy(isStarred = newIsStarredState)
+                    )
                     )
                 )
                 // Show an error message if a star request fails

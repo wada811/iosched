@@ -18,8 +18,6 @@ package com.google.samples.apps.iosched.shared.data.feed
 
 import com.google.samples.apps.iosched.model.Announcement
 import com.google.samples.apps.iosched.model.Moment
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * Single point of access to feed data for the presentation layer.
@@ -29,8 +27,7 @@ interface FeedRepository {
     fun getMoments(): List<Moment>
 }
 
-@Singleton
-open class DefaultFeedRepository @Inject constructor(
+open class DefaultFeedRepository(
     private val announcementDataSource: AnnouncementDataSource,
     private val momentDataSource: MomentDataSource
 ) : FeedRepository {

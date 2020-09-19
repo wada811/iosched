@@ -16,7 +16,6 @@
 
 object Libs {
     const val ACTIVITY_KTX = "androidx.activity:activity-ktx"
-    const val ANDROIDX_HILT_COMPILER = "androidx.hilt:hilt-compiler"
     const val APPCOMPAT = "androidx.appcompat:appcompat"
     const val ARCH_TESTING = "androidx.arch.core:core-testing"
     const val ARCORE = "com.google.ar:core"
@@ -28,6 +27,7 @@ object Libs {
     const val CRASHLYTICS = "com.crashlytics.sdk.android:crashlytics"
     const val COROUTINES = "org.jetbrains.kotlinx:kotlinx-coroutines-core"
     const val COROUTINES_TEST = "org.jetbrains.kotlinx:kotlinx-coroutines-test"
+    const val DEPENDENCY_PROPERTY = "com.github.wada811:DependencyProperty"
     const val DRAWER_LAYOUT = "androidx.drawerlayout:drawerlayout"
     const val ESPRESSO_CONTRIB = "androidx.test.espresso:espresso-contrib"
     const val ESPRESSO_CORE = "androidx.test.espresso:espresso-core"
@@ -48,10 +48,6 @@ object Libs {
     const val GOOGLE_PLAY_SERVICES_VISION = "com.google.android.gms:play-services-vision"
     const val GSON = "com.google.code.gson:gson"
     const val HAMCREST = "org.hamcrest:hamcrest-library"
-    const val HILT_ANDROID = "com.google.dagger:hilt-android"
-    const val HILT_VIEWMODEL = "androidx.hilt:hilt-lifecycle-viewmodel"
-    const val HILT_COMPILER = "com.google.dagger:hilt-android-compiler"
-    const val HILT_TESTING = "com.google.dagger:hilt-android-testing"
     const val INK_PAGE_INDICATOR = "com.pacioianu.david:ink-page-indicator"
     const val JUNIT = "junit:junit"
     const val KOTLIN_STDLIB = "org.jetbrains.kotlin:kotlin-stdlib-jdk7"

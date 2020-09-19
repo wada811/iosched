@@ -26,9 +26,7 @@ import androidx.lifecycle.Observer
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.model.Theme
-import dagger.hilt.android.AndroidEntryPoint
 
-@AndroidEntryPoint
 class ThemeSettingDialogFragment : AppCompatDialogFragment() {
 
     private val viewModel: SettingsViewModel by viewModels()
@@ -38,17 +36,17 @@ class ThemeSettingDialogFragment : AppCompatDialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
         listAdapter = ArrayAdapter(requireContext(),
-                android.R.layout.simple_list_item_single_choice)
+            android.R.layout.simple_list_item_single_choice)
 
         return MaterialAlertDialogBuilder(context)
-                .setTitle(R.string.settings_theme_title)
-                .setSingleChoiceItems(listAdapter, 0) { dialog, position ->
-                    listAdapter.getItem(position)?.theme?.let {
-                        viewModel.setTheme(it)
-                    }
-                    dialog.dismiss()
+            .setTitle(R.string.settings_theme_title)
+            .setSingleChoiceItems(listAdapter, 0) { dialog, position ->
+                listAdapter.getItem(position)?.theme?.let {
+                    viewModel.setTheme(it)
                 }
-                .create()
+                dialog.dismiss()
+            }
+            .create()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

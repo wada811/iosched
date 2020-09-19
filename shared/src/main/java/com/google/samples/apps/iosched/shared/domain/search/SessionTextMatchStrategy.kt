@@ -19,7 +19,6 @@ package com.google.samples.apps.iosched.shared.domain.search
 import androidx.core.os.trace
 import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.data.db.AppDatabase
-import javax.inject.Inject
 
 interface SessionTextMatchStrategy {
     suspend fun searchSessions(userSessions: List<UserSession>, query: String): List<UserSession>
@@ -46,7 +45,7 @@ object SimpleMatchStrategy : SessionTextMatchStrategy {
 }
 
 /** Searches sessions using FTS. */
-class FtsMatchStrategy @Inject constructor(
+class FtsMatchStrategy(
     private val appDatabase: AppDatabase
 ) : SessionTextMatchStrategy {
 

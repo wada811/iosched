@@ -20,7 +20,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.functions.FirebaseFunctions
 import com.google.samples.apps.iosched.shared.result.Result
-import javax.inject.Inject
 
 /**
  * Interface that checkes if a signed user is able to demo the AR feature
@@ -33,7 +32,7 @@ interface ArDebugFlagEndpoint {
     fun canDemoAr(): LiveData<Result<Boolean>>
 }
 
-class DefaultArDebugFlagEndpoint @Inject constructor(private val functions: FirebaseFunctions) :
+class DefaultArDebugFlagEndpoint(private val functions: FirebaseFunctions) :
     ArDebugFlagEndpoint {
 
     override fun canDemoAr(): LiveData<Result<Boolean>> {

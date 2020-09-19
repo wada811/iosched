@@ -40,12 +40,13 @@ import androidx.transition.TransitionInflater
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.R.style
 import com.google.samples.apps.iosched.databinding.FragmentSessionDetailBinding
+import com.google.samples.apps.iosched.di.AppModule
 import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.SpeakerId
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
-import com.google.samples.apps.iosched.shared.di.MapFeatureEnabledFlag
+import com.google.samples.apps.iosched.shared.di.SharedModule
 import com.google.samples.apps.iosched.shared.domain.users.SwapRequestParameters
 import com.google.samples.apps.iosched.shared.notifications.AlarmBroadcastReceiver
 import com.google.samples.apps.iosched.shared.result.EventObserver
@@ -67,32 +68,26 @@ import com.google.samples.apps.iosched.ui.signin.SignInDialogFragment
 import com.google.samples.apps.iosched.ui.signin.SignInDialogFragment.Companion.DIALOG_SIGN_IN
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
 import com.google.samples.apps.iosched.util.openWebsiteUrl
-import dagger.hilt.android.AndroidEntryPoint
+import com.wada811.dependencyproperty.DependencyModule
+import com.wada811.dependencyproperty.dependency
+import com.wada811.dependencyproperty.dependencyModules
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
-import javax.inject.Inject
-import javax.inject.Named
 
-@AndroidEntryPoint
 class SessionDetailFragment : MainNavigationFragment(), SessionFeedbackFragment.Listener {
 
     private var shareString = ""
 
-    @Inject lateinit var snackbarMessageManager: SnackbarMessageManager
+    private val snackbarMessageManager by dependency<AppModule, SnackbarMessageManager> { it.snackbarMessageManager }
 
     private val sessionDetailViewModel: SessionDetailViewModel by viewModels()
     private val snackbarPrefsViewModel: SnackbarPreferenceViewModel by activityViewModels()
 
-    @Inject lateinit var analyticsHelper: AnalyticsHelper
+    private val analyticsHelper by dependency<AppModule, AnalyticsHelper> { it.analyticsHelper }
 
-    @Inject
-    @field:Named("tagViewPool")
-    lateinit var tagRecycledViewPool: RecycledViewPool
+    private val tagRecycledViewPool: RecycledViewPool by dependency<SessionDetailFragmentModule, RecycledViewPool> { it.tagRecycledViewPool }
 
-    @Inject
-    @JvmField
-    @MapFeatureEnabledFlag
-    var isMapEnabled: Boolean = false
+    private val isMapEnabled: Boolean by dependency<SharedModule, Boolean> { it.featureFlags.isMapFeatureEnabled }
 
     private var session: Session? = null
 
@@ -105,6 +100,7 @@ class SessionDetailFragment : MainNavigationFragment(), SessionFeedbackFragment.
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        dependencyModules.replaceModule(SessionDetailFragmentModule())
         sharedElementReturnTransition =
             TransitionInflater.from(context).inflateTransition(R.transition.speaker_shared_enter)
         // Delay the enter transition until speaker image has loaded.
@@ -281,9 +277,10 @@ class SessionDetailFragment : MainNavigationFragment(), SessionFeedbackFragment.
         // When opened from the post session notification, open the feedback dialog
         requireNotNull(arguments).apply {
             val sessionId = getString(EXTRA_SESSION_ID)
-                    ?: SessionDetailFragmentArgs.fromBundle(this).sessionId
+                ?: SessionDetailFragmentArgs.fromBundle(this).sessionId
             val openRateSession =
-                arguments?.getBoolean(AlarmBroadcastReceiver.EXTRA_SHOW_RATE_SESSION_FLAG) ?: false
+                arguments?.getBoolean(AlarmBroadcastReceiver.EXTRA_SHOW_RATE_SESSION_FLAG)
+                    ?: false
             sessionDetailViewModel.showFeedbackButton.observe(viewLifecycleOwner, Observer {
                 if (it == true && openRateSession) {
                     openFeedbackDialog(sessionId)
@@ -430,5 +427,9 @@ class SessionDetailFragment : MainNavigationFragment(), SessionFeedbackFragment.
             }
             return SessionDetailFragment().apply { arguments = bundle }
         }
+    }
+
+    class SessionDetailFragmentModule : DependencyModule {
+        val tagRecycledViewPool: RecycledViewPool by lazy { RecycledViewPool() }
     }
 }

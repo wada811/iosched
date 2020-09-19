@@ -18,11 +18,9 @@ package com.google.samples.apps.iosched.shared.domain.sessions
 
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.userdata.UserSession
-import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
-import com.google.samples.apps.iosched.shared.di.IoDispatcher
+import com.google.samples.apps.iosched.shared.data.userevent.SessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.domain.FlowUseCase
 import com.google.samples.apps.iosched.shared.result.Result
-import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -32,9 +30,9 @@ import kotlinx.coroutines.flow.map
  * Load [UserSession]s for a given list of sessions.
  */
 @ExperimentalCoroutinesApi
-open class LoadUserSessionsUseCase @Inject constructor(
-    private val userEventRepository: DefaultSessionAndUserEventRepository,
-    @IoDispatcher dispatcher: CoroutineDispatcher
+open class LoadUserSessionsUseCase(
+    private val userEventRepository: SessionAndUserEventRepository,
+    dispatcher: CoroutineDispatcher
 ) : FlowUseCase<Pair<String?, Set<SessionId>>, List<UserSession>>(dispatcher) {
 
     override fun execute(parameters: Pair<String?, Set<String>>): Flow<Result<List<UserSession>>> {

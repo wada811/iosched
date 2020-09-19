@@ -18,6 +18,7 @@
 
 package com.google.samples.apps.iosched.ui.sessiondetail
 
+import android.app.Application
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
@@ -85,10 +86,12 @@ private const val TEN_SECONDS = 10_000L
 class SessionDetailViewModelTest {
 
     // Executes tasks in the Architecture Components in the same thread
-    @get:Rule var instantTaskExecutorRule = InstantTaskExecutorRule()
+    @get:Rule
+    var instantTaskExecutorRule = InstantTaskExecutorRule()
 
     // Allows explicit setting of "now"
-    @get:Rule var fixedTimeExecutorRule = FixedTimeExecutorRule()
+    @get:Rule
+    var fixedTimeExecutorRule = FixedTimeExecutorRule()
 
     // Overrides Dispatchers.Main used in Coroutines
     @get:Rule
@@ -249,12 +252,12 @@ class SessionDetailViewModelTest {
             ?.getContentIfNotHandled()
         assertThat(
             parameters, `is`(
-                RemoveReservationDialogParameters(
-                    testUid,
-                    TestData.session1.id,
-                    TestData.session1.title
-                )
+            RemoveReservationDialogParameters(
+                testUid,
+                TestData.session1.id,
+                TestData.session1.title
             )
+        )
         )
     }
 
@@ -377,6 +380,7 @@ class SessionDetailViewModelTest {
         defaultDispatcher: CoroutineDispatcher = coroutineRule.testDispatcher
     ): SessionDetailViewModel {
         return SessionDetailViewModel(
+            Application(),
             signInViewModelPlugin, loadUserSessionUseCase, loadRelatedSessionsUseCase,
             starEventUseCase, reservationActionUseCase, getTimeZoneUseCase, snackbarMessageManager,
             timeProvider, networkUtils, analyticsHelper, isReservationEnabledByRemoteConfig,

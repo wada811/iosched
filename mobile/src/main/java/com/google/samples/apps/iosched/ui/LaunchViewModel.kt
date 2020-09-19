@@ -16,19 +16,22 @@
 
 package com.google.samples.apps.iosched.ui
 
-import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.liveData
+import com.google.samples.apps.iosched.shared.di.SharedModule
 import com.google.samples.apps.iosched.shared.domain.prefs.OnboardingCompletedUseCase
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.data
+import com.wada811.dependencyproperty.dependencyModule
 
 /**
  * Logic for determining which screen to send users to on app launch.
  */
-class LaunchViewModel @ViewModelInject constructor(
-    onboardingCompletedUseCase: OnboardingCompletedUseCase
-) : ViewModel() {
+class LaunchViewModel @JvmOverloads constructor(
+    application: Application,
+    onboardingCompletedUseCase: OnboardingCompletedUseCase = application.dependencyModule<SharedModule>().onboardingCompletedUseCase
+) : AndroidViewModel(application) {
     val launchDestination = liveData {
         val result = onboardingCompletedUseCase(Unit)
         if (result.data == false) {

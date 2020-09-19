@@ -18,9 +18,7 @@ package com.google.samples.apps.iosched.shared.domain.feed
 
 import com.google.samples.apps.iosched.model.Moment
 import com.google.samples.apps.iosched.shared.data.feed.FeedRepository
-import com.google.samples.apps.iosched.shared.di.IoDispatcher
 import com.google.samples.apps.iosched.shared.domain.UseCase
-import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import org.threeten.bp.Instant
 import org.threeten.bp.ZoneId
@@ -29,9 +27,9 @@ import org.threeten.bp.ZonedDateTime
 /**
  * Loads a [Moment] corresponding to the given time passed as a parameter.
  */
-class LoadCurrentMomentUseCase @Inject constructor(
+class LoadCurrentMomentUseCase(
     private val repository: FeedRepository,
-    @IoDispatcher dispatcher: CoroutineDispatcher
+    dispatcher: CoroutineDispatcher
 ) : UseCase<Instant, Moment?>(dispatcher) {
 
     override suspend fun execute(parameters: Instant): Moment? {

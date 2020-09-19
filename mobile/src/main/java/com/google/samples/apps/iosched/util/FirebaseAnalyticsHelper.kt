@@ -28,7 +28,6 @@ import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
 import com.google.samples.apps.iosched.shared.data.prefs.SharedPreferenceStorage
-import com.google.samples.apps.iosched.shared.di.ApplicationScope
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -38,7 +37,7 @@ import timber.log.Timber
  * Firebase Analytics implementation of AnalyticsHelper
  */
 class FirebaseAnalyticsHelper(
-    @ApplicationScope private val externalScope: CoroutineScope,
+    private val externalScope: CoroutineScope,
     context: Context,
     signInViewModelDelegate: SignInViewModelDelegate,
     preferenceStorage: PreferenceStorage

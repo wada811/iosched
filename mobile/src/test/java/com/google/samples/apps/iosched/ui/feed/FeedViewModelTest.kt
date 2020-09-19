@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.iosched.ui.feed
 
+import android.app.Application
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.viewModelScope
 import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
@@ -145,7 +146,7 @@ class FeedViewModelTest {
         getTimeZoneUseCase: GetTimeZoneUseCase =
             GetTimeZoneUseCase(FakePreferenceStorage(), testDispatcher),
         getConferenceStateUseCase: GetConferenceStateUseCase =
-            GetConferenceStateUseCase(testDispatcher, defaultTimeProvider),
+            GetConferenceStateUseCase(defaultTimeProvider, testDispatcher),
         timeProvider: TimeProvider = defaultTimeProvider,
         signInViewModelDelegate: SignInViewModelDelegate = FakeSignInViewModelDelegate().apply {
             loadUser("123")
@@ -153,6 +154,7 @@ class FeedViewModelTest {
         themedActivityDelegate: ThemedActivityDelegate = FakeThemedActivityDelegate()
     ): FeedViewModel {
         return FeedViewModel(
+            Application(),
             loadCurrentMomentUseCase = loadCurrentMomentUseCase,
             loadAnnouncementsUseCase = loadAnnouncementUseCase,
             loadStarredAndReservedSessionsUseCase = loadStarredAndReservedSessionsUseCase,
@@ -161,7 +163,9 @@ class FeedViewModelTest {
             timeProvider = timeProvider,
             analyticsHelper = FakeAnalyticsHelper(),
             signInViewModelDelegate = signInViewModelDelegate,
-            themedActivityDelegate = themedActivityDelegate
+            themedActivityDelegate = themedActivityDelegate,
+            isReservationEnabledByRemoteConfig = false,
+            isMapEnabledByRemoteConfig = false
         )
     }
 }

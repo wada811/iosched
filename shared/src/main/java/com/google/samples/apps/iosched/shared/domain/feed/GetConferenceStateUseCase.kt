@@ -16,7 +16,6 @@
 
 package com.google.samples.apps.iosched.shared.domain.feed
 
-import com.google.samples.apps.iosched.shared.di.MainDispatcher
 import com.google.samples.apps.iosched.shared.domain.FlowUseCase
 import com.google.samples.apps.iosched.shared.domain.feed.ConferenceState.ENDED
 import com.google.samples.apps.iosched.shared.domain.feed.ConferenceState.STARTED
@@ -24,7 +23,6 @@ import com.google.samples.apps.iosched.shared.domain.feed.ConferenceState.UPCOMI
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.time.TimeProvider
 import com.google.samples.apps.iosched.shared.util.TimeUtils
-import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -37,9 +35,9 @@ enum class ConferenceState { UPCOMING, STARTED, ENDED }
 /**
  * Gets the current [ConferenceState].
  */
-class GetConferenceStateUseCase @Inject constructor(
-    @MainDispatcher val mainDispatcher: CoroutineDispatcher,
-    private val timeProvider: TimeProvider
+class GetConferenceStateUseCase(
+    private val timeProvider: TimeProvider,
+    mainDispatcher: CoroutineDispatcher
 ) : FlowUseCase<Unit?, ConferenceState>(mainDispatcher) {
 
     override fun execute(parameters: Unit?): Flow<Result<ConferenceState>> {

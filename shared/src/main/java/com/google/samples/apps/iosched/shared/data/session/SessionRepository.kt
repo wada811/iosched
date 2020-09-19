@@ -21,7 +21,6 @@ import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
 import com.google.samples.apps.iosched.shared.domain.sessions.SessionNotFoundException
-import javax.inject.Inject
 
 /**
  * Single point of access to session data for the presentation layer.
@@ -34,7 +33,7 @@ interface SessionRepository {
     fun getConferenceDays(): List<ConferenceDay>
 }
 
-class DefaultSessionRepository @Inject constructor(
+class DefaultSessionRepository(
     private val conferenceDataRepository: ConferenceDataRepository
 ) : SessionRepository {
 

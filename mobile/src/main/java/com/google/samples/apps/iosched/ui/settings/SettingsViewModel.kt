@@ -16,13 +16,14 @@
 
 package com.google.samples.apps.iosched.ui.settings
 
-import androidx.hilt.lifecycle.ViewModelInject
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import com.google.samples.apps.iosched.model.Theme
+import com.google.samples.apps.iosched.shared.di.SharedModule
 import com.google.samples.apps.iosched.shared.domain.prefs.NotificationsPrefSaveActionUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetAnalyticsSettingUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetAvailableThemesUseCase
@@ -36,19 +37,21 @@ import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.data
 import com.google.samples.apps.iosched.shared.result.successOr
 import com.google.samples.apps.iosched.shared.result.updateOnSuccess
+import com.wada811.dependencyproperty.dependencyModule
 import kotlinx.coroutines.launch
 
-class SettingsViewModel @ViewModelInject constructor(
-    val setTimeZoneUseCase: SetTimeZoneUseCase,
-    getTimeZoneUseCase: GetTimeZoneUseCase,
-    val notificationsPrefSaveActionUseCase: NotificationsPrefSaveActionUseCase,
-    getNotificationsSettingUseCase: GetNotificationsSettingUseCase,
-    val setAnalyticsSettingUseCase: SetAnalyticsSettingUseCase,
-    getAnalyticsSettingUseCase: GetAnalyticsSettingUseCase,
-    val setThemeUseCase: SetThemeUseCase,
-    getThemeUseCase: GetThemeUseCase,
-    getAvailableThemesUseCase: GetAvailableThemesUseCase
-) : ViewModel() {
+class SettingsViewModel @JvmOverloads constructor(
+    application: Application,
+    val setTimeZoneUseCase: SetTimeZoneUseCase = application.dependencyModule<SharedModule>().setTimeZoneUseCase,
+    getTimeZoneUseCase: GetTimeZoneUseCase = application.dependencyModule<SharedModule>().getTimeZoneUseCase,
+    val notificationsPrefSaveActionUseCase: NotificationsPrefSaveActionUseCase = application.dependencyModule<SharedModule>().notificationsPrefSaveActionUseCase,
+    getNotificationsSettingUseCase: GetNotificationsSettingUseCase = application.dependencyModule<SharedModule>().getNotificationsSettingUseCase,
+    val setAnalyticsSettingUseCase: SetAnalyticsSettingUseCase = application.dependencyModule<SharedModule>().setAnalyticsSettingUseCase,
+    getAnalyticsSettingUseCase: GetAnalyticsSettingUseCase = application.dependencyModule<SharedModule>().getAnalyticsSettingUseCase,
+    val setThemeUseCase: SetThemeUseCase = application.dependencyModule<SharedModule>().setThemeUseCase,
+    getThemeUseCase: GetThemeUseCase = application.dependencyModule<SharedModule>().getThemeUseCase,
+    getAvailableThemesUseCase: GetAvailableThemesUseCase = application.dependencyModule<SharedModule>().getAvailableThemesUseCase
+) : AndroidViewModel(application) {
 
     // Time Zone setting
     private val _preferConferenceTimeZone = MutableLiveData<Boolean>()

@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Google LLC
+ * Copyright 2020 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,22 +14,14 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.ui.theme
+package com.google.samples.apps.iosched.di
 
-import dagger.Binds
-import dagger.Module
-import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ApplicationComponent
-import javax.inject.Singleton
+import android.app.Application
+import com.google.samples.apps.iosched.util.signin.SignInHandler
+import com.google.samples.apps.iosched.util.signin.StagingAuthenticatedUser
+import com.google.samples.apps.iosched.util.signin.StagingSignInHandler
 
-@InstallIn(ApplicationComponent::class)
-@Module
-@Suppress("UNUSED")
-abstract class ThemedActivityDelegateModule {
-
-    @Singleton
-    @Binds
-    abstract fun provideThemedActivityDelegate(
-        impl: ThemedActivityDelegateImpl
-    ): ThemedActivityDelegate
+class AppModule(application: Application) : AbstractAppModule(application) {
+    override val signInHandler: SignInHandler
+        get() = StagingSignInHandler(StagingAuthenticatedUser(application))
 }

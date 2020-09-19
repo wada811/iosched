@@ -35,7 +35,6 @@ buildscript {
         classpath("androidx.benchmark:benchmark-gradle-plugin:${Versions.BENCHMARK}")
         classpath("androidx.navigation:navigation-safe-args-gradle-plugin:${Versions.NAVIGATION}")
         classpath("io.fabric.tools:gradle:${Versions.FABRIC}")
-        classpath("com.google.dagger:hilt-android-gradle-plugin:${Versions.HILT}")
     }
 }
 
@@ -48,6 +47,7 @@ allprojects {
         google()
         mavenCentral()
         jcenter()
+        maven { url = uri("https://jitpack.io/") }
 
         // For Android Build Server
         // - Material Design Components

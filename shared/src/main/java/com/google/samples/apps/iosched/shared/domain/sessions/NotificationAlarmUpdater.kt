@@ -19,7 +19,6 @@ package com.google.samples.apps.iosched.shared.domain.sessions
 import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.data.userevent.ObservableUserEvents
 import com.google.samples.apps.iosched.shared.data.userevent.SessionAndUserEventRepository
-import com.google.samples.apps.iosched.shared.di.ApplicationScope
 import com.google.samples.apps.iosched.shared.notifications.SessionAlarmManager
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.result.data
@@ -27,17 +26,14 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * Sets a notification for each session that is starred or reserved by the user.
  */
-@Singleton
-class NotificationAlarmUpdater @Inject constructor(
+class NotificationAlarmUpdater(
     private val alarmManager: SessionAlarmManager,
     private val repository: SessionAndUserEventRepository,
-    @ApplicationScope private val externalScope: CoroutineScope
+    private val externalScope: CoroutineScope
 ) {
 
     fun updateAll(userId: String) {
@@ -80,8 +76,7 @@ class NotificationAlarmUpdater @Inject constructor(
     }
 }
 
-@Singleton
-open class StarReserveNotificationAlarmUpdater @Inject constructor(
+open class StarReserveNotificationAlarmUpdater(
     private val alarmManager: SessionAlarmManager
 ) {
     open fun updateSession(

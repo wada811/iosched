@@ -30,12 +30,10 @@ import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.util.makeBold
-import dagger.hilt.android.AndroidEntryPoint
 
 /**
  * Dialog that confirms the user really wants to cancel their reservation
  */
-@AndroidEntryPoint
 class RemoveReservationDialogFragment : AppCompatDialogFragment() {
 
     companion object {

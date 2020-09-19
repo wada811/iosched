@@ -22,10 +22,8 @@ import com.google.samples.apps.iosched.model.filters.Filter.DateFilter
 import com.google.samples.apps.iosched.model.filters.Filter.TagFilter
 import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
 import com.google.samples.apps.iosched.shared.data.tag.TagRepository
-import com.google.samples.apps.iosched.shared.di.IoDispatcher
 import com.google.samples.apps.iosched.shared.domain.UseCase
 import kotlinx.coroutines.CoroutineDispatcher
-import javax.inject.Inject
 
 private val FILTER_CATEGORIES = listOf(
     Tag.CATEGORY_TYPE,
@@ -34,10 +32,10 @@ private val FILTER_CATEGORIES = listOf(
 )
 
 /** Loads filters for the Search screen. */
-class LoadSearchFiltersUseCase @Inject constructor(
+class LoadSearchFiltersUseCase(
     private val conferenceRepository: ConferenceDataRepository,
     private val tagRepository: TagRepository,
-    @IoDispatcher dispatcher: CoroutineDispatcher
+    dispatcher: CoroutineDispatcher
 ) : UseCase<Unit, List<Filter>>(dispatcher) {
 
     override suspend fun execute(parameters: Unit): List<Filter> {

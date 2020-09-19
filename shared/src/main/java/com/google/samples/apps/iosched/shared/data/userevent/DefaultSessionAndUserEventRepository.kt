@@ -32,8 +32,6 @@ import com.google.samples.apps.iosched.shared.domain.users.SwapRequestAction
 import com.google.samples.apps.iosched.shared.domain.users.SwapRequestParameters
 import com.google.samples.apps.iosched.shared.result.Result
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import javax.inject.Inject
-import javax.inject.Singleton
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
@@ -44,8 +42,7 @@ import timber.log.Timber
  * Single point of access to user events data associated with a user for the presentation layer.
  */
 @ExperimentalCoroutinesApi
-@Singleton
-open class DefaultSessionAndUserEventRepository @Inject constructor(
+open class DefaultSessionAndUserEventRepository(
     private val userEventDataSource: UserEventDataSource,
     private val sessionRepository: SessionRepository
 ) : SessionAndUserEventRepository {
@@ -102,17 +99,17 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
     ): Flow<Result<LoadUserSessionUseCaseResult>> {
         // If there is no logged-in user, return the session with a null UserEvent
         if (userId == null) {
-                Timber.d("EventRepository: No user logged in, returning session without user event")
-                val session = sessionRepository.getSession(eventId)
-                return flow {
-                    emit(
-                        Result.Success(
-                            LoadUserSessionUseCaseResult(
-                                userSession = UserSession(session, createDefaultUserEvent(session))
-                            )
+            Timber.d("EventRepository: No user logged in, returning session without user event")
+            val session = sessionRepository.getSession(eventId)
+            return flow {
+                emit(
+                    Result.Success(
+                        LoadUserSessionUseCaseResult(
+                            userSession = UserSession(session, createDefaultUserEvent(session))
                         )
                     )
-                }
+                )
+            }
         }
 
         // Observes the user events and merges them with session data.
@@ -138,13 +135,14 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
     override fun getUserSession(userId: String, sessionId: SessionId): UserSession {
         val session = sessionRepository.getSession(sessionId)
         val userEvent = userEventDataSource.getUserEvent(userId, sessionId)
-                ?: throw Exception("UserEvent not found")
+            ?: throw Exception("UserEvent not found")
 
         return UserSession(
-                session = session,
-                userEvent = userEvent
+            session = session,
+            userEvent = userEvent
         )
     }
+
     override suspend fun starEvent(
         userId: String,
         userEvent: UserEvent

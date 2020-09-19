@@ -16,16 +16,17 @@
 
 package com.google.samples.apps.iosched.ui.feed
 
-import androidx.hilt.lifecycle.ViewModelInject
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.liveData
 import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavDirections
 import com.google.samples.apps.iosched.R
+import com.google.samples.apps.iosched.di.AppModule
 import com.google.samples.apps.iosched.model.Announcement
 import com.google.samples.apps.iosched.model.Moment
 import com.google.samples.apps.iosched.model.Session
@@ -33,8 +34,7 @@ import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
-import com.google.samples.apps.iosched.shared.di.MapFeatureEnabledFlag
-import com.google.samples.apps.iosched.shared.di.ReservationEnabledFlag
+import com.google.samples.apps.iosched.shared.di.SharedModule
 import com.google.samples.apps.iosched.shared.domain.feed.ConferenceState
 import com.google.samples.apps.iosched.shared.domain.feed.ConferenceState.ENDED
 import com.google.samples.apps.iosched.shared.domain.feed.ConferenceState.UPCOMING
@@ -58,29 +58,30 @@ import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailFragmentDir
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.google.samples.apps.iosched.ui.theme.ThemedActivityDelegate
 import com.google.samples.apps.iosched.util.combine
+import com.wada811.dependencyproperty.dependencyModule
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
-import javax.inject.Inject
 
 /**
  * Loads data and exposes it to the view.
- * By annotating the constructor with [@Inject], Dagger will use that constructor when needing to
- * create the object, so defining a [@Provides] method for this class won't be needed.
  */
-class FeedViewModel @ViewModelInject constructor(
-    private val loadCurrentMomentUseCase: LoadCurrentMomentUseCase,
-    loadAnnouncementsUseCase: LoadAnnouncementsUseCase,
-    private val loadStarredAndReservedSessionsUseCase: LoadStarredAndReservedSessionsUseCase,
-    getTimeZoneUseCase: GetTimeZoneUseCase,
-    getConferenceStateUseCase: GetConferenceStateUseCase,
-    private val timeProvider: TimeProvider,
-    private val analyticsHelper: AnalyticsHelper,
-    private val signInViewModelDelegate: SignInViewModelDelegate,
-    themedActivityDelegate: ThemedActivityDelegate
-) : ViewModel(),
+class FeedViewModel @JvmOverloads constructor(
+    application: Application,
+    private val loadCurrentMomentUseCase: LoadCurrentMomentUseCase = application.dependencyModule<SharedModule>().loadCurrentMomentUseCase,
+    loadAnnouncementsUseCase: LoadAnnouncementsUseCase = application.dependencyModule<SharedModule>().loadAnnouncementsUseCase,
+    private val loadStarredAndReservedSessionsUseCase: LoadStarredAndReservedSessionsUseCase = application.dependencyModule<SharedModule>().loadStarredAndReservedSessionsUseCase,
+    getTimeZoneUseCase: GetTimeZoneUseCase = application.dependencyModule<SharedModule>().getTimeZoneUseCase,
+    getConferenceStateUseCase: GetConferenceStateUseCase = application.dependencyModule<SharedModule>().getConferenceStateUseCase,
+    private val timeProvider: TimeProvider = application.dependencyModule<SharedModule>().timeProvider,
+    private val analyticsHelper: AnalyticsHelper = application.dependencyModule<AppModule>().analyticsHelper,
+    private val signInViewModelDelegate: SignInViewModelDelegate = application.dependencyModule<AppModule>().signInViewModelDelegate,
+    themedActivityDelegate: ThemedActivityDelegate = application.dependencyModule<AppModule>().themedActivityDelegate,
+    private val isReservationEnabledByRemoteConfig: Boolean = application.dependencyModule<SharedModule>().featureFlags.isReservationFeatureEnabled,
+    private val isMapEnabledByRemoteConfig: Boolean = application.dependencyModule<SharedModule>().featureFlags.isMapFeatureEnabled
+) : AndroidViewModel(application),
     FeedEventListener,
     ThemedActivityDelegate by themedActivityDelegate,
     SignInViewModelDelegate by signInViewModelDelegate {
@@ -100,15 +101,6 @@ class FeedViewModel @ViewModelInject constructor(
         private object NoSessionsContainer
     }
 
-    @Inject
-    @JvmField
-    @ReservationEnabledFlag
-    var isReservationEnabledByRemoteConfig: Boolean = false
-
-    @Inject
-    @JvmField
-    @MapFeatureEnabledFlag
-    var isMapEnabledByRemoteConfig: Boolean = false
 
     val feed: LiveData<List<Any>>
 

@@ -19,27 +19,25 @@ package com.google.samples.apps.iosched.shared.domain.users
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.data.userevent.SessionAndUserEventRepository
-import com.google.samples.apps.iosched.shared.di.IoDispatcher
 import com.google.samples.apps.iosched.shared.domain.UseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.StarReserveNotificationAlarmUpdater
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.result.Result.Loading
 import com.google.samples.apps.iosched.shared.result.Result.Success
 import kotlinx.coroutines.CoroutineDispatcher
-import javax.inject.Inject
 
 /**
  * Sends a request to reserve or cancel a reservation for a session.
  */
 // TODO: Verify after b/149544822 is fixed.
-open class ReservationActionUseCase @Inject constructor(
+open class ReservationActionUseCase(
     private val repository: SessionAndUserEventRepository,
     private val alarmUpdater: StarReserveNotificationAlarmUpdater,
-    @IoDispatcher ioDispatcher: CoroutineDispatcher
+    ioDispatcher: CoroutineDispatcher
 ) : UseCase<ReservationRequestParameters, ReservationRequestAction>(ioDispatcher) {
 
     override suspend fun execute(parameters: ReservationRequestParameters):
-            ReservationRequestAction {
+        ReservationRequestAction {
         val (userId, sessionId, action) = parameters
         return when (val updateResult = repository.changeReservation(userId, sessionId, action)) {
             is Success -> {
@@ -47,8 +45,8 @@ open class ReservationActionUseCase @Inject constructor(
                     alarmUpdater.updateSession(
                         parameters.userSession,
                         parameters.userSession.userEvent.isStarred ||
-                                // TODO(b/130515170)
-                                updateResult.data is ReservationRequestAction.RequestAction
+                            // TODO(b/130515170)
+                            updateResult.data is ReservationRequestAction.RequestAction
                     )
                 }
                 updateResult.data

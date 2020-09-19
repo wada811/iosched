@@ -33,11 +33,9 @@ import com.google.samples.apps.iosched.databinding.FragmentSessionFeedbackBindin
 import com.google.samples.apps.iosched.databinding.ItemQuestionBinding
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.widget.SimpleRatingBar
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi
-@AndroidEntryPoint
 class SessionFeedbackFragment : AppCompatDialogFragment() {
 
     private val viewModel: SessionFeedbackViewModel by viewModels()

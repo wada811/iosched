@@ -23,17 +23,16 @@ import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.lifecycle.coroutineScope
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.samples.apps.iosched.R
+import com.google.samples.apps.iosched.shared.di.SharedModule
 import com.google.samples.apps.iosched.shared.domain.users.SwapActionUseCase
 import com.google.samples.apps.iosched.shared.domain.users.SwapRequestParameters
 import com.google.samples.apps.iosched.util.makeBold
-import dagger.hilt.android.AndroidEntryPoint
+import com.wada811.dependencyproperty.dependency
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 /**
  * Dialog that confirms the user wants to replace their reservations
  */
-@AndroidEntryPoint
 class SwapReservationDialogFragment : AppCompatDialogFragment() {
 
     companion object {
@@ -56,8 +55,7 @@ class SwapReservationDialogFragment : AppCompatDialogFragment() {
         }
     }
 
-    @Inject
-    lateinit var swapActionUseCase: SwapActionUseCase
+    private val swapActionUseCase by dependency<SharedModule, SwapActionUseCase> { it.swapActionUseCase }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val context = requireContext()

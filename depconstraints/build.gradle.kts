@@ -32,6 +32,7 @@ val coroutines = "1.3.4"
 val coroutinesTest = "1.3.4"
 val crashlytics = "2.9.8"
 val drawerLayout = "1.1.0-rc01"
+val dependencyProperty = "1.0.0"
 val espresso = "3.1.1"
 val firebaseAnalytics = "17.4.0"
 val firebaseAuth = "19.3.1"
@@ -48,8 +49,6 @@ val googlePlayServicesMaps = "16.0.0"
 val googlePlayServicesVision = "17.0.2"
 val gson = "2.8.6"
 val hamcrest = "1.3"
-val hilt = Versions.HILT
-val hiltJetPack = "1.0.0-alpha01"
 val junit = "4.13"
 val junitExt = "1.1.1"
 val lifecycle = "2.2.0"
@@ -71,7 +70,6 @@ val viewpager2 = "1.0.0"
 dependencies {
     constraints {
         api("${Libs.ACTIVITY_KTX}:$activity")
-        api("${Libs.ANDROIDX_HILT_COMPILER}:$hiltJetPack")
         api("${Libs.APPCOMPAT}:$appcompat")
         api("${Libs.CARDVIEW}:$cardview")
         api("${Libs.ARCH_TESTING}:$archTesting")
@@ -84,6 +82,7 @@ dependencies {
         api("${Libs.COROUTINES_TEST}:$coroutines")
         api("${Libs.CRASHLYTICS}:$crashlytics")
         api("${Libs.DRAWER_LAYOUT}:$drawerLayout")
+        api("${Libs.DEPENDENCY_PROPERTY}:$dependencyProperty")
         api("${Libs.ESPRESSO_CORE}:$espresso")
         api("${Libs.ESPRESSO_CONTRIB}:$espresso")
         api("${Libs.FIREBASE_AUTH}:$firebaseAuth")
@@ -102,10 +101,6 @@ dependencies {
         api("${Libs.GOOGLE_PLAY_SERVICES_VISION}:$googlePlayServicesVision")
         api("${Libs.GSON}:$gson")
         api("${Libs.HAMCREST}:$hamcrest")
-        api("${Libs.HILT_ANDROID}:$hilt")
-        api("${Libs.HILT_COMPILER}:$hilt")
-        api("${Libs.HILT_TESTING}:$hilt")
-        api("${Libs.HILT_VIEWMODEL}:$hiltJetPack")
         api("${Libs.JUNIT}:$junit")
         api("${Libs.EXT_JUNIT}:$junitExt")
         api("${Libs.KOTLIN_STDLIB}:${Versions.KOTLIN}")

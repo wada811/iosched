@@ -19,31 +19,36 @@ package com.google.samples.apps.iosched
 import android.app.Application
 import android.os.StrictMode
 import android.os.StrictMode.ThreadPolicy.Builder
+import com.google.samples.apps.iosched.di.AppModule
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
+import com.google.samples.apps.iosched.shared.di.CoroutineModule
+import com.google.samples.apps.iosched.shared.di.SharedModule
 import com.google.samples.apps.iosched.util.CrashlyticsTree
 import com.jakewharton.threetenabp.AndroidThreeTen
-import dagger.hilt.android.HiltAndroidApp
+import com.wada811.dependencyproperty.DependencyModules
+import com.wada811.dependencyproperty.DependencyModulesHolder
+import com.wada811.dependencyproperty.dependency
 import timber.log.Timber
-import javax.inject.Inject
 
 /**
  * Initialization of libraries.
  */
-@HiltAndroidApp
-class MainApplication : Application() {
-
-    // Even if the var isn't used, needs to be initialized at application startup.
-    @Inject lateinit var analyticsHelper: AnalyticsHelper
+class MainApplication : Application(), DependencyModulesHolder {
+    override val dependencyModules: DependencyModules by dependencyModules(AppModule(this), SharedModule(this), CoroutineModule())
 
     override fun onCreate() {
         // ThreeTenBP for times and dates, called before super to be available for objects
         AndroidThreeTen.init(this)
 
-        // Enable strict mode before Dagger creates graph
+        // Enable strict mode
         if (BuildConfig.DEBUG) {
             enableStrictMode()
         }
         super.onCreate()
+
+        val analyticsHelper = dependency<AppModule, AnalyticsHelper> { it.analyticsHelper }.value
+        // Even if the var isn't used, needs to be initialized at application startup.
+        analyticsHelper.toString()
 
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())

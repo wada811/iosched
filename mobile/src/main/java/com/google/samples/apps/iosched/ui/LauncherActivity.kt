@@ -25,12 +25,10 @@ import com.google.samples.apps.iosched.shared.util.checkAllMatched
 import com.google.samples.apps.iosched.ui.LaunchDestination.MAIN_ACTIVITY
 import com.google.samples.apps.iosched.ui.LaunchDestination.ONBOARDING
 import com.google.samples.apps.iosched.ui.onboarding.OnboardingActivity
-import dagger.hilt.android.AndroidEntryPoint
 
 /**
  * A 'Trampoline' activity for sending users to an appropriate screen on launch.
  */
-@AndroidEntryPoint
 class LauncherActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {

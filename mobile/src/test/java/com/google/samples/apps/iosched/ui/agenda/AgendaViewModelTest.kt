@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.iosched.ui.agenda
 
+import android.app.Application
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.model.Block
@@ -46,6 +47,7 @@ class AgendaViewModelTest {
     @Test
     fun agendaDataIsLoaded() {
         val viewModel = AgendaViewModel(
+            Application(),
             LoadAgendaUseCase(FakeAgendaRepository(), coroutineRule.testDispatcher),
             GetTimeZoneUseCase(FakePreferenceStorage(), coroutineRule.testDispatcher)
         )

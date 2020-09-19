@@ -17,17 +17,15 @@
 package com.google.samples.apps.iosched.shared.domain.prefs
 
 import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
-import com.google.samples.apps.iosched.shared.di.IoDispatcher
 import com.google.samples.apps.iosched.shared.domain.UseCase
-import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 
 /**
  * Records whether onboarding has been completed.
  */
-open class OnboardingCompleteActionUseCase @Inject constructor(
+open class OnboardingCompleteActionUseCase(
     private val preferenceStorage: PreferenceStorage,
-    @IoDispatcher dispatcher: CoroutineDispatcher
+    dispatcher: CoroutineDispatcher
 ) : UseCase<Boolean, Unit>(dispatcher) {
     override suspend fun execute(parameters: Boolean) {
         preferenceStorage.onboardingCompleted = parameters

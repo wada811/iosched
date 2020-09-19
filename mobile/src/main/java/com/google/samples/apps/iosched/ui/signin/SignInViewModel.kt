@@ -16,21 +16,24 @@
 
 package com.google.samples.apps.iosched.ui.signin
 
-import androidx.hilt.lifecycle.ViewModelInject
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.samples.apps.iosched.di.AppModule
 import com.google.samples.apps.iosched.shared.result.Event
+import com.wada811.dependencyproperty.dependencyModule
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
 /**
  * ViewModel for *both* the sign in & sign out dialogs.
  */
-class SignInViewModel @ViewModelInject constructor(
-    signInViewModelDelegate: SignInViewModelDelegate
-) : ViewModel(), SignInViewModelDelegate by signInViewModelDelegate {
+class SignInViewModel @JvmOverloads constructor(
+    application: Application,
+    signInViewModelDelegate: SignInViewModelDelegate = application.dependencyModule<AppModule>().signInViewModelDelegate
+) : AndroidViewModel(application), SignInViewModelDelegate by signInViewModelDelegate {
 
     private val _dismissDialogAction = MutableLiveData<Event<Unit>>()
     val dismissDialogAction: LiveData<Event<Unit>>

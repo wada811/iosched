@@ -32,25 +32,21 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentInfoEventBinding
+import com.google.samples.apps.iosched.di.AppModule
 import com.google.samples.apps.iosched.model.ConferenceWifiInfo
-import com.google.samples.apps.iosched.shared.di.AssistantAppEnabledFlag
+import com.google.samples.apps.iosched.shared.di.SharedModule
 import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.setUpSnackbar
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
 import com.google.samples.apps.iosched.widget.FadingSnackbar
-import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
+import com.wada811.dependencyproperty.dependency
 
-@AndroidEntryPoint
 class EventFragment : Fragment() {
 
-    @Inject lateinit var snackbarMessageManager: SnackbarMessageManager
+    private val snackbarMessageManager by dependency<AppModule, SnackbarMessageManager> { it.snackbarMessageManager }
 
-    @Inject
-    @JvmField
-    @AssistantAppEnabledFlag
-    var assistantAppEnabled = false
+    private val assistantAppEnabled by dependency<SharedModule, Boolean> { it.featureFlags.isAssistantAppFeatureEnabled }
 
     private val eventInfoViewModel: EventInfoViewModel by viewModels()
 

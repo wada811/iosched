@@ -32,7 +32,6 @@ import com.google.samples.apps.iosched.databinding.FragmentOnboardingBinding
 import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.ui.MainActivity
-import dagger.hilt.android.AndroidEntryPoint
 
 private const val AUTO_ADVANCE_DELAY = 6_000L
 private const val INITIAL_ADVANCE_DELAY = 3_000L
@@ -40,7 +39,6 @@ private const val INITIAL_ADVANCE_DELAY = 3_000L
 /**
  * Contains the pages of the onboarding experience and responds to [OnboardingViewModel] events.
  */
-@AndroidEntryPoint
 class OnboardingFragment : Fragment() {
 
     private val onboardingViewModel: OnboardingViewModel by viewModels()

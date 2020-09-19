@@ -18,20 +18,18 @@ package com.google.samples.apps.iosched.shared.domain.ar
 
 import androidx.lifecycle.asFlow
 import com.google.samples.apps.iosched.shared.data.ar.ArDebugFlagEndpoint
-import com.google.samples.apps.iosched.shared.di.IoDispatcher
 import com.google.samples.apps.iosched.shared.domain.FlowUseCase
 import com.google.samples.apps.iosched.shared.result.Result
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
-import javax.inject.Inject
 
 /**
  * UseCase that loads if a signed in user can demo the AR feature (bypass teaser).
  * Should post Result.Success(true) to result when the signed in user can demo the AR feature.
  */
-class LoadArDebugFlagUseCase @Inject constructor(
+class LoadArDebugFlagUseCase(
     private val endpoint: ArDebugFlagEndpoint,
-    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
+    ioDispatcher: CoroutineDispatcher
 ) : FlowUseCase<Unit, Boolean>(ioDispatcher) {
 
     override fun execute(parameters: Unit): Flow<Result<Boolean>> = endpoint.canDemoAr().asFlow()

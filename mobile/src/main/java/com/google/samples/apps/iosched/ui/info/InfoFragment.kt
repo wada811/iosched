@@ -28,18 +28,17 @@ import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentInfoBinding
+import com.google.samples.apps.iosched.di.AppModule
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.ui.MainActivityViewModel
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
 import com.google.samples.apps.iosched.ui.signin.setupProfileMenuItem
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
-import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
+import com.wada811.dependencyproperty.dependency
 
-@AndroidEntryPoint
 class InfoFragment : MainNavigationFragment() {
 
-    @Inject lateinit var analyticsHelper: AnalyticsHelper
+    private val analyticsHelper by dependency<AppModule, AnalyticsHelper> { it.analyticsHelper }
 
     private lateinit var binding: FragmentInfoBinding
 

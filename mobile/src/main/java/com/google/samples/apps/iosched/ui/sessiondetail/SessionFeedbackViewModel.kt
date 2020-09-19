@@ -16,32 +16,36 @@
 
 package com.google.samples.apps.iosched.ui.sessiondetail
 
+import android.app.Application
 import androidx.annotation.IntRange
 import androidx.annotation.StringRes
-import androidx.hilt.lifecycle.ViewModelInject
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.samples.apps.iosched.R
+import com.google.samples.apps.iosched.di.AppModule
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.userdata.UserSession
+import com.google.samples.apps.iosched.shared.di.SharedModule
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCase
 import com.google.samples.apps.iosched.shared.domain.users.FeedbackParameter
 import com.google.samples.apps.iosched.shared.domain.users.FeedbackUseCase
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.util.cancelIfActive
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
+import com.wada811.dependencyproperty.dependencyModule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @ExperimentalCoroutinesApi
-class SessionFeedbackViewModel @ViewModelInject constructor(
-    private val signInViewModelDelegate: SignInViewModelDelegate,
-    private val loadUserSessionUseCase: LoadUserSessionUseCase,
-    private val feedbackUseCase: FeedbackUseCase
-) : ViewModel(),
+class SessionFeedbackViewModel @JvmOverloads constructor(
+    application: Application,
+    private val signInViewModelDelegate: SignInViewModelDelegate = application.dependencyModule<AppModule>().signInViewModelDelegate,
+    private val loadUserSessionUseCase: LoadUserSessionUseCase = application.dependencyModule<SharedModule>().loadUserSessionUseCase,
+    private val feedbackUseCase: FeedbackUseCase = application.dependencyModule<SharedModule>().feedbackUseCase
+) : AndroidViewModel(application),
     SignInViewModelDelegate by signInViewModelDelegate {
 
     companion object {

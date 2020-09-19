@@ -28,20 +28,20 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView.RecycledViewPool
 import com.google.samples.apps.iosched.databinding.FragmentCodelabsBinding
+import com.google.samples.apps.iosched.di.AppModule
 import com.google.samples.apps.iosched.model.Codelab
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
-import com.google.samples.apps.iosched.shared.di.MapFeatureEnabledFlag
+import com.google.samples.apps.iosched.shared.di.SharedModule
 import com.google.samples.apps.iosched.ui.MainActivityViewModel
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
 import com.google.samples.apps.iosched.ui.signin.setupProfileMenuItem
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
 import com.google.samples.apps.iosched.util.openWebsiteUri
-import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
-import javax.inject.Named
+import com.wada811.dependencyproperty.DependencyModule
+import com.wada811.dependencyproperty.dependency
+import com.wada811.dependencyproperty.dependencyModules
 
-@AndroidEntryPoint
 class CodelabsFragment : MainNavigationFragment(), CodelabsActionsHandler {
 
     companion object {
@@ -52,16 +52,11 @@ class CodelabsFragment : MainNavigationFragment(), CodelabsActionsHandler {
         private const val VALUE_UTM_MEDIUM = "android"
     }
 
-    @Inject
-    @field:Named("tagViewPool")
-    lateinit var tagRecycledViewPool: RecycledViewPool
+    private val tagRecycledViewPool: RecycledViewPool by dependency<CodelabsFragmentModule, RecycledViewPool> { it.tagRecycledViewPool }
 
-    @Inject
-    @JvmField
-    @MapFeatureEnabledFlag
-    var mapFeatureEnabled: Boolean = false
+    private val mapFeatureEnabled by dependency<SharedModule, Boolean> { it.featureFlags.isMapFeatureEnabled }
 
-    @Inject lateinit var analyticsHelper: AnalyticsHelper
+    private val analyticsHelper by dependency<AppModule, AnalyticsHelper> { it.analyticsHelper }
 
     private lateinit var binding: FragmentCodelabsBinding
     private val codelabsViewModel: CodelabsViewModel by viewModels()
@@ -79,6 +74,7 @@ class CodelabsFragment : MainNavigationFragment(), CodelabsActionsHandler {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        dependencyModules.replaceModule(CodelabsFragmentModule())
         binding.toolbar.setupProfileMenuItem(mainActivityViewModel, this)
 
         codelabsAdapter = CodelabsAdapter(
@@ -132,5 +128,9 @@ class CodelabsFragment : MainNavigationFragment(), CodelabsActionsHandler {
             .appendQueryParameter(PARAM_UTM_SOURCE, VALUE_UTM_SOURCE)
             .appendQueryParameter(PARAM_UTM_MEDIUM, VALUE_UTM_MEDIUM)
             .build()
+    }
+
+    class CodelabsFragmentModule : DependencyModule {
+        val tagRecycledViewPool: RecycledViewPool by lazy { RecycledViewPool() }
     }
 }

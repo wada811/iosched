@@ -16,12 +16,12 @@
 
 package com.google.samples.apps.iosched.ui.map
 
-import androidx.hilt.lifecycle.ViewModelInject
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.maps.CameraUpdate
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -31,8 +31,10 @@ import com.google.maps.android.data.geojson.GeoJsonFeature
 import com.google.maps.android.data.geojson.GeoJsonLayer
 import com.google.maps.android.data.geojson.GeoJsonPoint
 import com.google.samples.apps.iosched.BuildConfig
+import com.google.samples.apps.iosched.di.AppModule
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
+import com.google.samples.apps.iosched.shared.di.SharedModule
 import com.google.samples.apps.iosched.shared.domain.prefs.MyLocationOptedInUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.OptIntoMyLocationUseCase
 import com.google.samples.apps.iosched.shared.result.Event
@@ -41,15 +43,17 @@ import com.google.samples.apps.iosched.shared.result.updateOnSuccess
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.google.samples.apps.iosched.util.combine
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior
+import com.wada811.dependencyproperty.dependencyModule
 import kotlinx.coroutines.launch
 
-class MapViewModel @ViewModelInject constructor(
-    private val loadGeoJsonFeaturesUseCase: LoadGeoJsonFeaturesUseCase,
-    private val analyticsHelper: AnalyticsHelper,
-    private val signInViewModelDelegate: SignInViewModelDelegate,
-    private val optIntoMyLocationUseCase: OptIntoMyLocationUseCase,
-    myLocationOptedInUseCase: MyLocationOptedInUseCase
-) : ViewModel(), SignInViewModelDelegate by signInViewModelDelegate {
+class MapViewModel @JvmOverloads constructor(
+    application: Application,
+    private val loadGeoJsonFeaturesUseCase: LoadGeoJsonFeaturesUseCase = application.dependencyModule<AppModule>().loadGeoJsonFeaturesUseCase,
+    private val analyticsHelper: AnalyticsHelper = application.dependencyModule<AppModule>().analyticsHelper,
+    private val signInViewModelDelegate: SignInViewModelDelegate = application.dependencyModule<AppModule>().signInViewModelDelegate,
+    private val optIntoMyLocationUseCase: OptIntoMyLocationUseCase = application.dependencyModule<SharedModule>().optIntoMyLocationUseCase,
+    myLocationOptedInUseCase: MyLocationOptedInUseCase = application.dependencyModule<SharedModule>().myLocationOptedInUseCase
+) : AndroidViewModel(application), SignInViewModelDelegate by signInViewModelDelegate {
 
     /**
      * Area covered by the venue. Determines the viewport of the map.

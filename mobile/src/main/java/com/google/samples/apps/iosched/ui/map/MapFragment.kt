@@ -42,6 +42,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.maps.android.data.geojson.GeoJsonLayer
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentMapBinding
+import com.google.samples.apps.iosched.di.AppModule
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.ui.MainActivityViewModel
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
@@ -50,14 +51,12 @@ import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
 import com.google.samples.apps.iosched.util.slideOffsetToAlpha
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior.BottomSheetCallback
-import dagger.hilt.android.AndroidEntryPoint
+import com.wada811.dependencyproperty.dependency
 import org.threeten.bp.Instant
-import javax.inject.Inject
 
-@AndroidEntryPoint
 class MapFragment : MainNavigationFragment() {
 
-    @Inject lateinit var analyticsHelper: AnalyticsHelper
+    private val analyticsHelper by dependency<AppModule, AnalyticsHelper> { it.analyticsHelper }
 
     private val viewModel: MapViewModel by viewModels()
     private val mainActivityViewModel: MainActivityViewModel by activityViewModels()
@@ -84,6 +83,7 @@ class MapFragment : MainNavigationFragment() {
         // between 0 and 1, inclusive, coinciding with a point between the bottom sheet's
         // collapsed (0) and expanded (1) states.
         private const val ALPHA_TRANSITION_END = 0.5f
+
         // Threshold for when the marker description reaches minimum alpha. Should be a value
         // between 0 and 1, inclusive, coinciding with a point between the bottom sheet's
         // collapsed (0) and expanded (1) states.
@@ -230,7 +230,7 @@ class MapFragment : MainNavigationFragment() {
             }
 
             binding.descriptionScrollview.updatePaddingRelative(
-                    bottom = insets.systemWindowInsetBottom)
+                bottom = insets.systemWindowInsetBottom)
 
             // The peek height should use the bottom system gesture inset since it is a scrolling
             // widget

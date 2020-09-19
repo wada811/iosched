@@ -22,8 +22,6 @@ import androidx.lifecycle.MutableLiveData
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.userdata.UserSession
-import com.google.samples.apps.iosched.shared.di.ApplicationScope
-import com.google.samples.apps.iosched.shared.di.MainDispatcher
 import com.google.samples.apps.iosched.shared.domain.users.StarEventAndNotifyUseCase
 import com.google.samples.apps.iosched.shared.domain.users.StarEventParameter
 import com.google.samples.apps.iosched.shared.result.Event
@@ -36,7 +34,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.util.UUID
-import javax.inject.Inject
 
 /**
  * A delegate providing common functionality for displaying a list of events and responding to
@@ -48,12 +45,12 @@ interface EventActionsViewModelDelegate : EventActions {
     val snackBarMessage: LiveData<Event<SnackbarMessage>>
 }
 
-class DefaultEventActionsViewModelDelegate @Inject constructor(
+class DefaultEventActionsViewModelDelegate(
     signInViewModelDelegate: SignInViewModelDelegate,
     private val starEventUseCase: StarEventAndNotifyUseCase,
     private val snackbarMessageManager: SnackbarMessageManager,
-    @ApplicationScope private val externalScope: CoroutineScope,
-    @MainDispatcher private val mainDispatcher: CoroutineDispatcher
+    private val applicationScope: CoroutineScope,
+    private val mainDispatcher: CoroutineDispatcher
 ) : EventActionsViewModelDelegate, SignInViewModelDelegate by signInViewModelDelegate {
 
     private val _navigateToEventAction = MutableLiveData<Event<SessionId>>()
@@ -94,7 +91,7 @@ class DefaultEventActionsViewModelDelegate @Inject constructor(
             )
         )
 
-        externalScope.launch(mainDispatcher) {
+        applicationScope.launch(mainDispatcher) {
             getUserId()?.let {
                 val result = starEventUseCase(
                     StarEventParameter(
